@@ -188,13 +188,12 @@ header {
     display: flex;
     justify-content: space-around;
     background-color: #931621ff;
-    /* padding: 10px; */
+
     text-align: center;
     color: whitesmoke;
     /* font-family: var(--primary-font); */
     font-family: Roboto, Arial, san-serif;
-    margin-bottom: 0 auto;
-    /* flex-wrap: nowrap; */
+
 }
 
 .logo {
@@ -742,7 +741,7 @@ footer {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: auto;
+        padding: 0;
         background-color: #bed;
         height: 300px;
         margin: 5px auto;
