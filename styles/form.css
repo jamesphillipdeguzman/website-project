@@ -1,0 +1,171 @@
+/*================== FORMS ==================== */
+
+fieldset {
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+.form-section {
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+}
+
+.form-section h1 {
+    background-color: aquamarine;
+    margin: 0;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px;
+    background-color: #bed;
+}
+
+label {
+    display: block;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+select {
+    padding: 10px 0;
+    width: 100%;
+    max-width: 500px;
+    height: 44px;
+    font-size: 0.9rem;
+    /* color: #000; */
+}
+
+/* stars-rating */
+input[type="radio"] {
+    display: none;
+    position: relative;
+    caret-color: rgba(0, 0, 0, 0);
+}
+
+.stars-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: left;
+}
+
+.stars-rating>label {
+    color: brown;
+    width: 30px;
+    height: 30px;
+    font-size: 2rem;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    caret-color: rgba(0, 0, 0, 0);
+    /* remove blinking cursor*/
+}
+
+.stars-rating>label:hover {
+    color: #000;
+}
+
+.stars-rating>label::before {
+    content: "\2606";
+}
+
+.stars-rating input:checked~label::before {
+    content: "\2605";
+}
+
+/* Install date */
+input[type="date"] {
+    padding: 20px 0;
+    width: 100%;
+    /* max-width: 500px; */
+    height: 44px;
+    font-size: 0.9rem;
+}
+
+
+input[type="checkbox"].features {
+    display: flex;
+
+}
+
+input[type="checkbox"].large-checkbox {
+    transform: scale(1.2);
+    margin-right: 3px;
+
+}
+
+
+.wrap-checkbox {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin-bottom: 10px;
+
+
+}
+
+.wrap-checkbox label {
+    height: 25px;
+    margin-bottom: 4px;
+
+}
+
+#italicize {
+    font-style: italic;
+}
+
+.review label {
+    display: flex;
+    flex-direction: column;
+
+}
+
+textarea {
+    height: 100px;
+    font-size: 0.9rem;
+}
+
+.review input {
+    height: 44px;
+}
+
+.review .optional {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.6rem;
+}
+
+
+#review-btn {
+    font-family: Roboto, Arial, sans-serif;
+    padding: 10px 20px;
+    background-color: rebeccapurple;
+    color: whitesmoke;
+    border-radius: 5px;
+    margin: 0 auto;
+    height: auto;
+    max-width: 200px;
+    flex: 1 0 10%;
+
+
+}
+
+#review-btn:hover {
+    background-color: #4cae4c;
+}
+
+.bottom-section>h2 {
+    color: whitesmoke;
+}
+
+.errMsg {
+    color: red;
+    font-weight: bold;
+    font-size: 0.7rem;
+    margin: 5px 0 10px 0;
+    /* display: none; */
+}

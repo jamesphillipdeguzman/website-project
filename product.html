@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="author" content="James Phillip De Guzman">
+    <meta name="description" content="Product Review: A product review form using HTML forms">
+    <title>Product Review</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/form.css">
+    <link rel="icon" href="images/besys-tech-logo.ico" type="image/x-icon">
+    <meta property="og:title" content="My Personal Website">
+    <meta property="og:description"
+        content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!">
+    <meta property="og:image" content="images/project-images/profile.png">
+    <meta property="og:url" content="https://jamesdeguzman.com/product.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
+    <script src="scripts/base.js" defer></script>
+</head>
+
+<body>
+
+
+    <div class="page-wrap">
+
+        <header>
+
+            <nav class="navigation">
+
+                <div class="logo"><img src="images/besys-tech-logo.svg" alt="company logo" width="100" height="100">
+                </div>
+                <ul>
+                    <li><a href="index.html" id="home">Home</a></li>
+                    <li><a href="about.html" id="about">About</a></li>
+                    <li><a href="contact.html" id="contact">Contact</a></li>
+                    <li><a href="portfolios.html" id="portfolio">Portfolios</a></li>
+                    <li><a href="product.html" id="product" class="active">Products</a></li>
+
+                </ul>
+                <button id="menu" aria-label="menu"></button>
+            </nav>
+            <button class="signup-btn">Join</button>
+
+
+
+
+        </header>
+
+
+
+        <main>
+
+            <div class="hero">
+                <div class="image-container">
+                    <h1 id="hero-text">besys.tech</h1>
+                    <img src="images/besys-tech-logo.svg" alt="besys tech company" width="200" height="100">
+                </div>
+
+            </div>
+
+
+            <div class="form-section">
+                <h3>Sample Product Review Form</h3>
+
+                <form action="review.html" method="get" id="review-form">
+                    <fieldset class="form-group">
+
+                        <label for="dynamic-product">Product Name</label>
+
+                        <!-- Dynamic select dropdown list -->
+                        <select id="dynamic-product" name="dynamic-product" required>
+                            <option value="" disabled>Select a product...</option>
+                        </select>
+                        <div id="select-error-message"></div>
+
+
+                        <label for="stars">Overall Rating</label>
+
+                        <!-- Radio star buttons -->
+                        <div class="stars-rating" id="stars">
+                            <input type="radio" id="fivestar" name="stars" value="5" required><label
+                                for="fivestar"></label>
+                            <input type="radio" id="fourstar" name="stars" value="4" required><label
+                                for="fourstar"></label>
+                            <input type="radio" id="threestar" name="stars" value="3" required><label
+                                for="threestar"></label>
+                            <input type="radio" id="twostar" name="stars" value="2" required><label
+                                for="twostar"></label>
+                            <input type="radio" id="onestar" name="stars" value="1" required><label
+                                for="onestar"></label>
+                        </div>
+                        <div id="radio-error-message"></div>
+
+                        <!-- Date Input -->
+                        <div class="install-date">
+                            <label for="date-installed">Date of Installation</label>
+                            <input type="date" id="date-installed" name="date-installed" required>
+
+                        </div>
+
+                        <div id="date-error-message"></div>
+
+                        <!-- Checkboxes -->
+                        <div class="features">
+
+                            <p>Which features did you find useful in the product?</p>
+                            <p id="italicize">(Check all that apply)</p>
+                            <div class="wrap-checkbox">
+                                <label for="durability"><input type="checkbox" class="large-checkbox" id="durability"
+                                        name="features" value="durability">Durability</label>
+                                <label for="ease"><input type="checkbox" class="large-checkbox" id="ease"
+                                        name="features" value="ease">Ease of Use</label>
+                                <label for="performance"><input type="checkbox" class="large-checkbox" id="performance"
+                                        name="features" value="performance">Performance</label>
+                                <label for="design"><input type="checkbox" class="large-checkbox" id="design"
+                                        name="features" value="design">Design</label>
+                            </div>
+                        </div>
+
+                        <div class="review">
+
+                            <label for="written-review">Written Review <span class="optional">(Optional)</span>
+                                <!-- Text area for written review -->
+                                <textarea id="written-review" name="written-review"></textarea></label>
+
+
+                            <label for="fname">Name <span class="optional">(Optional)</span>
+                                <!-- Textbox for name -->
+                                <input type="text" id="fname" name="fname"></label>
+                        </div>
+
+                        <input type="submit" id="review-btn" value="Post a Review">
+                    </fieldset>
+
+                </form>
+
+
+
+            </div>
+
+    </div>
+
+    </main>
+    </div>
+    <div class="wireframe-overlay"></div>
+
+
+    <footer>
+        <div class="footer-wrapper">
+            <div class="footer-links">
+                <a href="siteplan.html">
+                    <img src="images/svg/site-plan-logo.svg" alt="site plan logo" width="50" height="50">
+                </a>
+            </div>
+
+
+            <div class="footer-text">
+                &copy;<span id="currentyear"></span> James Phillip K. De Guzman <p class="lastmodified">Last Modified:
+                    <span id="lastModified"></span>
+                </p>
+
+                <!-- Show number of searches here and date-->
+                <p>Submission Count: <span id="submit-count"></span></p>
+                <!-- <p> Date: <span id="today"></span></p> -->
+            </div>
+
+            <div class="social-links">
+                <a href="https://www.facebook.com/diet.deguzman" target="_blank">
+                    <img src="images/svg/fb-logo.svg" alt="facebook logo" width="50" height="50">
+                </a>
+                <a href="https://www.linkedin.com/in/jamesphillipdeguzman/" target="_blank">
+                    <img src="images/svg/linkedin-logo.svg" alt="LinkedIn logo" width="50" height="50">
+                </a>
+            </div>
+
+
+        </div>
+    </footer>
+
+</body>
+
+</html>

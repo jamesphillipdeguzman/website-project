@@ -1,0 +1,11 @@
+/* Hide hamburger button for larger screens*/
+@media (min-width: 953px) {
+
+    #menu {
+        display: none;
+    }
+
+}
+
+
+

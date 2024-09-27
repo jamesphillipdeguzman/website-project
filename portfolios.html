@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Portfolios Page</title>
+    <meta name="description" content="Portfolios page: Website projects created by James De Guzman">
+    <meta name="author" content="James Phillip K. De Guzman">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="icon" href="images/besys-tech-logo.ico" type="image/x-icon">
+    <meta property="og:title" content="My Personal Website">
+    <meta property="og:description"
+        content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!">
+    <meta property="og:image" content="images/project-images/profile.png">
+    <meta property="og:url" content="https://jamesdeguzman.com/portfolios.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
+    <script src="scripts/base.js" defer></script>
+</head>
+
+<body>
+
+
+    <div class="page-wrap">
+
+        <header>
+
+            <nav class="navigation">
+
+                <div class="logo"><img src="images/besys-tech-logo.svg" alt="company logo" width="100" height="100">
+                </div>
+                <ul>
+                    <li><a href="index.html" id="home">Home</a></li>
+                    <li><a href="about.html" id="about">About</a></li>
+                    <li><a href="contact.html" id="contact">Contact</a></li>
+                    <li><a href="portfolios.html" id="portfolio" class="active">Portfolios</a></li>
+                    <li><a href="product.html" id="product">Products</a></li>
+
+                </ul>
+                <button id="menu" aria-label="menu"></button>
+            </nav>
+            <button class="signup-btn">Join</button>
+
+
+
+
+        </header>
+
+
+
+        <main>
+
+            <div class="hero">
+                <div class="image-container">
+                    <h1>My Latest Work</h1>
+                    <img src="images/site-planning.svg" alt="picture of a notebook with wireframe sketches" width="200"
+                        height="100">
+                </div>
+
+
+            </div>
+
+            <div class="bottom-section">
+
+                <h2 id="choose">Choose a website portfolio</h2>
+                <div class="dropdown-container">
+                    <!-- <label for="my-portfolio">My Porfolios</label> -->
+                    <select id="my-portfolios">
+                        <option value="">Select a portfolio</option>
+                        <option value="Place page">Portfolio 1</option>
+                        <option value="WDD131 home page">Portfolio 2</option>
+                        <option value="Filtered temples page">Portfolio 3</option>
+                        <option value="Unfiltered temples page">Portfolio 4</option>
+                        <option value="Holy grail layout (practice)">Portfolio 5</option>
+                        <option value="Whitewater rafting site (WDD130)">Portfolio 6</option>
+                        <option value="Course Home Page (WDD231)">Portfolio 7</option>
+                    </select>
+                    <button id="portfolio-btn">Select</button>
+
+                </div>
+
+                <div id="results"></div>
+                <!-- Create dynamic text content here -->
+                <div class="image-loader"></div>
+
+                <!-- Create a grid for the websites -->
+                <div class="portfolio-container">
+                    <div class="portfolio-items">
+                        <div class="titlediv">
+                            <!--Portfolio 1-->
+                            <h3 class="project-title">Portfolio 1: Place page </h3>
+
+                        </div>
+                        <div class="picturediv">
+
+
+                            <!-- <source
+                                    srcset="images/project-images/portfolio-1.webp"
+                                    media="(min-width: 600px)"> -->
+                            <!-- sizes="(min-width: 600px) 600px, 100vw"> -->
+                            <!-- <source
+                                    srcset="images/project-images/portfolio-1-small.webp"
+                                    media="(min-width: 599px)"> -->
+                            <!-- sizes="(min-width: 599px) 500px, 100vw"> -->
+
+                            <a href="https://jamesphillipdeguzman.github.io/wdd131/place.html">
+                                <img src="images/project-images/portfolio-1.webp" alt="Portfolio 1: place.html"
+                                    width="300" height="200" loading="eager">
+                            </a>
+
+
+                        </div>
+                        <div class="descdiv">
+                            <p class="project-desc">
+                                This website portfolio uses picture and srcset in order to load different picture sizes.
+                                The site is about my dream destination, Banaue Rice Terraces in the Philippines!
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="portfolio-items">
+                        <div class="titlediv">
+                            <!--Portfolio 2-->
+                            <h3 class="project-title">Portfolio 2: WDD131 home page </h3>
+                        </div>
+                        <div class="picturediv">
+
+                            <!-- <source
+                                srcset="images/project-images/portfolio-2.webp"
+                                media="(min-width: 600px)"> -->
+                            <!-- sizes="(min-width: 600px) 600px, 100vw"> -->
+                            <!-- <source
+                                srcset="images/project-images/portfolio-2-small.webp"
+                                media="(min-width: 599px)"> -->
+                            <!-- sizes="(min-width: 599px) 500px, 100vw"> -->
+                            <a href="https://jamesphillipdeguzman.github.io/wdd131/index.html">
+                                <img src="images/project-images/portfolio-2.webp" alt="Portfolio 2: index.html"
+                                    width="300" height="270" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="descdiv">
+                            <p class="project-desc">
+                                This is a simple HTML personal homepage I've created for my course Dynamic Web
+                                Fundamentals (WDD131) in BYU-Idaho Spring Semester 2024.
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="portfolio-items">
+                        <div class="titlediv">
+                            <!--Portfolio 3-->
+                            <h3 class="project-title">Portfolio 3: Filtered temples page </h3>
+                        </div>
+                        <div class="picturediv">
+
+                            <!-- <source
+                                srcset="images/project-images/portfolio-3.webp"
+                                media="(min-width: 600px)"> -->
+                            <!-- sizes="(min-width: 600px) 600px, 100vw"> -->
+                            <!-- <source
+                                srcset="images/project-images/portfolio-3-small.webp"
+                                media="(min-width: 599px)"> -->
+                            <!-- sizes="(min-width: 599px) 500px, 100vw"> -->
+                            <a href="https://jamesphillipdeguzman.github.io/wdd131/filtered-temples.html">
+                                <img src="images/project-images/portfolio-3.webp" alt="Portfolio 3: " width="300"
+                                    height="270" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="descdiv">
+                            <p class="project-desc">
+                                This website portfolio uses filtering of array objects in JavaScript.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="portfolio-items">
+                        <div class="titlediv">
+                            <!--Portfolio 4-->
+                            <h3 class="project-title">Portfolio 4: Unfiltered temples page </h3>
+                        </div>
+                        <div class="picturediv">
+
+                            <!-- <source
+                                srcset="images/project-images/portfolio-4.webp"
+                                media="(min-width: 600px)"> -->
+                            <!-- sizes="(min-width: 600px) 600px, 100vw"> -->
+                            <!-- <source
+                                srcset="images/project-images/portfolio-4-small.webp"
+                                media="(min-width: 599px)"> -->
+                            <!-- sizes="(min-width: 599px) 500px, 100vw"> -->
+                            <a href="https://jamesphillipdeguzman.github.io/wdd131/temples.html">
+                                <img src="images/project-images/portfolio-4.webp" alt="Portfolio 4: " width="300"
+                                    height="270" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="descdiv">
+                            <p class="project-desc">
+                                This website portfolio is the beta version of the Filtered Temples page.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="portfolio-items">
+                        <div class="titlediv">
+                            <!--Portfolio 5-->
+                            <h3 class="project-title">Portfolio 5: Holy grail layout (practice) </h3>
+                        </div>
+                        <div class="picturediv">
+
+                            <!-- <source
+                                srcset="images/project-images/portfolio-5.webp"
+                                media="(min-width: 600px)"> -->
+                            <!-- sizes="(min-width: 600px) 600px, 100vw"> -->
+                            <!-- <source
+                                srcset="images/project-images/portfolio-5-small.webp"
+                                media="(min-width: 599px)"> -->
+                            <!-- sizes="(min-width: 599px) 500px, 100vw"> -->
+                            <a
+                                href="https://jamesphillipdeguzman.github.io/wdd131/csspractice/holy-grail-layout-flex.html">
+                                <img src="images/project-images/portfolio-5.webp" alt="Portfolio 5: " width="300"
+                                    height="270" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="descdiv">
+                            <p class="project-desc">
+                                This is only a practice website to create my first holy grail layout in HTML.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="portfolio-items">
+                        <div class="titlediv">
+                            <!--Portfolio 6-->
+                            <h3 class="project-title">Portfolio 6: Whitewater rafting site (WDD130) </h3>
+                        </div>
+                        <div class="picturediv">
+
+                            <!-- <source
+                                srcset="images/project-images/portfolio-6.webp"
+                                media="(min-width: 600px)"> -->
+                            <!-- sizes="(min-width: 600px) 600px, 100vw"> -->
+                            <!-- <source
+                                srcset="images/project-images/portfolio-6-small.webp"
+                                media="(min-width: 599px)"> -->
+                            <!-- sizes="(min-width: 599px) 500px, 100vw"> -->
+                            <a href="https://jamesphillipdeguzman.github.io/wdd130/wwr/index.html">
+                                <img src="images/project-images/portfolio-6.webp" alt="Portfolio 6: " width="300"
+                                    height="270" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="descdiv">
+                            <p class="project-desc">
+                                This website portfolio is my project in Web Fundamentals (WDD130).
+                            </p>
+                        </div>
+                    </div>
+                    <div class="portfolio-items">
+                        <div class="titlediv">
+                            <!--Portfolio 7-->
+                            <h3 class="project-title">Portfolio 7: Course Home Page (WDD231) </h3>
+                        </div>
+                        <div class="picturediv">
+
+                            <!-- <source
+                            srcset="images/project-images/portfolio-7.webp"
+                            media="(min-width: 600px)"> -->
+                            <!-- sizes="(min-width: 600px) 600px, 100vw"> -->
+                            <!-- <source
+                            srcset="images/project-images/portfolio-7-small.webp"
+                            media="(min-width: 599px)"> -->
+                            <!-- sizes="(min-width: 599px) 500px, 100vw"> -->
+                            <a href="https://jamesphillipdeguzman.github.io/wdd231/index.html">
+                                <img src="images/project-images/portfolio-7.webp" alt="Portfolio 7: " width="300"
+                                    height="270" loading="lazy">
+                            </a>
+                        </div>
+                        <div class="descdiv">
+                            <p class="project-desc">
+                                This is my course home page and chamber of commerce project in Web Frontend Development
+                                I (WDD231).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <div class="wireframe-overlay"></div>
+
+
+    <footer>
+        <div class="footer-wrapper">
+            <div class="footer-links">
+                <a href="siteplan.html">
+                    <img src="images/svg/site-plan-logo.svg" alt="site plan logo" width="50" height="50">
+                </a>
+            </div>
+
+            <div class="footer-text">
+                &copy;<span id="currentyear"></span> James Phillip K. De Guzman <p class="lastmodified">Last Modified:
+                    <span id="lastModified"></span>
+                </p>
+
+                <!-- Show number of searches here and date-->
+                <p>Search Count: <span id="search"></span></p>
+                <p> Date: <span id="today"></span></p>
+            </div>
+
+            <div class="social-links">
+                <a href="https://www.facebook.com/diet.deguzman">
+                    <img src="images/svg/fb-logo.svg" alt="facebook logo" width="50" height="50">
+                </a>
+                <a href="https://www.linkedin.com/in/jamesphillipdeguzman/">
+                    <img src="images/svg/linkedin-logo.svg" alt="LinkedIn logo" width="50" height="50">
+                </a>
+            </div>
+
+        </div>
+    </footer>
+
+</body>
+
+</html>
