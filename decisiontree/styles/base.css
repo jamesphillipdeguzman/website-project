@@ -1,76 +1,63 @@
 :root {
-
     --primary-color: rgba(255, 244, 0, 1);
     --secondary-color: rgba(39, 36, 37, 1);
     --bg-color: #5BC0EB;
     --base-color: #404E4D;
     --dirty-white: rgba(245, 240, 220, 1);
-
     --primary-font: "Poppins", Arial, sans-serif;
     --secondary-font: "Satisfy", Verdana, Georgia;
-
 }
 
-
-/* -------------- PRESETS --------------  */
+/* -------------- PRESETS -------------- */
 
 * {
-
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-
 }
 
-
 html {
-
     height: 100%;
     font-size: 16px;
     /* Base font size for scalability */
-
 }
 
-
+/* Combine body styles to avoid redundancy */
 body {
     background-color: var(--bg-color);
     color: var(--base-color);
     /* Base text color */
-    font-family: var(--primary-font, Arial, sans-serif);
-    /* Fallback font*/
+    font-family: var(--primary-font);
+    /* Fallback font */
     height: 100%;
     /* Ensures body takes full height */
     line-height: 1.6;
     /* Improves readability */
     padding: 20px;
     /* Add some spacing */
+    margin: 0;
+    /* Reset default margin */
 }
-
 
 /* Responsive Typography */
 h1 {
-
     font-size: 2.5rem;
     /* Scalable font size */
     margin-bottom: 20px;
+    text-align: center;
+    /* Center alignment for h1 */
 }
 
-
 h2 {
-
     font-family: var(--secondary-font);
-
 }
 
 p {
-
-    font-size: 1rem
-        /* Base font size for paragraph */
-        margin-bottom: 15px;
+    font-size: 1rem;
+    /* Base font size for paragraph */
+    margin-bottom: 15px;
     /* Spacing below paragraphs */
-
 }
-
 
 a {
     color: #555555;
@@ -79,10 +66,13 @@ a {
     transition: color 0.1s, background-color 0.1s;
 }
 
+li {
+    list-style-type: none;
+}
+
 a:hover {
-    color: #007BFF;
+    color: #dc3545;
     /* Hover */
-    background-color: #F0F8FF;
 }
 
 a:active {
@@ -91,13 +81,11 @@ a:active {
     background-color: #007BFF;
 }
 
-
 .branding {
     color: white;
 }
 
 /* -------------- MENU -------------------  */
-
 #menu {
     display: none;
 }
@@ -108,19 +96,13 @@ a:active {
     color: white;
 }
 
-
-
-/* -------------- NAVIGATION --------------  */
-
-
+/* -------------- NAVIGATION -------------- */
 header {
     background-color: var(--primary-color);
     border: 1px solid #888;
-
 }
 
 .toplinks {
-
     align-content: center;
     align-items: center;
     background-color: var(--primary-color);
@@ -128,30 +110,21 @@ header {
     display: flex;
     justify-content: space-evenly;
     max-width: 100vw;
-
 }
-
 
 ul.toplinks {
-
     list-style-type: none;
-
+    display: flex;
+    /* Moved from repeated definition */
 }
 
-
-
+ul.toplinks li {
+    margin: 15px;
+}
 
 ul li a {
-
     text-decoration: none;
-    list-style: none;
 }
-
-.toplinks {
-
-    display: flex;
-}
-
 
 main {
     display: flex;
@@ -163,20 +136,8 @@ main {
     height: 35rem;
 }
 
-/* -------------- BODY --------------  */
-
-
-body {
-    align-items: center;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-}
-
+/* -------------- BODY -------------- */
 .container {
-
-
     background-color: var(--dirty-white);
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -188,11 +149,6 @@ body {
     margin: 5px;
     padding: 20px;
     width: 100%;
-
-}
-
-h1 {
-    text-align: center;
 }
 
 .container h1 {
@@ -204,7 +160,6 @@ h1 {
 
 .tree-selection {
     margin: 20px;
-
 }
 
 .node {
@@ -242,54 +197,33 @@ button:hover {
 
 .italics {
     font-style: italic;
-
 }
 
 .bold {
     font-weight: bold;
-
 }
 
 /* ================== FOOTER ====================== */
-
-
 footer {
-
     display: block;
     background-color: rgba(0, 0, 0, 0.8);
-
     padding-top: 50px;
-    /* padding: 20px; */
+    /* Add padding */
     text-align: center;
     color: whitesmoke;
     font-family: var(--primary-font);
     font-size: 0.8rem;
     max-width: 100vw;
     width: 100%;
-
-
-
 }
-
-/*.footer-wrapper {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(1, 1fr);
-    justify-content: space-evenly;
-    align-content: center;
-
-}*/
 
 .footer-text {
     color: white;
     font-size: 1rem;
 }
 
-
-/* -------------- MOBILE VIEW --------------  */
-
+/* -------------- MOBILE VIEW -------------- */
 @media (max-width: 600px) {
-
     header {
         display: flex;
         flex-direction: column;
@@ -300,109 +234,82 @@ footer {
     }
 
     h1 {
-
         text-align: center;
+        font-size: 1.7rem;
+        /* Adjust font size for smaller screens */
     }
 
-    ul.toplinks {
+    ul.toplinks.open {
         display: flex;
         flex-direction: column;
         align-items: center;
-
+        /* Align items for open menu */
     }
 
-    .navigation>a {
-        /* Adjust styles for individual links */
-        margin: 5px 0;
-        /* Add vertical spacing between links */
+    .toplinks {
+        display: none;
+        /* Hide links initially */
     }
 
     #menu {
-
         background: none;
         border: none;
         color: #000;
         cursor: pointer;
         display: block;
         font-size: 2rem;
-        font-family: var(--default-font);
         padding: .2rem 2vw;
         position: absolute;
         right: 20px;
         top: 8px;
-        /* width: 100%; */
         text-align: right;
-
     }
 
     #menu::before {
-        /* content: "☰"; */
         content: "\2630";
-        /* When menu is closed, display the hamburger icon */
-
+        /* Hamburger icon */
     }
 
     #menu.open::before {
         content: "X";
-        /* When menus is opened, display the 'X' button to close the menu */
-
+        /* Close icon */
     }
-
-
 
     .toplinks ul li a {
         font-size: 1rem;
-
     }
 
     .toplinks ul li {
         margin: 5px auto;
     }
 
-    ul.toplinks .open {
-
+    ul.toplinks.open {
         display: flex;
-        flex-direction: column;
-
-        /* display the menu when the hamburger icon is clicked; 
-    display block only activates when top-navigation have the open class*/
+        /* Show menu when hamburger icon is clicked */
     }
 
     .toplinks .logo {
         display: flex;
     }
 
-
-
     .toplinks ul li {
         align-items: center;
         text-align: center;
         justify-content: right;
         margin: 0 auto;
-
     }
-
 
     .toplinks a {
         font-size: 0.8rem;
         display: flex;
     }
 
-
-    h1 {
-        font-size: 1.7rem;
-        /* Adjust font size for smaller screens */
-
-    }
-
     p {
-        font-size: 0.8rem
-            /* Slightly smaller text */
-
+        font-size: 0.8rem;
+        /* Slightly smaller text */
     }
 
     .footer-text {
         font-size: 1.4rem;
     }
-
 }
