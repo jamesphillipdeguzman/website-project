@@ -482,17 +482,18 @@ function ioResponsible(answer) {
             <button class="no" onclick="hireCarOption('no')">No</button>
         `;
     } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Did the customer identify the Driver's details of the at fault vehicle? 
-            <ul>
-                <li> Fullname </li>
-                <li> TPV Registration </li>
-                <li> TP Address </li>
-            </ul></p>
-            <button class="yes" onclick="driverDetails('yes')">Yes</button>
-            <button class="no" onclick="nafHireCar()">No</button>
-        `;
+        tpAtFaultOnIncidentDesc();
     }
+}
+
+function tpAtFaultOnIncidentDesc() {
+
+    decisionTreeDiv.innerHTML = `
+        <p>Is the incident description clear that TP is responsible?</p>
+        <button class="yes" onclick="driverDetails('yes')">Yes</button>
+        <button class="no" onclick="driverDetails('no')">No</button>
+    `;
+
 }
 
 function driverDetails(answer) {
@@ -503,7 +504,7 @@ function driverDetails(answer) {
             <button class="no" onclick="excessWaived('no')">No</button>
         `;
     } else {
-        tpAtFaultOnIncidentDesc();
+        noteFromRecSet();
     }
 }
 
@@ -515,32 +516,60 @@ function excessWaived(answer) {
             <button class="no" onclick="binglePolicy('no')">No</button>
         `;
     } else {
-        tpAtFaultOnIncidentDesc();
+        theftClaim();
+    }
+}
+
+function binglePolicy(answer) {
+    if (answer === 'yes') {
+        decisionTreeDiv.innerHTML = `
+            <p>Explain to IO that they don't have the HC Option on their policy. Offer the CDP Code - Step 1 of 
+<a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
+        `;
+    } else {
+        decisionTreeDiv.innerHTML = `
+            <p>Book a Not at Fault Hire Car for unlimited days with a car that suits our customer's needs.
+            AAMI, APIA, Suncorp, and GIO. Follow the initial booking days 
+<a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1074602&locale=en-GB" target="_blank">KM1074602</a>
+            <ul>
+                <li>SMART or cAre: 14 days</li>
+                <li>Other Repair Type: 21 days</li>
+            </ul> 
+            </p>
+        `;
     }
 }
 
 function hireCarOption(answer) {
     if (answer === 'yes') {
         decisionTreeDiv.innerHTML = `
-            <p>Book the Hire Car According to the Policy Option:</p>
+            <p>What kind of HC Coverage does the customer have?:</p>
             <button class="limited" onclick="limitedOption()">Limited</button>
             <button class="unlimited" onclick="unlimitedOption()">Unlimited</button>
         `;
     } else {
-        theftClaim('no');
+        decisionTreeDiv.innerHTML = `
+            <p>Explain to IO that they don't have the HC Option on their policy. Offer the CDP Code - Step 1 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> </p>
+	`;
     }
 }
 
 function limitedOption() {
     decisionTreeDiv.innerHTML = `
-        <p>Limited - An option added to Suncorp and GIO Policy Holders for 21 Calendar Days only.</p>
+        <p><span class="bold">Limited</span> - An option added to Suncorp and GIO Policy Holders for 21 Calendar Days only.</p>
+	<p>Initial Booking based on the Repairer:</p>
+<p class="bold">SMART or cAre: 14 days
+Other Repair Type: 21 days</p>
         <p>GIO - ITGIO75<br>SUNCORP - ITSUN75</p>
     `;
 }
 
 function unlimitedOption() {
     decisionTreeDiv.innerHTML = `
-        <p>Unlimited - IO can use the Hire Car until the repairs are complete and if the claim has been settled.</p>
+        <p><span class="bold">Unlimited</span> - IO can use the Hire Car until the repairs are complete and if the claim has been settled.</p>
+<p>Initial Booking based on the Repairer:</p>
+<p class="bold">SMART or cAre: 14 days
+Other Repair Type: 21 days</p>
         <p>AAMI - ITHCOAAMI90<br>APIA - ITHCOAPIA90<br>SUNCORP - ITSUNUNLI100<br>GIO - ITGIOPLAT100<br>BINGLE - ITLLDU</p>
     `;
 }
@@ -565,52 +594,93 @@ function theftClaimType(answer) {
     }
 }
 
-function binglePolicy(answer) {
-    if (answer === 'yes') {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain to IO that they don't have the HC Option on their policy. Offer the CDP Code - Step 1 of 
-<a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Book a Not at Fault Hire Car for unlimited days with a car that suits our customer's needs.
-            AAMI, APIA, Suncorp, and GIO. Follow the initial booking days 
-<a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1074602&locale=en-GB" target="_blank">KM1074602</a>
-            <ul>
-                <li>SMART or cAre: 14 days</li>
-                <li>Other Repair Type: 21 days</li>
-            </ul> 
-            </p>
-        `;
-    }
-}
+
 
 function theftBooking() {
     decisionTreeDiv.innerHTML = `
         <p>Book a Theft Hire Car for 21 days only.</p>
-        <p>AAMI - ITTHEAAMI<br>APIA - ITTHEAPIA<br>SUNCORP - ITTHESUN<br>GIO - ITTHEGIO</p>
+        <p>Note: If IO has a HC cover, we can extend the HC until their car is repaired or the claim is settled. If IO does not have the HC cover, they can only use the HC After Theft for 21 days.</p>
     `;
 }
 
-function tpAtFaultOnIncidentDesc() {
-    decisionTreeDiv.innerHTML = `
-        <p>In the incident description, is it clear that TP is responsible?</p>
-        <button class="yes" onclick="noteFromRecSet('yes')">Yes</button>
-        <button class="no" onclick="noteFromRecSet('no')">No</button>
-    `;
-}
+
 
 function noteFromRecSet(answer) {
     if (answer === 'yes') {
         bookNAFHC();
     } else {
         decisionTreeDiv.innerHTML = `
-            <p>Is there a note from Rec&Set that TP is at fault?</p>
-            <button class="yes" onclick="bookNAFHC()">Yes</button>
-            <button class="no" onclick="noHCAwaitLiabilityDecision()">No</button>
+            <p>Is there a note from Rec&Set that confirms TP is 100% responsible?</p>
+            <button class="yes" onclick="theftClaim2('yes')">Yes</button>
+            <button class="no" onclick="theftClaim2('no')">No</button>
         `;
     }
 }
+
+
+function theftClaim2(answer) {
+    if (answer === 'yes') {
+        decisionTreeDiv.innerHTML = `
+            <p>Is this a Theft Claim?</p>
+            <button class="yes" onclick="haveTPAtFaultDetails('yes')">Yes</button>
+	    <button class="no" onclick="haveTPAtFaultDetails('no')">No</button>
+   `;
+
+    } else {
+
+        decisionTreeDiv.innerHTML = `
+            <p>Is this a Theft Claim?</p>
+            <button class="yes" onclick="haveTPAtFaultDetails('yes')">Yes</button>
+	    <button class="no" onclick="haveTPAtFaultDetails('no')">No</button>
+   `;
+    }
+}
+
+function haveTPAtFaultDetails() {
+
+    decisionTreeDiv.innerHTML = `
+        <p>Does the customer have details of the at fault Party?</p>
+
+	<p class="bold">Fullname, Address, and Rego?</p>
+
+        <button class="yes" onclick="withHCCover('yes')">Yes</button>
+        <button class="no" onclick="withHCCover('no')">No</button>
+    `;
+
+
+}
+
+
+function withHCCover(answer) {
+    if (answer === 'yes') {
+        decisionTreeDiv.innerHTML = `
+            <p>Does IO have the HC Cover on his policy?</p>
+            <button class="yes" onclick="hireCarOption('yes')">Yes</button>
+            <button class="no" onclick="hireCarOption2()">No</button>
+        `;
+
+    } else {
+        decisionTreeDiv.innerHTML = `<p>
+	Explain to IO that the liability is clear that he/she is Not at Fault, but in order for us to provide a Not At Fault HC, we need to have the Fullname, Address, and Rego of the at fault party. </p>
+
+<p>Offer the CDP Code - Step 1 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
+	`;
+    }
+
+}
+
+function hireCarOption2() {
+    decisionTreeDiv.innerHTML = `
+            <p>Waive the excess and book a Not at Fault Hire Car for unlimited days with a car the suits our customer's needs.
+AAMI, APIA, Suncorp, and GIO. Follow the initial booking days <a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1074602&locale=en-GB" target="_blank">KM1074602</a> </p>
+
+<p class="bold">
+SMART or cAre: 14 days
+Other Repair Type: 21 days </p>`;
+
+
+}
+
 
 function bookNAFHC() {
     decisionTreeDiv.innerHTML = `
@@ -652,6 +722,5 @@ function noHCAwaitLiabilityDecision() {
 }
 
 // END Insured Logic
-
 
 
