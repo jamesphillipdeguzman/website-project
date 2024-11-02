@@ -190,7 +190,15 @@ document.addEventListener('DOMContentLoaded', () => {
             sourceImg: "images/project-images/portfolio-9.webp",
             description: 'My final project in WDD231.',
             imageURL: 'https://jamesphillipdeguzman.github.io/wdd231/web-project/index.html',
-        }
+        },
+        {
+            pNumber: 'Portfolio 10',
+            pTitle: 'Hire Car Decision Tree',
+            fileName: 'index.html',
+            sourceImg: "images/project-images/portfolio-10.webp",
+            description: 'This is a decision tree to help agents path bookings and extensions hire car efficiently.',
+            imageURL: 'https://jamesphillipdeguzman.github.io/website-project/decisiontree/index.html',
+        },
 
     ];
 
