@@ -1,0 +1,84 @@
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="James Phillip De Guzman">
+    <meta name="description" content="Hire Car Decision Tree">
+    <title>HC Extension Decision Tree</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Satisfy&display=swap"
+        rel="stylesheet">
+
+    <meta property="og:title" content="Hire Car Extension Decision Tree">
+    <meta property="og:description" content="Web app for HC Extension Decision Tree">
+    <meta property="og:image"
+        content="https://jamesphillipdeguzman.github.io/website-project/decisiontree/images/HCDT.png">
+    <meta property="og:url"
+        content="https://jamesphillipdeguzman.github.io/website-project/decisiontree/hirecar_extension.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site-name" content="Hire Car Extension Decision Tree">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="icon" href="images/tree.ico" type="image/x-icon">
+    <script src="scripts/base.js" defer></script>
+    <script src="scripts/hirecar_extension.js" defer></script>
+
+</head>
+
+<body>
+    <header>
+        <h1>HC Decision Tree</h1>
+        <nav class="navlinks">
+            <!--<img src="images/hertz-logo.svg" alt="hertz logo small" width="180" height="60"> -->
+            <ul class="toplinks">
+
+                <li><a href="index.html"><img src="images/home.png" alt="home icon" width="25" height="25"></a></li>
+                <li><a href="about.html">About</a></li> <!-- Fixed link -->
+                <li><a href="hirecar_booking.html">HC Booking DT</a></li>
+                <li><a href="hirecar_extension.html" class="active">HC Extension DT</a></li>
+            </ul>
+
+            <button id="menu" aria-label="menu"></button>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <h1>HC Extension Decision Tree</h1>
+            <div class="tree-selection">
+                <h2>Select a Decision Tree:</h2>
+                <label><input type="radio" name="tree" id="ecd" value="ecd" checked> Extension based on ECD</label><br>
+                <label><input type="radio" name="tree" id="total_loss" value="totalLoss"> Extension for a Total Loss
+                    Car</label><br>
+                <label><input type="radio" name="tree" id="investigation" value="claimsInvestigation"> Claims Under
+                    Investigations</label><br>
+                <label><input type="radio" name="tree" id="rectification" value="rectificationHC"> Rectification
+                    HC</label><br>
+                <button id="start">Start HC Ext Decision Tree</button>
+            </div>
+            <div id="decision-tree1"></div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-wrapper">
+
+
+            <div class="footer-text">
+                &copy;<span id="currentyear"></span> HC Decision Tree <p class="lastmodified">Last Modified:
+                    <span id="lastModified"></span>
+                </p>
+            </div>
+
+            <div class="mysite">
+                <a class="branding" href="https://www.jamesdeguzman.com/" target="_blank">&copy;2024besys.tech</a>
+
+
+            </div>
+
+        </div>
+    </footer>
+</body>
+
+</html>
