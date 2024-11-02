@@ -216,6 +216,22 @@ h2 {
     font-size: 1.2rem;
 }
 
+.project-title {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+#my-portfolios {
+    font-size: 1.2rem;
+}
+
+#portfolio-btn {
+    height: 40px;
+    font-size: 1.2rem;
+    width: 100%;
+}
+
+
 article.my-company h3 {
     font-size: 1.2rem;
     font-weight: 500;
@@ -225,17 +241,30 @@ article.my-company h3 {
 }
 
 p.project-desc {
+    justify-content: center;
+    align-content: center;
+    text-align: left;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 1.2rem;
+    padding: 10px;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.descdiv {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    text-align: center;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 0 auto;
+    max-width: 50%;
+
 }
 
 .portfolio-items {
     display: flex;
     flex-direction: column;
+    /* grid-template-columns: repeat(auto-fit, minmax(200px, 2fr)); */
     margin: 30px auto;
     border: 1px solid #eee;
     border-radius: 5px;
@@ -244,7 +273,7 @@ p.project-desc {
 }
 
 .portfolio-items img {
-    width: 100%;
+    width: 70%;
     height: auto;
     display: block;
     margin: 10px auto;
@@ -603,8 +632,23 @@ footer {
 
 
 /* ================== MOBILE VIEW ====================== */
+@media (max-width: 400px) {
+    #my-portfolios {
+        font-size: 0.9rem;
+    }
+}
 
-@media screen and (max-width: 800px) {
+@media (max-width: 800px) {
+
+    p.project-desc {
+        font-size: 0.8rem;
+    }
+
+    .descdiv {
+
+        max-width: 80%;
+
+    }
 
     #menu {
         font-size: 1.5rem;
@@ -823,6 +867,7 @@ footer {
 
     #portfolio-btn {
         height: 40px;
+        font-size: 1rem;
         width: 100%;
     }
 

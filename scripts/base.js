@@ -175,6 +175,22 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'This is my course home page (WDD231).',
             imageURL: 'https://jamesphillipdeguzman.github.io/wdd231/index.html',
         },
+        {
+            pNumber: 'Portfolio 8',
+            pTitle: 'Chamber Home Page (WDD231)',
+            fileName: 'index.html',
+            sourceImg: "images/project-images/portfolio-8.webp",
+            description: 'This is the Iloilo Chamber home page (WDD231).',
+            imageURL: 'https://jamesphillipdeguzman.github.io/wdd231/chamber/index.html',
+        },
+        {
+            pNumber: 'Portfolio 9',
+            pTitle: 'Quote Vitamins',
+            fileName: 'index.html',
+            sourceImg: "images/project-images/portfolio-9.webp",
+            description: 'My final project in WDD231.',
+            imageURL: 'https://jamesphillipdeguzman.github.io/wdd231/web-project/index.html',
+        }
 
     ];
 
@@ -305,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadIt.style.textAlign = 'center';
 
 
-            v
+
 
         });
 
