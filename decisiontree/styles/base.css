@@ -101,7 +101,7 @@ header {
     background-color: var(--primary-color);
     border: 1px solid #888;
     height: auto;
-    margin-top: 2rem;
+    margin-top: 3rem;
 }
 
 header h1 {
@@ -346,8 +346,8 @@ footer {
     }
 
     #decision-tree1 {
-        max-width: 80vw;
-        width: 80%;
+        max-width: 90vw;
+        width: 90%;
     }
 
     .breadcrumbContainer {

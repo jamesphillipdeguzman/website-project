@@ -28,74 +28,74 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <header>
-            <h1>HC Decision Tree</h1>
-            <nav class="navlinks">
-                <!--<img src="images/hertz-logo.svg" alt="hertz logo small" width="180" height="60"> -->
-                <ul class="toplinks">
 
-                    <li><a href="index.html"><img src="images/home.png" alt="home icon" width="25" height="25"></a></li>
-                    <li><a href="about.html">About</a></li> <!-- Fixed link -->
-                    <li><a href="hirecar_booking.html" class="active">HC Booking DT</a></li>
-                    <li><a href="hirecar_extension.html">HC Extension DT</a></li>
-                </ul>
+    <header>
+        <h1>HC Decision Tree</h1>
+        <nav class="navlinks">
+            <!--<img src="images/hertz-logo.svg" alt="hertz logo small" width="180" height="60"> -->
+            <ul class="toplinks">
 
-                <button id="menu" aria-label="menu"></button>
-            </nav>
+                <li><a href="index.html"><img src="images/home.png" alt="home icon" width="25" height="25"></a></li>
+                <li><a href="about.html">About</a></li> <!-- Fixed link -->
+                <li><a href="hirecar_booking.html" class="active">HC Booking DT</a></li>
+                <li><a href="hirecar_extension.html">HC Extension DT</a></li>
+            </ul>
 
-        </header>
+            <button id="menu" aria-label="menu"></button>
+        </nav>
 
-        <main>
-            <div class="container">
-                <h2>HC Booking Decision Tree</h2>
+    </header>
 
-                <div id="tree-selection2">
-                    <h3>Select a Decision Tree:</h3>
-                    <label><input type="radio" name="tree" id="io_responsible" value="insured" checked> Insured
-                    </label><br>
-                    <label><input type="radio" name="tree" id="mtp" value="mtp"> MTP </label><br>
-                    <label><input type="radio" name="tree" id="rectification_hc" value="rectificationHC2"> Rectification
-                        Hire Car</label><br>
-                    <label><input type="radio" name="tree" id="wpclaims" value="wpClaims"> WP Claims</label><br>
+    <main>
+        <div class="container">
+            <h2>HC Booking Decision Tree</h2>
 
-                    <button id="start" class="startBtn">Start HC Booking Decision Tree</button>
-                    <button id="clear" class="clear-button">Clear</button>
+            <div id="tree-selection2">
+                <h3>Select a Decision Tree:</h3>
+                <label><input type="radio" name="tree" id="io_responsible" value="insured" checked> Insured
+                </label><br>
+                <label><input type="radio" name="tree" id="mtp" value="mtp"> MTP </label><br>
+                <label><input type="radio" name="tree" id="rectification_hc" value="rectificationHC2"> Rectification
+                    Hire Car</label><br>
+                <label><input type="radio" name="tree" id="wpclaims" value="wpClaims"> WP Claims</label><br>
+
+                <button id="start" class="startBtn">Start HC Booking Decision Tree</button>
+                <button id="clear" class="clear-button">Clear</button>
+            </div>
+
+            <div id="breadcrumbContainer" class="breadcrumbContainer">
+                <!-- Decision Tree Content -->
+                <div id="decision-tree1"></div> <!-- This will display the decision tree -->
+
+                <!-- Copy Button -->
+                <button id="copy-breadcrumb" class="copy-button">Copy Breadcrumb</button>
+
+                <span class="copytext"></span>
+
+                <!-- Breadcrumb trail display -->
+                <div id="breadcrumbTrail" class="breadcrumb">
+                    <!-- Dynamic breadcrumb trail will be displayed here -->
                 </div>
-
-                <div id="breadcrumbContainer" class="breadcrumbContainer">
-                    <!-- Decision Tree Content -->
-                    <div id="decision-tree1"></div> <!-- This will display the decision tree -->
-
-                    <!-- Copy Button -->
-                    <button id="copy-breadcrumb" class="copy-button">Copy Breadcrumb</button>
-
-                    <span class="copytext"></span>
-
-                    <!-- Breadcrumb trail display -->
-                    <div id="breadcrumbTrail" class="breadcrumb">
-                        <!-- Dynamic breadcrumb trail will be displayed here -->
-                    </div>
-
-                </div>
-
 
             </div>
-        </main>
 
-        <footer>
-            <div class="footer-wrapper">
-                <div class="footer-text">
-                    &copy;<span id="currentyear"></span> HC Decision Tree
-                    <p class="lastmodified">Last Modified: <span id="lastModified"></span></p>
-                </div>
 
-                <div class="mysite">
-                    <a class="branding" href="https://jamesdeguzman.com/" target="_blank">&copy;2024besys.tech</a>
-                </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-wrapper">
+            <div class="footer-text">
+                &copy;<span id="currentyear"></span> HC Decision Tree
+                <p class="lastmodified">Last Modified: <span id="lastModified"></span></p>
             </div>
-        </footer>
-    </div>
+
+            <div class="mysite">
+                <a class="branding" href="https://jamesdeguzman.com/" target="_blank">&copy;2024besys.tech</a>
+            </div>
+        </div>
+    </footer>
+
 </body>
 
 </html>
