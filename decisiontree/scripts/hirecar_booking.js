@@ -700,7 +700,7 @@ function hireCarOption(answer) {
         question = "What kind of HC Coverage does the customer have?";
 
         decisionTreeDiv.innerHTML = `
-            <p>${question}:</p>
+            <p>${question}</p>
             <button class="limited" onclick="limitedOption()">Limited</button>
             <button class="unlimited" onclick="unlimitedOption()">Unlimited</button>
         `;
