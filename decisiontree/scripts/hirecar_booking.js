@@ -1,15 +1,81 @@
+// Sample breadcrumb history array to hold the breadcrumb trail
+let breadcrumbHistory = [];
+
+var question = '';
+var instruction = '';
+
+
+// Function to update the breadcrumb trail with the question and answer
+function updateBreadcrumb(question, answer, instruction) {
+
+    // Combine question and answer into one string, return the instruction if answer is empty
+    const breadcrumbItem = answer === '' ? `${instruction}` : `${question} : ${answer === 'yes' ? 'Yes' : 'No'}`;
+
+
+    // alert(breadcrumbItem);
+
+    // Add the question-answer pair to the breadcrumb history
+    breadcrumbHistory.push(breadcrumbItem);
+
+    // Update breadcrumb trail display
+    const breadcrumbTrail = document.getElementById('breadcrumbTrail'); // Assuming the breadcrumb container has this ID
+    breadcrumbTrail.innerHTML = breadcrumbHistory.map((item, index) => {
+        return `<span class="breadcrumbContent">${item}</span>${index < breadcrumbHistory.length - 1 ? " &rtri; " : ""}`;
+    }).join('');
+}
+
+
 const decisionTreeDiv = document.getElementById("decision-tree1");
 
-// Start button click event
-document.getElementById("start").onclick = function () {
+// Function to uncheck the radio button
+function uncheckRadioButton() {
+    const radioSelected = document.querySelector('input[name="tree"]:checked');
+    if (radioSelected) {
+        radioSelected.checked = false; // Uncheck the selected radio button
+    }
+}
+
+// Function to clear the breadcrumb and decision tree
+function clearContent() {
+    breadcrumbTrail.innerHTML = ''; // Clear breadcrumb trail
+    decisionTreeDiv.innerHTML = ''; // Clear decision tree div
+}
+
+// Function to show the copy breadcrumb button
+function showCopyBreadcrumbBtn() {
+    const copyBreadcrumbBtn = document.querySelector('#copy-breadcrumb');
+    copyBreadcrumbBtn.style.display = 'block';
+
+    const startBtn = document.querySelector('#start');
+    startBtn.disabled = true; // Disable start button
+    startBtn.classList.add('disabled');  // Add the 'disabled' class to change its appearance
+
+}
+
+
+
+// Function to handle the start button click
+const start = document.getElementById("start").onclick = function () {
     const radioSelected = document.querySelector('input[name="tree"]:checked');
 
+    // First, clear the existing content
+    clearContent();
+
+    // Show breadcrumb container onclick
+    const breadcrumbContainer = document.querySelector('#breadcrumbContainer');
+    breadcrumbContainer.style.display = 'block';
+
+
+    // Check which radio button is selected and run the corresponding logic
     if (radioSelected && radioSelected.value === "insured") {
+        question = "Is IO responsible for the accident/incident?";
+
         decisionTreeDiv.innerHTML = `
-            <p>Is IO responsible for the accident/incident?</p>
+            <p>${question}</p>
             <button class="yes" onclick="ioResponsible('yes')">Yes</button>
             <button class="no" onclick="ioResponsible('no')">No</button>
         `;
+
     } else if (radioSelected && radioSelected.value === "mtp") {
         decisionTreeDiv.innerHTML = `
             <p>Is the liability clear that IO is at fault?</p>
@@ -21,7 +87,57 @@ document.getElementById("start").onclick = function () {
     } else if (radioSelected && radioSelected.value === "wpClaims") {
         wpClaimsLogic(); // Activate WP Claims Logic
     }
+
+    // After starting, uncheck the radio button to prevent the same button from being selected again.
+    //uncheckRadioButton();
 }
+
+// Function to handle the reset for breadcrumb
+
+const clear = document.querySelector('#clear');
+clear.addEventListener('click', () => {
+
+    clearContent();
+    window.location.reload();
+    breadcrumbTrail.style.outline = 'none';
+    breadcrumbTrail.style.border = 'none';
+    uncheckRadioButton();
+});
+
+// Function to copy the breadcrumb content to the clipboard
+function copyBreadcrumb() {
+    const breadcrumbText = breadcrumbHistory.join(" > "); // Concatenate breadcrumb items as a string
+
+    // Create a temporary input element to hold the text to be copied
+    const tempInput = document.createElement("input");
+    tempInput.value = breadcrumbText; // Set the value to the breadcrumb text
+    document.body.appendChild(tempInput);
+
+    // Select the text in the temporary input
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+    // Execute the "copy" command to copy the text to the clipboard
+    document.execCommand("copy");
+
+    // Remove the temporary input element
+    document.body.removeChild(tempInput);
+
+    // Optionally, you can show a notification that the text was copied
+
+    const copyText = document.querySelector('.copytext');
+
+    copyText.style.display = 'block';
+    copyText.innerHTML = 'Copied text!';
+
+
+}
+
+// Attach the copy function to the "Copy Breadcrumb" button
+document.getElementById("copy-breadcrumb").addEventListener("click", copyBreadcrumb);
+
+
+
 
 // START WP Claims Logic
 function wpClaimsLogic() {
@@ -472,12 +588,18 @@ function vehicleInsured(answer) {
 // The existing insured functions go here...
 
 
+
+
 // START Insured Logic
 
 function ioResponsible(answer) {
+    // alert('ioResponsible');
+    updateBreadcrumb(question, answer);
     if (answer === 'yes') {
+        question = "Did the customer add a Hire Car Option on their Policy?";
+
         decisionTreeDiv.innerHTML = `
-            <p>Did the customer add a Hire Car Option on their Policy?</p>
+            <p>${question}</p>
             <button class="yes" onclick="hireCarOption('yes')">Yes</button>
             <button class="no" onclick="hireCarOption('no')">No</button>
         `;
@@ -487,9 +609,12 @@ function ioResponsible(answer) {
 }
 
 function tpAtFaultOnIncidentDesc() {
+    // alert('tpAtFaultOnIncidentDesc');
+
+    question = "Is the incident description clear that TP is responsible?";
 
     decisionTreeDiv.innerHTML = `
-        <p>Is the incident description clear that TP is responsible?</p>
+        <p>${question}</p>
         <button class="yes" onclick="driverDetails('yes')">Yes</button>
         <button class="no" onclick="driverDetails('no')">No</button>
     `;
@@ -497,230 +622,272 @@ function tpAtFaultOnIncidentDesc() {
 }
 
 function driverDetails(answer) {
+    // alert('driverDetails');
+    updateBreadcrumb(question, answer);
+    question = "Was the excess waived?";
+
     if (answer === 'yes') {
         decisionTreeDiv.innerHTML = `
-            <p>Was the excess waived?</p>
+            <p>${question}</p>
             <button class="yes" onclick="excessWaived('yes')">Yes</button>
             <button class="no" onclick="excessWaived('no')">No</button>
         `;
     } else {
-        noteFromRecSet();
+        question = "Is there a note from Rec&Set that confirms TP is 100% responsible?";
+
+        decisionTreeDiv.innerHTML = `
+            <p>${question}</p>
+            <button class="yes" onclick="noteFromRecSet('yes')">Yes</button>
+            <button class="no" onclick="noteFromRecSet('no')">No</button>
+        `;
+
     }
 }
 
 function excessWaived(answer) {
+    // alert('excessWaived');
+    updateBreadcrumb(question, answer);
+    question = "Is this a Bingle Policy?";
+
     if (answer === 'yes') {
         decisionTreeDiv.innerHTML = `
-            <p>Is this a Bingle Policy?</p>
+            <p>${question}</p>
             <button class="yes" onclick="binglePolicy('yes')">Yes</button>
             <button class="no" onclick="binglePolicy('no')">No</button>
         `;
     } else {
+
         theftClaim();
     }
 }
 
 function binglePolicy(answer) {
+    // alert('binglePolicy');
+    updateBreadcrumb(question, answer);
     if (answer === 'yes') {
+        question = "Explain to IO that they don't have the HC Option on their policy.";
+
         decisionTreeDiv.innerHTML = `
-            <p>Explain to IO that they don't have the HC Option on their policy. Offer the CDP Code - Step 1 of 
-<a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
+            <p>${question} Offer the CDP Code - Step 1 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
         `;
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+
     } else {
+
         decisionTreeDiv.innerHTML = `
             <p>Book a Not at Fault Hire Car for unlimited days with a car that suits our customer's needs.
-            AAMI, APIA, Suncorp, and GIO. Follow the initial booking days 
-<a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1074602&locale=en-GB" target="_blank">KM1074602</a>
+            AAMI, APIA, Suncorp, and GIO. Follow the initial booking days <a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1074602&locale=en-GB" target="_blank">KM1074602</a>
             <ul>
                 <li>SMART or cAre: 14 days</li>
                 <li>Other Repair Type: 21 days</li>
             </ul> 
             </p>
         `;
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
     }
 }
 
 function hireCarOption(answer) {
+    // alert('hireCarOption');
+    updateBreadcrumb(question, answer);
+
     if (answer === 'yes') {
+        question = "What kind of HC Coverage does the customer have?";
+
         decisionTreeDiv.innerHTML = `
-            <p>What kind of HC Coverage does the customer have?:</p>
+            <p>${question}:</p>
             <button class="limited" onclick="limitedOption()">Limited</button>
             <button class="unlimited" onclick="unlimitedOption()">Unlimited</button>
         `;
+
+
     } else {
         decisionTreeDiv.innerHTML = `
             <p>Explain to IO that they don't have the HC Option on their policy. Offer the CDP Code - Step 1 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> </p>
-	`;
+        `;
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+
     }
+
 }
 
 function limitedOption() {
+    // alert('limitedOption');
+    question = "Limited - An option added to Suncorp and GIO Policy Holders for 21 Calendar Days only.";
+
     decisionTreeDiv.innerHTML = `
-        <p><span class="bold">Limited</span> - An option added to Suncorp and GIO Policy Holders for 21 Calendar Days only.</p>
-	<p>Initial Booking based on the Repairer:</p>
-<p class="bold">SMART or cAre: 14 days
-Other Repair Type: 21 days</p>
+        <p><span class="bold">${question}</span></p>
+        <p>Initial Booking based on the Repairer:</p>
+        <p class="bold">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p>
         <p>GIO - ITGIO75<br>SUNCORP - ITSUN75</p>
     `;
+
+    instruction = decisionTreeDiv.innerText;
+    updateBreadcrumb(question, "", instruction);
+    showCopyBreadcrumbBtn();
+
 }
 
 function unlimitedOption() {
+    // alert('unlimitedOption');
+    question = "Unlimited - IO can use the Hire Car until the repairs are complete.";
+
     decisionTreeDiv.innerHTML = `
-        <p><span class="bold">Unlimited</span> - IO can use the Hire Car until the repairs are complete and if the claim has been settled.</p>
-<p>Initial Booking based on the Repairer:</p>
-<p class="bold">SMART or cAre: 14 days
-Other Repair Type: 21 days</p>
+        <p><span class="bold">${question}</span></p>
+        <p>Initial Booking based on the Repairer:</p>
+        <p class="bold">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p>
         <p>AAMI - ITHCOAAMI90<br>APIA - ITHCOAPIA90<br>SUNCORP - ITSUNUNLI100<br>GIO - ITGIOPLAT100<br>BINGLE - ITLLDU</p>
     `;
+    instruction = decisionTreeDiv.innerText;
+    updateBreadcrumb(question, "", instruction);
+    showCopyBreadcrumbBtn();
+
 }
 
 function theftClaim(answer) {
+    // alert('theftClaim');
+    //    updateBreadcrumb(question, answer);
+    question = "Is this a Theft Claim?";
+
     decisionTreeDiv.innerHTML = `
-        <p>Is this a Theft Claim?</p>
+        <p>${question}</p>
         <button class="yes" onclick="theftClaimType('yes')">Yes</button>
         <button class="no" onclick="noHireCar()">No</button>
     `;
 }
 
 function theftClaimType(answer) {
+    // alert('theftClaimType');
+    updateBreadcrumb(question, answer);
+    question = "Is this a Bingle Policy?";
+
     if (answer === 'yes') {
         decisionTreeDiv.innerHTML = `
-            <p>Is this a Bingle Policy?</p>
+            <p>${question}</p>
             <button class="yes" onclick="binglePolicy('yes')">Yes</button>
-            <button class="no" onclick="theftBooking()">No</button>
+            <button class="no" onclick="theftBooking('no')">No</button>
         `;
     } else {
         noHireCar();
     }
 }
 
+function theftBooking(answer) {
+    // alert('theftBooking');
 
+    updateBreadcrumb(question, answer);
+    question = "Book a Theft Hire Car for 21 days only.";
 
-function theftBooking() {
     decisionTreeDiv.innerHTML = `
-        <p>Book a Theft Hire Car for 21 days only.</p>
+        <p>${question}</p>
         <p>Note: If IO has a HC cover, we can extend the HC until their car is repaired or the claim is settled. If IO does not have the HC cover, they can only use the HC After Theft for 21 days.</p>
+    `;
+    instruction = decisionTreeDiv.innerText;
+    updateBreadcrumb(question, "", instruction);
+    showCopyBreadcrumbBtn();
+
+}
+
+function noteFromRecSet(answer) {
+    // alert('noteFromRecSet');
+    updateBreadcrumb(question, answer);
+    question = "Is this a Theft Claim?";
+
+    decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="theftClaim2('yes')">Yes</button>
+        <button class="no" onclick="theftClaim2('no')">No</button>
     `;
 }
 
-
-
-function noteFromRecSet(answer) {
-    if (answer === 'yes') {
-        bookNAFHC();
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Is there a note from Rec&Set that confirms TP is 100% responsible?</p>
-            <button class="yes" onclick="theftClaim2('yes')">Yes</button>
-            <button class="no" onclick="theftClaim2('no')">No</button>
-        `;
-    }
-}
-
-
 function theftClaim2(answer) {
-    if (answer === 'yes') {
-        decisionTreeDiv.innerHTML = `
-            <p>Is this a Theft Claim?</p>
-            <button class="yes" onclick="haveTPAtFaultDetails('yes')">Yes</button>
-	    <button class="no" onclick="haveTPAtFaultDetails('no')">No</button>
-   `;
+    // alert('theftClaim2');
+    updateBreadcrumb(question, answer);
+    question = "Does the customer have details of the at fault Party? Fullname, Address, and Rego?";
 
-    } else {
-
-        decisionTreeDiv.innerHTML = `
-            <p>Is this a Theft Claim?</p>
-            <button class="yes" onclick="haveTPAtFaultDetails('yes')">Yes</button>
-	    <button class="no" onclick="haveTPAtFaultDetails('no')">No</button>
-   `;
-    }
-}
-
-function haveTPAtFaultDetails() {
 
     decisionTreeDiv.innerHTML = `
-        <p>Does the customer have details of the at fault Party?</p>
+        <p>${question}</p>
+        <button class="yes" onclick="haveTPAtFaultDetails('yes')">Yes</button>
+        <button class="no" onclick="haveTPAtFaultDetails('no')">No</button>
+    `;
 
-	<p class="bold">Fullname, Address, and Rego?</p>
 
+}
+
+function haveTPAtFaultDetails(answer) {
+    // alert('haveTPAtFaultDetails');
+    updateBreadcrumb(question, answer);
+    question = "Does IO have the HC Cover on his policy?";
+
+    if (answer === 'yes') {
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
         <button class="yes" onclick="withHCCover('yes')">Yes</button>
         <button class="no" onclick="withHCCover('no')">No</button>
     `;
+    } else {
+        decisionTreeDiv.innerHTML = `
+            <p>Explain to IO that the liability is clear that he/she is Not at Fault, but in order for us to 	provide a Not At Fault HC, we need to have the Fullname, Address, and Rego of the at fault party.</p>
+            <p>Offer the CDP Code - Step 1 of <a 		href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
+        `;
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
 
-
+    }
 }
 
-
 function withHCCover(answer) {
+    // alert('withHCCover');
+    updateBreadcrumb(question, answer);
+    question = "What kind of HC Coverage does the customer have?";
+
     if (answer === 'yes') {
         decisionTreeDiv.innerHTML = `
-            <p>Does IO have the HC Cover on his policy?</p>
-            <button class="yes" onclick="hireCarOption('yes')">Yes</button>
-            <button class="no" onclick="hireCarOption2()">No</button>
+            <p>${question}:</p>
+            <button class="limited" onclick="limitedOption()">Limited</button>
+            <button class="unlimited" onclick="unlimitedOption()">Unlimited</button>
         `;
 
     } else {
-        decisionTreeDiv.innerHTML = `<p>
-	Explain to IO that the liability is clear that he/she is Not at Fault, but in order for us to provide a Not At Fault HC, we need to have the Fullname, Address, and Rego of the at fault party. </p>
-
-<p>Offer the CDP Code - Step 1 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
-	`;
-    }
-
-}
-
-function hireCarOption2() {
-    decisionTreeDiv.innerHTML = `
-            <p>Waive the excess and book a Not at Fault Hire Car for unlimited days with a car the suits our customer's needs.
-AAMI, APIA, Suncorp, and GIO. Follow the initial booking days <a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1074602&locale=en-GB" target="_blank">KM1074602</a> </p>
-
-<p class="bold">
-SMART or cAre: 14 days
-Other Repair Type: 21 days </p>`;
-
-
-}
-
-
-function bookNAFHC() {
-    decisionTreeDiv.innerHTML = `
-        <p>Book a Not at Fault Hire Car for unlimited days with a car that suits our customer's needs.
-        AAMI, APIA, Suncorp, and GIO. Follow the initial booking days
-<a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1074602&locale=en-GB" target="_blank">KM1074602</a>        
-       <ul>
-            <li>SMART or cAre: 14 days</li>
-            <li>Other Repair Type: 21 days</li>
-        </ul> 
-        </p>
+        question = "Waive the excess and book a Not at Fault Hire Car for unlimited days.";
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <p>Follow the initial booking days <a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1074602&locale=en-GB" target="_blank">KM1074602</a></p>
+        <p class="bold">SMART or cAre: 14 days Other Repair Type: 21 days</p>
     `;
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+
+    }
 }
+
+
+
 
 function noHireCar() {
+    // alert('noHireCar');
+    updateBreadcrumb(question, answer);
+    question = "Explain to IO that they don't have the HC Option on their policy.";
     decisionTreeDiv.innerHTML = `
-        <p>Explain to IO that they don't have the HC Option on their policy. Offer the CDP Code - Step 1 of 
-
-<a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
+        <p>${question}</p>
+        <p>Offer the CDP Code - Step 1 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
     `;
 }
 
-function nafHireCar() {
-    decisionTreeDiv.innerHTML = `
-        <p>Explain to IO that we can only provide a Not At Fault Hire Car if we can recover the cost from the at fault party. In order to do that, we need to at least have the Driver's details of the at fault vehicle:</p>
-        <ul>
-            <li>Fullname</li>
-            <li>TPV Registration</li>
-            <li>TP Address</li>
-        </ul>
-    `;
-}
 
-function noHCAwaitLiabilityDecision() {
-    decisionTreeDiv.innerHTML = `
-        <p>Explain to IO that they don't have the HC Option on their policy, and the liability decision has not been confirmed by Rec&Set yet. Offer the CDP Code - Step 1 of 
-<a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB" target+"_blank">KM1143067</a></p>
-    `;
-}
+
+
+
 
 // END Insured Logic
-
-
