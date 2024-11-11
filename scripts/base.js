@@ -45,19 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         todayDisplay.textContent = Date.now();
     }
 
-    const firstName = document.querySelector('#firstname');
-    const lastName = document.querySelector('#lastname');
-    const email = document.querySelector('#email');
-    const submit = document.querySelector('#submit');
-    submit.addEventListener('click', (event) => {
 
-
-        event.preventDefault();
-        if (firstName.value && lastName.value && email.value) {
-            window.location.href = 'thanks.html';
-        }
-
-    });
 
     const selectPortfolioBtn = document.querySelector('#portfolio-btn');
     const dropdownContainer = document.querySelector('.dropdown-container select');
@@ -245,4 +233,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     lsStorage(); // Call to run local storage function
+
+
+});
+
+
+const firstName = document.querySelector('#firstname');
+const lastName = document.querySelector('#lastname');
+const email = document.querySelector('#email');
+const submit = document.querySelector('#submit');
+submit.addEventListener('click', (event) => {
+
+
+    event.preventDefault();
+    if (firstName.value && lastName.value && email.value) {
+        window.location.href = 'thanks.html';
+    }
+
 });
