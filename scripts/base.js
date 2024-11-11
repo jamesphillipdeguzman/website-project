@@ -45,6 +45,20 @@ document.addEventListener('DOMContentLoaded', () => {
         todayDisplay.textContent = Date.now();
     }
 
+    const firstName = document.querySelector('#firstname');
+    const lastName = document.querySelector('#lastname');
+    const email = document.querySelector('#email');
+    const submit = document.querySelector('#submit');
+    submit.addEventListener('click', (event) => {
+
+
+        event.preventDefault();
+        if (firstName.value && lastName.value && email.value) {
+            window.location.href = 'thanks.html';
+        }
+
+    });
+
     const selectPortfolioBtn = document.querySelector('#portfolio-btn');
     const dropdownContainer = document.querySelector('.dropdown-container select');
     const choice = document.querySelector('#choose');
@@ -219,6 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
         card.appendChild(dataBox);
         loadIt.appendChild(card);
     }
+
+
 
     // Load images based on dropdown selection
     dropdownContainer.addEventListener('change', () => {

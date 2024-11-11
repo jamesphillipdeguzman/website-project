@@ -38,8 +38,8 @@
 
             <nav class="navigation">
 
-                <div class="logo"><img src="images/besys-tech-logo.svg" alt="company logo" width="100" height="100">
-                </div>
+                <a href="index.html" id="logolink"><img id="logo" src="images/besys-tech-logo.svg" alt="company logo"
+                        width="100" height="100"></a>
                 <ul>
                     <li><a href="index.html" id="home">Home</a></li>
                     <li><a href="about.html" id="about">About</a></li>
@@ -62,27 +62,74 @@
         <main>
 
             <div class="hero">
-                <div class="image-container">
-                    <h1>Be part of our growing community!</h1>
-                    <img src="images/site-planning.svg" alt="picture of a notebook with wireframe sketches" width="200"
-                        height="100">
-                </div>
+                <!-- <div class="image-container"> -->
+                <h1>Be part of our growing community!</h1>
+                <!-- <img src="images/site-planning.svg" alt="picture of a notebook with wireframe sketches" width="200" -->
+                <!-- height="100"> -->
+                <!-- </div> -->
 
             </div>
 
             <div class="bottom-section">
-                <h2>Enter your contact details</h2>
 
-                <form action="thanks.html" method="get" id="signup-form">
-                    <div class="contact-section">
-                        <label for="fname" class="name-label">Name<input type="text" id="fname" name="fname"
-                                required></label>
-                        <label for="email" class="email-label">Email<input type="email" id="email" required></label>
-                        <label for="message" class="message"> <textarea name="message" id="message"
-                                placeholder="type your message here..."></textarea></label>
-                        <button id="submit">Join Us</button>
-                    </div>
+
+                <form action="thanks.html" method="dialog" class="join-form">
+
+                    <fieldset>
+                        <h3>Please subscribe to our weekly newsletter!</h3>
+                        <!-- <div class="primary-info"> -->
+                        <label for="firstname">
+                            First Name
+                            <input type="text" id="firstname" title="Enter your first name" name="firstname"
+                                autocomplete="given-name">
+
+                        </label>
+                        <label for="lastname">
+                            Last Name
+                            <input type="text" id="lastname" title="Enter your last name" name="lastname"
+                                autocomplete="family-name">
+
+                        </label>
+
+
+                        <label for="email">
+                            Email
+                            <input type="email" aria-required="true" required id="email" title="Enter your email"
+                                name="email" autocomplete="email" placeholder="info@example.com">
+                        </label>
+
+                        <!-- <label for="mobile">
+                            Mobile
+                            <input type="tel" aria-required="true" required id="mobile" title="Enter your mobile"
+                                name="mobile" autocomplete="tel">
+    
+                        </label> -->
+
+
+
+                        <label for="questions">
+                            Questions or Comments
+                            <textarea name="questions" id="questions"
+                                title="Enter any questions you might have"></textarea>
+                        </label>
+
+                        <label for="timestamp">
+                            <input type="datetime-local" name="timestamp" id="timestamp" aria-hidden="true" hidden>
+                        </label>
+
+
+                        <label for="submit">
+                            <input type="submit" id="submit" name="submit" value="I want to subscribe">
+                        </label>
+
+
+
+                    </fieldset>
+
+
                 </form>
+
+
 
             </div>
 
