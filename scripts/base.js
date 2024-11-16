@@ -187,13 +187,15 @@ document.addEventListener('DOMContentLoaded', () => {
         img.alt = portfolio.pTitle;
         img.loading = 'lazy';
         img.style.height = 'auto';
-        img.style.width = '300px';
+        img.style.width = '100%';
+        img.style.borderRadius = '5px';
 
         const dataBox = document.createElement('div');
         dataBox.className = 'databox';
         dataBox.appendChild(createRows('Title: ', portfolio.pTitle));  // Display portfolio title
         dataBox.appendChild(createRows('File Name: ', portfolio.fileName));
         dataBox.appendChild(createRows('Description: ', portfolio.description));
+        dataBox.style.gap = '10px';
         // dataBox.appendChild(createRows('Image: ', portfolio.sourceImg));
         // dataBox.appendChild(createRows('URL: ', portfolio.imageURL));
         dataBox.style.margin = '10px 10px';
@@ -215,6 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.style.flexDirection = 'column';
         card.style.margin = '0 auto';
         card.style.lineHeight = '25px';
+        card.style.borderRadius = '5px';
 
         a.appendChild(img);
         card.appendChild(a);
