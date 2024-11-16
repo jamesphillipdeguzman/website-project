@@ -1,13 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById("lastModified").innerHTML = document.lastModified;
 
-  // use the date object
+  // Use the date object
   const today = new Date();
   const year = document.querySelector("#currentyear");
-  if (year) {
-    year.innerHTML = `<span class="highlight">${today.getFullYear()}</span>`;
-  }
+  year.innerHTML = `<span class="highlight">${today.getFullYear()}</span>`;
 
+  const hamburgerBtn = document.querySelector("#menu");
+  const navigation = document.querySelector(".navigation ul");
+
+  hamburgerBtn.addEventListener('click', () => {
+    hamburgerBtn.classList.toggle('open');
+    navigation.classList.toggle('open');
+  });
   const products = [
     { id: "fc-1888", name: "flux capacitor", averagerating: 4.5 },
     { id: "fc-2050", name: "power laces", averagerating: 4.7 },
