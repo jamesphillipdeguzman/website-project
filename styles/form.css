@@ -1,8 +1,15 @@
 /*================== FORMS ==================== */
 
+main {
+    max-width: 100vw;
+    width: 100%;
+}
+
 fieldset {
     margin: 0 auto;
     padding: 10px 0;
+    max-width: 100vw;
+    width: 100%;
 }
 
 .form-section {
@@ -17,11 +24,18 @@ fieldset {
     font-size: 1.8rem;
 }
 
+.form-section h3 {
+    text-align: center;
+}
+
 .form-group {
     display: flex;
     flex-direction: column;
     padding: 20px 20px;
     background-color: #bed;
+    max-width: 50vw;
+    width: 50%;
+
 }
 
 label {
@@ -97,6 +111,8 @@ input[type="checkbox"].features {
 input[type="checkbox"].large-checkbox {
     /* transform: scale(1.1); */
     /* A smaller scaling effect */
+    width: 20px;
+    height: 20px;
     margin-right: 3px;
 }
 
@@ -105,17 +121,20 @@ input[type="checkbox"].large-checkbox {
 
 .wrap-checkbox {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    margin-bottom: 10px;
+    margin: 0;
 
 
 }
 
 .wrap-checkbox label {
     /* height: 25px; */
-    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
 
 }
 
@@ -173,4 +192,39 @@ textarea {
     font-size: 0.7rem;
     margin: 5px 0 10px 0;
     /* display: none; */
+}
+
+@media (max-width: 402px) {
+
+    .form-group {
+
+        max-width: 50vw;
+        width: 50%;
+    }
+
+    .fieldset {
+        max-width: 50vw;
+        width: 50%;
+    }
+
+    main {
+        max-width: 100vw;
+        width: 100%;
+    }
+
+    .wrap-checkbox {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5px;
+    }
+
+
+
+    .wrap-checkbox label {
+        /* height: 25px; */
+        margin: 0;
+        padding: 10px 0 15px;
+
+    }
+
 }

@@ -242,6 +242,7 @@ const firstName = document.querySelector('#firstname');
 const lastName = document.querySelector('#lastname');
 const email = document.querySelector('#email');
 const submit = document.querySelector('#submit');
+
 submit.addEventListener('click', (event) => {
 
 
