@@ -201,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dataBox.style.margin = '10px 10px';
         dataBox.style.padding = '10px 10px';
         dataBox.style.maxWidth = '305px';
+        dataBox.style.textAlign = 'center';
 
         const a = document.createElement('a');
         a.className = 'pImageUrl';
