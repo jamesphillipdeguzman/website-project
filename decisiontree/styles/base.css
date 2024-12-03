@@ -599,7 +599,8 @@ footer {
 
     }
 
-    .breadcrumbContent {
+    .breadcrumbContent,
+    .hashtagContent {
         font-size: 0.7rem;
     }
 
