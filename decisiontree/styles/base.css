@@ -385,7 +385,8 @@ button:hover {
     width: 45%;
 }
 
-.copytext {
+.copytext,
+.copytext2 {
     display: none;
     font-size: 0.7rem;
     margin-left: 2rem;
