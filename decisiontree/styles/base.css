@@ -1,8 +1,8 @@
 :root {
     --primary-color: rgba(255, 244, 0, 1);
     --secondary-color: rgba(39, 36, 37, 1);
-    --bg-color: #5bc0eb;
-    --base-color: #404e4d;
+    --bg-color: #5BC0EB;
+    --base-color: #404E4D;
     --dirty-white: rgba(245, 240, 220, 1);
     --primary-font: "Londrino Solid", Arial, sans-serif;
     --secondary-font: "Satisfy", Verdana, Georgia;
@@ -82,9 +82,9 @@ a:hover {
 }
 
 a:active {
-    color: #ffffff;
+    color: #FFFFFF;
     /* Active */
-    background-color: #007bff;
+    background-color: #007BFF;
 }
 
 .branding {
@@ -97,7 +97,7 @@ a:active {
 }
 
 .active::after {
-    content: "📌";
+    content: '📌';
     margin-right: 8px;
     color: white;
 }
@@ -149,6 +149,50 @@ main {
     height: auto;
 }
 
+/* -------------- KM TABLE -------------- */
+
+.styled-table {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    border-collapse: collapse;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    width: 90%;
+
+}
+
+
+.styled-table th {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.styled-table tr:hover {
+    background-color: #f1f1f1;
+
+}
+
+.styled-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+
+}
+
+.styled-table td {
+    background-color: rgba(255, 255, 204, 1);
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.sos-app {
+    width: 10rem;
+    margin-bottom: 50px;
+}
+
 /* -------------- BODY -------------- */
 
 .funfacts li {
@@ -156,6 +200,7 @@ main {
     padding: 10px;
     margin-top: 20px;
 }
+
 
 .wrapper {
     display: flex;
@@ -211,18 +256,7 @@ main {
     box-shadow: 0px 0px 10px #aaa;
     margin: 0.9rem 2rem 0;
     padding: 10px;
-    outline: 10px solid #4caf50;
-    /* Raised (outset) shadow effect */
-}
-
-.hashtag {
-    background-color: #bed;
-    border: 1px solid #eee;
-    border-radius: 3px;
-    box-shadow: 0px 0px 10px #aaa;
-    margin: 0.9rem 2rem 0;
-    padding: 10px;
-    outline: 10px solid #4caf50;
+    outline: 10px solid #4CAF50;
     /* Raised (outset) shadow effect */
 }
 
@@ -230,14 +264,6 @@ main {
     color: #000;
     display: flex;
     flex-direction: column;
-    font-size: 0.9rem;
-    padding: 0.7rem 1rem 0.7rem;
-}
-
-.hashtagContent {
-    color: #000;
-    display: flex;
-    flex-direction: row;
     font-size: 0.9rem;
     padding: 0.7rem 1rem 0.7rem;
 }
@@ -296,15 +322,13 @@ button.no {
 }
 
 
-.copy-button,
-.copy-button2 {
+.copy-button {
     display: none;
     margin-left: 2rem;
 }
 
 .clear-button,
-.copy-button,
-.copy-button2 {
+.copy-button {
     padding: 8px 16px;
     /* Padding inside the button */
     background-color: transparent;
@@ -319,8 +343,7 @@ button.no {
 }
 
 .clear-button:hover,
-.copy-button:hover,
-.copy-button2:hover {
+.copy-button:hover {
     background-color: rgba(0, 0, 0, 0.05);
     /* Light background on hover */
     color: rgba(0, 0, 0, 0.9);
@@ -338,8 +361,7 @@ button:hover {
     width: 45%;
 }
 
-.copytext,
-.copytext2 {
+.copytext {
     display: none;
     font-size: 0.7rem;
     margin-left: 2rem;
@@ -387,18 +409,28 @@ footer {
         padding: 5px;
         margin-top: 10px;
     }
+
 }
 
+
+
 @media (max-width: 600px) {
+
     .welcome {
+
         font-size: 1.8rem;
+
     }
+
 
     .funfacts li {
         font-size: 0.7rem;
         padding: 10px;
         margin: 10px;
     }
+
+
+
 
     header {
         display: flex;
@@ -416,6 +448,8 @@ footer {
         font-size: 1.7rem;
         /* Adjust font size for smaller screens */
     }
+
+
 
     .container {
         margin: 1rem auto 2rem;
@@ -455,7 +489,7 @@ footer {
         cursor: pointer;
         display: block;
         font-size: 2rem;
-        padding: 0.2rem 2vw;
+        padding: .2rem 2vw;
         position: absolute;
         right: 0.8rem;
         top: -20px;
@@ -469,6 +503,7 @@ footer {
 
     #menu.open::before {
         content: "X";
+
 
         /* Close icon */
     }
@@ -487,6 +522,7 @@ footer {
 
     ul.toplinks.open {
         display: flex;
+
 
         /* Show menu when hamburger icon is clicked */
     }
@@ -522,6 +558,7 @@ footer {
 }
 
 @media (max-width: 430px) {
+
     h2 {
         font-size: 1rem;
     }
@@ -534,11 +571,13 @@ footer {
     button.no {
         max-width: 100vw;
         width: 100%;
+
     }
 
     .breadcrumbContent {
         font-size: 0.7rem;
     }
+
 
     #decision-tree1,
     .container {
@@ -548,6 +587,7 @@ footer {
         width: 90%;
         padding: 5px;
         margin: 5px;
+
     }
 
     .tree-selection {
@@ -559,6 +599,7 @@ footer {
     }
 
     .breadcrumbContainer {
+
         max-width: 100vw;
         width: 100%;
     }
@@ -571,4 +612,5 @@ footer {
     .footer-text {
         font-size: 1rem;
     }
+
 }
