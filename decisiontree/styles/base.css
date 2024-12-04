@@ -400,6 +400,10 @@ button:hover {
     font-weight: bold;
 }
 
+.red {
+    color: red;
+}
+
 /* ================== FOOTER ====================== */
 footer {
     background-color: rgba(0, 0, 0, 0.8);

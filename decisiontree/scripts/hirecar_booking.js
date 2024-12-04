@@ -11,8 +11,8 @@ let breadcrumbHistory = [];
 let hashtagHistory = [];
 
 function updateHashtag(hashText, answer) {
-    // alert("hashText: " + hashText);
-    // alert("answer: " + answer);
+    //alert("hashText: " + hashText);
+    //alert("answer: " + answer);
     const hashtagItem =
         answer === ""
             ? `${hashText}`
@@ -38,7 +38,7 @@ function updateBreadcrumb(question, answer, instruction) {
                 ? `${question} : ${answer === "yes" ? "Yes" : "No"}`
                 : `${question} : ${answer === "Limited" ? "Limited" : "Unlimited"}`;
 
-    // alert(breadcrumbItem);
+    //alert(breadcrumbItem);
 
     // Add the question-answer pair to the breadcrumb history
     breadcrumbHistory.push(breadcrumbItem);
@@ -624,17 +624,17 @@ function getDecisionTreeText_Insured(
 
     //alert(flagCombination);
 
-    let warning = `<div class="warning"><p class="bold">Warning!</p>
-             <p>There may be a possible leakage because the excess was waived without complete details of the at-fault party.</p> 
+    let warning = `<div class="warning"><p class="bold">⚠️Warning!</p>
+             <p>There may be a possible leakage because the excess was waived even when the liability is not clear or the details of the at-fault party is incomplete.</p> 
              <p>Please perform a claim health check first:</p>
              <ul>
-		<li>1) Review the notes.</li>
+		<li>1) Review the notes for any update about the Liability and details of the at-fault party.</li>
 		<li>2) Check the documents.</li>
-		<li>3) Ask IO if they have the details of the at-fault party.</li>
+		<li>3) Review the at-fault party details if it is complete.</li>
 	     </ul>
              <br>   
-             <p>Once you have completed the above actions AND they still don't have the at-fault party details, please warm transfer the call to Rec&Set - Settlement Owner.</p></div>`;
-    let reminder = `<div class=reminder><p class="bold">Reminder: </p>
+             <p>Once you have completed the above actions and the liability remains unclear or details of the at-fault party is incomplete, please warm transfer the call to Rec&Set - Settlement Owner.</p></div>`;
+    let reminder = `<div class=reminder><p class="bold">🎗️Reminder: </p>
               <p>You may waive the excess.</p></div>`;
     // Switch statement to handle different flag combinations
     switch (flagCombination) {
@@ -643,35 +643,42 @@ function getDecisionTreeText_Insured(
         case "100000001A":
         case "010000001A":
         case "001111001A":
-        case "001111100A":
         case "001100100A":
         case "001011100A":
         case "001000100A":
+        case "001111100A":
         case "000111100A":
         case "000100100A":
         case "000000100A":
         case "000001100A":
 
             decisionTreeDiv.innerHTML = `
-        <p><span class="bold">Limited - An option added to Suncorp and GIO Policy Holders for 21 Calendar Days only.</span></p>
-        <p>Initial Booking based on the Repairer:</p>
-        <p class="bold">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p>
-        <p>GIO - ITGIO75<br>SUNCORP - ITSUN75</p>
+        <p><span class="bold">Book a Limited Hire Car for IO</p> 
+        <p>Limited HC for 21 days Only:</p>
+        <p>Suncorp: 	ITSUN75</p>
+        <p>GIO: 	ITGIO75</p>
+        
+        <p class="bold red">❗IMPORTANT NOTE: </p>
+        <p>Where a customer has a purchased a limited 21 day benefit and are entitled to a Not at Fault hire car on their policy, we are to use the Not at Fault Benefit first. NAF HC Code: ITNAF (All Brands)</p>
+        
      
     `;
             break;
         // A - #limitedHireCarCover with Warning!
-        case "001110100A":
         case "001110100A":
         case "001010100A":
         case "000110100A":
         case "000011100A":
         case "000010100A":
             decisionTreeDiv.innerHTML = `
-        <p><span class="bold">Limited - An option added to Suncorp and GIO Policy Holders for 21 Calendar Days only.</span></p>
-        <p>Initial Booking based on the Repairer:</p>
-        <p class="bold">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p>
-        <p>GIO - ITGIO75<br>SUNCORP - ITSUN75</p>
+        <p><span class="bold">Book a Limited Hire Car for IO</p> 
+        <p>Limited HC for 21 days Only:</p>
+        <p>Suncorp: 	ITSUN75</p>
+        <p>GIO: 	ITGIO75</p>
+        
+        <p class="bold red">❗IMPORTANT NOTE: </p>
+        <p>Where a customer has a purchased a limited 21 day benefit and are entitled to a Not at Fault hire car on their policy, we are to use the Not at Fault Benefit first. NAF HC Code: ITNAF (All Brands)</p>
+        
         <p>${warning}</p>
     `;
             break;
@@ -680,10 +687,13 @@ function getDecisionTreeText_Insured(
         case "001001100A":
         case "000101100A":
             decisionTreeDiv.innerHTML = `
-        <p><span class="bold">Limited - An option added to Suncorp and GIO Policy Holders for 21 Calendar Days only.</span></p>
-        <p>Initial Booking based on the Repairer:</p>
-        <p class="bold">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p>
-        <p>GIO - ITGIO75<br>SUNCORP - ITSUN75</p>
+        <p><span class="bold">Book a Limited Hire Car for IO</p> 
+        <p>Limited HC for 21 days Only:</p>
+        <p>Suncorp: 	ITSUN75</p>
+        <p>GIO: 	ITGIO75</p>
+        
+        <p class="bold red">❗IMPORTANT NOTE: </p>
+        <p>Where a customer has a purchased a limited 21 day benefit and are entitled to a Not at Fault hire car on their policy, we are to use the Not at Fault Benefit first. NAF HC Code: ITNAF (All Brands)</p>
         <p>${reminder}</p>
     `;
             break;
@@ -701,15 +711,24 @@ function getDecisionTreeText_Insured(
         case "000001100B":
 
             decisionTreeDiv.innerHTML = `
-        <p><span class="bold">Unlimited - IO can use the Hire Car until the repairs are complete.</span></p>
+        <p><span class="bold">Book an Unlimited HC for IO according to their Policy Coverage.</p>
+        <ul>
+            <li>AAMI - ITHCOAAMI90</li>
+            <li>APIA - ITHCOAPIA90</li>
+            <li>SUNCORP - ITSUNUNLI100</li>
+            <li>GIO - ITGIOPLAT100</li>
+            <li>Bingle - ITLLDU</li>
+        </ul>
+        <br>
+        <p class="bold red">❗IMPORTANT NOTE: </p>
+        <p>Where a customer has purchased an Unlimited benefit and are entitled to the Not at Fault Hire Car on their policy, we are to use the Not at Fault Benefit first.</p>
         <p>Initial Booking based on the Repairer:</p>
         <p class="bold">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p>
-        <p>AAMI - ITHCOAAMI90<br>APIA - ITHCOAPIA90<br>SUNCORP - ITSUNUNLI100<br>GIO - ITGIOPLAT100<br>BINGLE - ITLLDU</p>
+        
         
     `;
             break;
         // B - #unlimitedHireCarCover with Warning!
-        case "001110100B":
         case "001110100B":
         case "001010100B":
         case "000110100B":
@@ -717,10 +736,19 @@ function getDecisionTreeText_Insured(
         case "000010100B":
 
             decisionTreeDiv.innerHTML = `
-        <p><span class="bold">Unlimited - IO can use the Hire Car until the repairs are complete.</span></p>
+        <p><span class="bold">Book an Unlimited HC for IO according to their Policy Coverage.</p>
+        <ul>
+            <li>AAMI - ITHCOAAMI90</li>
+            <li>APIA - ITHCOAPIA90</li>
+            <li>SUNCORP - ITSUNUNLI100</li>
+            <li>GIO - ITGIOPLAT100</li>
+            <li>Bingle - ITLLDU</li>
+        </ul>
+        <br>
+        <p class="bold red">❗IMPORTANT NOTE: </p>
+        <p>Where a customer has purchased an Unlimited benefit and are entitled to the Not at Fault Hire Car on their policy, we are to use the Not at Fault Benefit first.</p>
         <p>Initial Booking based on the Repairer:</p>
         <p class="bold">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p>
-        <p>AAMI - ITHCOAAMI90<br>APIA - ITHCOAPIA90<br>SUNCORP - ITSUNUNLI100<br>GIO - ITGIOPLAT100<br>BINGLE - ITLLDU</p>
         <p>${warning}</p>
         
     `;
@@ -730,10 +758,19 @@ function getDecisionTreeText_Insured(
         case "001001100B":
         case "000101100B":
             decisionTreeDiv.innerHTML = `
-        <p><span class="bold">Unlimited - IO can use the Hire Car until the repairs are complete.</span></p>
+        <p><span class="bold">Book an Unlimited HC for IO according to their Policy Coverage.</p>
+        <ul>
+            <li>AAMI - ITHCOAAMI90</li>
+            <li>APIA - ITHCOAPIA90</li>
+            <li>SUNCORP - ITSUNUNLI100</li>
+            <li>GIO - ITGIOPLAT100</li>
+            <li>Bingle - ITLLDU</li>
+        </ul>
+        <br>
+        <p class="bold red">❗IMPORTANT NOTE: </p>
+        <p>Where a customer has purchased an Unlimited benefit and are entitled to the Not at Fault Hire Car on their policy, we are to use the Not at Fault Benefit first.</p>
         <p>Initial Booking based on the Repairer:</p>
         <p class="bold">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p>
-        <p>AAMI - ITHCOAAMI90<br>APIA - ITHCOAPIA90<br>SUNCORP - ITSUNUNLI100<br>GIO - ITGIOPLAT100<br>BINGLE - ITLLDU</p>
         <p>${reminder}</p>
     `;
             break;
@@ -788,10 +825,12 @@ function getDecisionTreeText_Insured(
             <p>Note: If IO has a HC cover, we can extend the HC until their car is repaired or the claim is settled. If IO does not have the HC cover, they can only use the HC After Theft for 21 days.
             </p>
         `;
+            break;
         // E - #nafHCCover
         case "001111000E":
         case "001011000E":
         case "000111000E":
+        case "001111100E":
             decisionTreeDiv.innerHTML = `
             <p>Book a Not at Fault Hire Car for unlimited days with a car the suits our customer's needs.</p>
             <p>AAMI, APIA, Suncorp, and GIO. Follow the initial booking days <a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732856454622?contentId=KM1074602&locale=en-GB" target="_blank">KM1074602</a></p>
