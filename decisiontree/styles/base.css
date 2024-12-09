@@ -323,7 +323,8 @@ button.no {
     /* Red for No */
 }
 
-.warning {
+.warning,
+.notfound {
     background-color: #fff3e6;
     /* light orange or similar */
     border: 2px solid firebrick;
@@ -342,6 +343,14 @@ button.no {
     padding: 1rem;
 }
 
+.mtp {
+    display: flex;
+    gap: 1rem;
+}
+
+
+
+}
 
 .copy-button,
 .copy-button2 {
@@ -381,8 +390,8 @@ button:hover {
 #decision-tree1 {
     padding: 10px;
     margin: 2rem;
-    max-width: 50vw;
-    width: 45%;
+    max-width: 80vw;
+    width: 80%;
 }
 
 .copytext,

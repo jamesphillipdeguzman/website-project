@@ -7,18 +7,24 @@
 //Breadcrumb - update
 
 //Previous question is for the next function
+
+
+// ==========================
+// A. Administrative Logic (Handles User Input)
+// ==========================
 let breadcrumbHistory = [];
 let hashtagHistory = [];
 
+// Function to update the hashtag trail
 function updateHashtag(hashText, answer) {
-    //alert("hashText: " + hashText);
-    //alert("answer: " + answer);
+    showHashTags();
     const hashtagItem =
         answer === ""
             ? `${hashText}`
             : `${hashText}${answer === "yes" ? "Yes" : "No"}`;
 
     hashtagHistory.push(hashtagItem);
+
     const hashtagTrail = document.querySelector("#hashtagTrail");
     hashtagTrail.innerHTML = hashtagHistory
         .map((item, index) => {
@@ -28,9 +34,10 @@ function updateHashtag(hashText, answer) {
         .join("");
 }
 
-// Function to update the breadcrumb trail with the question and answer
+// Function to update the breadcrumb trail
 function updateBreadcrumb(question, answer, instruction) {
-    // Combine question and answer into one string, return the instruction if answer is empty
+    showBreadcrumbs();
+
     const breadcrumbItem =
         answer === ""
             ? `${instruction}`
@@ -38,12 +45,8 @@ function updateBreadcrumb(question, answer, instruction) {
                 ? `${question} : ${answer === "yes" ? "Yes" : "No"}`
                 : `${question} : ${answer === "Limited" ? "Limited" : "Unlimited"}`;
 
-    //alert(breadcrumbItem);
-
-    // Add the question-answer pair to the breadcrumb history
     breadcrumbHistory.push(breadcrumbItem);
 
-    // Update breadcrumb trail display
     const breadcrumbTrail = document.querySelector("#breadcrumbTrail");
     breadcrumbTrail.innerHTML = breadcrumbHistory
         .map((item, index) => {
@@ -53,43 +56,10 @@ function updateBreadcrumb(question, answer, instruction) {
         .join("");
 }
 
+
 const decisionTreeDiv = document.getElementById("decision-tree1");
 
-// Function to uncheck the radio button
-function uncheckRadioButton() {
-    const radioSelected = document.querySelector('input[name="tree"]:checked');
-    if (radioSelected) {
-        radioSelected.checked = false; // Uncheck the selected radio button
-    }
-}
-
-// Function to clear the breadcrumb and decision tree
-function clearContent() {
-    breadcrumbTrail.innerHTML = ""; // Clear breadcrumb trail
-    hashtagTrail.innerHTML = ""; // Clear hashtag trail
-    decisionTreeDiv.innerHTML = ""; // Clear decision tree div
-}
-
-// Function to show the copy breadcrumb button
-function showCopyBreadcrumbBtn() {
-    const copyBreadcrumbBtn = document.querySelector("#copy-breadcrumb");
-    copyBreadcrumbBtn.style.display = "block";
-
-    const startBtn = document.querySelector("#start");
-    startBtn.disabled = true; // Disable start button
-    startBtn.classList.add("disabled"); // Add the 'disabled' class to change its appearance
-}
-
-function showCopyHashtagBtn() {
-    const copyHashtagBtn = document.querySelector("#copy-hashtag");
-    copyHashtagBtn.style.display = "block";
-
-    const startBtn = document.querySelector("#start");
-    startBtn.disabled = true; // Disable start button
-    startBtn.classList.add("disabled"); // Add the 'disabled' class to change its appearance
-}
-
-// Function to handle the start button click
+// Function to handle the start button click and initiate the flow
 const start = (document.getElementById("start").onclick = function () {
     const radioSelected = document.querySelector('input[name="tree"]:checked');
 
@@ -102,53 +72,135 @@ const start = (document.getElementById("start").onclick = function () {
 
     // Check which radio button is selected and run the corresponding logic
     if (radioSelected && radioSelected.value === "insured") {
+
         selectedInsured();
     } else if (radioSelected && radioSelected.value === "mtp") {
         selectedMTP();
     } else if (radioSelected && radioSelected.value === "rectificationHC2") {
-        rectificationQualityIssue(); // Activate Rectification Hire Car Logic
+        selectedRectificationHC(); // Activate Rectification Hire Car Logic
     } else if (radioSelected && radioSelected.value === "wpClaims") {
-        wpClaimsLogic(); // Activate WP Claims Logic
+        selectedWPClaims(); // Activate WP Claims Logic
     }
 
     // After starting, uncheck the radio button to prevent the same button from being selected again.
     //uncheckRadioButton();
 });
 
-// Function to handle the reset for breadcrumb
+// ==========================
+// A. END of Administrative Logic (Handles User Input)
+// ==========================
 
+
+// ==========================
+// B. UI Manipulation (Handles User Interface Updates)
+// ==========================
+let breadcrumb = document.querySelector(".breadcrumb");
+let hashTag = document.querySelector(".hashtag");
+let copyBreadcrumbBtn = document.querySelector("#copy-breadcrumb");
+let copyHashtagBtn = document.querySelector("#copy-hashtag");
+
+function clearContent() {
+    breadcrumbTrail.innerHTML = ""; // Clear breadcrumb trail
+    hashtagTrail.innerHTML = ""; // Clear hashtag trail
+    decisionTreeDiv.innerHTML = ""; // Clear decision tree div
+    // Hide the breadcrumb and hashtags on first click of start button
+    hideBreadcrumbs();
+    hideHashTags();
+}
+
+function hideBreadcrumbs() {
+
+    breadcrumb.style.opacity = "0";
+    copyBreadcrumbBtn.style.display = "none";
+}
+
+function hideHashTags() {
+
+    hashTag.style.opacity = "0";
+    copyHashtagBtn.style.display = "none";
+
+}
+
+function showBreadcrumbs() {
+
+    breadcrumb.style.opacity = "1";
+
+}
+
+function showHashTags() {
+
+    hashTag.style.opacity = "1";
+
+}
+
+// Function to show the copy breadcrumb button
+function showCopyBreadcrumbBtn() {
+
+    copyBreadcrumbBtn.style.display = "block";
+
+
+    const startBtn = document.querySelector("#start");
+    startBtn.disabled = true; // Disable start button
+    startBtn.classList.add("disabled"); // Add the 'disabled' class to change its appearance
+}
+
+// Function to show the copy hashtag button
+function showCopyHashtagBtn() {
+
+    copyHashtagBtn.style.display = "block";
+
+
+    const startBtn = document.querySelector("#start");
+    startBtn.disabled = true; // Disable start button
+    startBtn.classList.add("disabled"); // Add the 'disabled' class to change its appearance
+}
+
+// Function to handle the reset for breadcrumb
 const clear = document.querySelector("#clear");
 clear.addEventListener("click", () => {
     clearContent();
     window.location.href = window.location.href;
     breadcrumbTrail.style.outline = "none";
     breadcrumbTrail.style.border = "none";
-    uncheckRadioButton();
+    uncheckAllRadioButton();
 });
+
+// ==========================
+// B. END of UI Manipulation (Handles User Interface Updates)
+// ==========================
+
+// ==========================
+// C. Helper Functions (Reusable Utilities)
+// ==========================
+function uncheckRadioButton() {
+    const radioSelected = document.querySelector('input[name="tree"]:checked');
+    if (radioSelected) {
+        radioSelected.checked = false; // Uncheck the selected radio button
+    }
+}
+
+const uncheckAllRadioButton = () => {
+    const radioSelected = document.querySelectorAll('input[name="tree"]:checked');
+    radioSelected.forEach(radio => {
+        radio.checked = false;  // uncheck the selected radio button
+    });
+}
 
 // Function to copy the breadcrumb content to the clipboard
 function copyBreadcrumb() {
     const breadcrumbText = breadcrumbHistory.join(" > "); // Concatenate breadcrumb items as a string
 
-    // Create a temporary input element to hold the text to be copied
     const tempInput = document.createElement("input");
     tempInput.value = breadcrumbText; // Set the value to the breadcrumb text
-
     document.body.appendChild(tempInput);
 
-    // Select the text in the temporary input
     tempInput.select();
     tempInput.setSelectionRange(0, 99999); // For mobile devices
-
-    // Execute the "copy" command to copy the text to the clipboard
     document.execCommand("copy");
 
-    // Remove the temporary input element
     document.body.removeChild(tempInput);
 
-    // Show notification that the text was copied
     const copyText = document.querySelector(".copytext");
-
     copyText.style.display = "block";
     copyText.innerHTML = "Copied text!";
 }
@@ -157,25 +209,17 @@ function copyBreadcrumb() {
 function copyHashtag() {
     const hashtagText = hashtagHistory.join(" > "); // Concatenate hashtag items as a string
 
-    // Create a temporary input element to hold the text to be copied
     const tempInput = document.createElement("input");
-
     tempInput.value = hashtagText; // Set the value to the hashtag text
     document.body.appendChild(tempInput);
 
-    // Select the text in the temporary input
     tempInput.select();
     tempInput.setSelectionRange(0, 99999); // For mobile devices
-
-    // Execute the "copy" command to copy the text to the clipboard
     document.execCommand("copy");
 
-    // Remove the temporary input element
     document.body.removeChild(tempInput);
 
-    // Show notification that the text was copied
     const copyText2 = document.querySelector(".copytext2");
-
     copyText2.style.display = "block";
     copyText2.innerHTML = "Copied text!";
 }
@@ -188,377 +232,24 @@ document
 // Attach the copy function to the "Copy Hashtag" button
 document.querySelector("#copy-hashtag").addEventListener("click", copyHashtag);
 
-// START WP Claims Logic
-function wpClaimsLogic() {
-    decisionTreeDiv.innerHTML = `
-        <p>What's the reason for the claim to be WP?</p>
-        <button class="authorization" onclick="authorization()">Further Information Required</button>
-        <button class="mechanical" onclick="mechanicalIssue()">Mechanical Issue</button>
-        <button class="investigation" onclick="investigation()">Referred to Investigation</button>
-    `;
-}
+// ==========================
+// C. END of Helper Functions (Reusable Utilities)
+// ==========================
 
-function authorization() {
-    decisionTreeDiv.innerHTML = `
-        <p>Have you secured authorization from the Policy Holder and accepted the claim?</p>
-        <button class="yes" onclick="policyHolderAuthorization('yes')">Yes</button>
-        <button class="no" onclick="policyHolderAuthorization('no')">No</button>
-    `;
-}
 
-function policyHolderAuthorization(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Does the customer have a rental car option added on the policy?</p>
-            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
-            <button class="no" onclick="rentalCarOption('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain to our customer that we need to secure authorization from the Policy Holder before we can proceed with the claim.</p>
-            <p class="bold">No Hire Car Booking is required.</p>
-            <p>End Process.</p>
-        `;
-    }
-}
 
-function rentalCarOption(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p class="bold">Book IO according to the type of HC Cover.</p>
-		<p class="italics">A customer must not be refused a policy benefit due to their claim being in a WP status due to Investigation</p>
-            <p>End Process.</p>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Is the customer entitled to a NAF HC?</p>
-            <button class="yes" onclick="nafEligibility('yes')">Yes</button>
-            <button class="no" onclick="nafEligibility('no')">No</button>
-        `;
-    }
-}
 
-function nafEligibility(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Book IO according to the NAF HC Process.</p>
-            <p>End Process.</p>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain to IO that they don't have the HC Option on their policy.<br>
-            Offer the CDP Code - Step 1 of 
-<a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
-            <p>End Process.</p>
-        `;
-    }
-}
 
-function mechanicalIssue() {
-    decisionTreeDiv.innerHTML = `
-        <p>Did IO send a Mechanical Report?</p>
-        <button class="yes" onclick="mechanicalReport('yes')">Yes</button>
-        <button class="no" onclick="mechanicalReport('no')">No</button>
-    `;
-}
 
-function mechanicalReport(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Did ASCO give approval for the Mechanical Report and accept the claim?</p>
-            <button class="yes" onclick="ascoApproval('yes')">Yes</button>
-            <button class="no" onclick="ascoApproval('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain to IO that we need to have the mechanical report for ASCO Team to review.</p>
-            <p class="bold">No Hire Car Booking is required.</p>
-            <p>End Process.</p>
-        `;
-    }
-}
+// ==========================
+// D. Business Logic (Handles Core Logic and Function Calls)
+// ==========================
 
-function ascoApproval(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Does the customer have a rental car option added on the policy?</p>
-            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
-            <button class="no" onclick="rentalCarOption('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain to IO that the claim is under review.</p>
-            <p class="bold">No Hire Car Booking is required.</p>
-            <p>End Process.</p>
-        `;
-    }
-}
 
-function investigation() {
-    decisionTreeDiv.innerHTML = `
-        <p>Do we have a review outcome?</p>
-        <button class="yes" onclick="reviewOutcome('yes')">Yes</button>
-        <button class="no" onclick="reviewOutcome('no')">No</button>
-    `;
-}
 
-function reviewOutcome(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Is the claim rejected?</p>
-            <button class="yes" onclick="claimRejected('yes')">Yes</button>
-            <button class="no" onclick="claimRejected('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Does the customer have a rental car option added on the policy?</p>
-            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
-            <button class="no" onclick="rentalCarOption('no')">No</button>
-        `;
-    }
-}
-
-function claimRejected(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain the claim outcome to IO.</p>
-            <p class="bold">No Hire Car Booking Required.</p>
-            <p>End Process.</p>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Does the customer have a rental car option added on the policy?</p>
-            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
-            <button class="no" onclick="rentalCarOption('no')">No</button>
-        `;
-    }
-}
-
-// End of WP logic
-
-// Rectification Hire Car Logic
-function rectificationQualityIssue() {
-    decisionTreeDiv.innerHTML = `
-        <p>Did the customer call for a quality issue?</p>
-        <button class="yes" onclick="vehicleDriveable('yes')">Yes</button>
-        <button class="no" onclick="vehicleDriveable('no')">No</button>
-    `;
-}
-
-function vehicleDriveable(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Is the vehicle driveable?</p>
-            <button class="yes" onclick="sameRepairer('yes')">Yes</button>
-            <button class="no" onclick="sameRepairer('no')">No</button>
-        `;
-    } else {
-        followInsuredMTPProcess();
-    }
-}
-
-function followInsuredMTPProcess() {
-    decisionTreeDiv.innerHTML = `
-        <p>Follow the Insured/MTP Hire Car Booking Process</p>
-        <p>End Process.</p>
-    `;
-}
-
-function sameRepairer(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Does the customer want to go back to the same repairer?</p>
-            <button class="yes" onclick="originalRepairer('yes')">Yes</button>
-            <button class="no" onclick="originalRepairer('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-        <p>"Book the quality Issue, and book Rectification Hire Car for <span class="bold">3 Business Days</span> on the date that the customer needs the Hire Car.</p>
-
-<p class="italics">Automatic Extension must be turned off for all Integrated Hire Car bookings for Rectification Hire Cars. </p>
-	    <p>The Assessor will then determine if the Hire Car needs to be extended.</p>
-            <p>End Process.</p>
-`;
-    }
-}
-
-function handleDifferentRepairer() {
-    decisionTreeDiv.innerHTML = `
-        <p>Book the quality issue and advise the customer to wait for our Assessor's call for the reinspection process.<br>
-        Once we have the confirmed start date of repairs, book Rectification Hire Car for <span class="bold">3 Business Days</span> on the same date that the customer will drop off the vehicle back to the repairer for QI.</p>
-        <p class="italics">Automatic Extension must be turned off for all Integrated Hire Car bookings for Rectification Hire Cars. </p>
-	    <p>The Assessor will then determine if the Hire Car needs to be extended.</p>
-            <p>End Process.</p>
-    `;
-}
-
-function originalRepairer(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Is the original repairer our recommended repairer?</p>
-            <button class="yes" onclick="recommendedRepairer('yes')">Yes</button>
-            <button class="no" onclick="recommendedRepairer('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-	<p>Book the quality issue and advise the customer to wait for our Assessor's call for the reinspection.
-</p>
-	<p>End Process</p>
-`;
-    }
-}
-
-function recommendedRepairer(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Book Rectification Hire Car for <span class="bold">3 Business Days</span> on the same date that the customer will drop off the vehicle back to the repairer for QI.</p>
-            <p class="italics">Automatic Extension must be turned off for all Integrated Hire Car bookings for Rectification Hire Cars. </p>
-	    <p>The Assessor will then determine if the Hire Car needs to be extended.</p>
-            <p>End Process.</p>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Book the quality issue and advise the customer needs to call their repairer for the reinspection process.<br>
-            Once we have the confirmed start date of repairs, book Rectification Hire Car for <span class="bold">3 Business Days</span> on the same date that the customer will drop off the vehicle back to the repairer for QI.</p>
-            <p class="italics">Automatic Extension must be turned off for all Integrated Hire Car bookings for Rectification Hire Cars. </p>
-	    <p>The Assessor will then determine if the Hire Car needs to be extended.</p>
-            <p>End Process.</p>
-        `;
-    }
-}
-
-// END WP Claims Logic
-
-// The existing insured and MTP functions go here...
-
-// START MTP Logic
-
-function selectedMTP() {
-    question =
-        "Is the liability clear that IO is at fault based on the incident description?";
-    decisionTreeDiv.innerHTML = `
-            <p>${question}</p>
-            <button class="yes" onclick="mtpLiability('yes')">Yes</button>
-            <button class="no" onclick="mtpLiability('no')">No</button>
-            
-        `;
-}
-
-function mtpLiability(answer) {
-    updateBreadcrumb(question, answer);
-    question =
-        "Did the Third Party advise whether they currently have, have been offered, or intend to accept a hire car through a credit provider or repairer?";
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>${question}</p>
-            <button class="yes" onclick="creditHireCar('yes')">Yes</button>
-            <button class="no" onclick="creditHireCar('no')">No</button>
-        `;
-    } else {
-        question = "Is there a note from Rec&Set that IO is NOT at fault?";
-        decisionTreeDiv.innerHTML = `
-            <p>${question}</p>
-            <button class="yes" onclick="recSetNote('yes')">Yes</button>
-            <button class="no" onclick="recSetNote('no')">No</button>
-        `;
-    }
-}
-
-function creditHireCar(answer) {
-    updateBreadcrumb(question, answer);
-    question =
-        "Obtain as much information from the Third Party as possible (Step 5 of KM1074811). Advise the Third Party that a member of our Customer Support Team will be in contact with them.";
-
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>${question}</p>
-            <p>Did the Third Party Accepts Call Back?</p>
-            <button class="yes" onclick="acceptsCallbacks('yes')">Yes</button>
-            <button class="no" onclick="acceptsCallbacks('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Continue to arrange the MTP Hire Car for the Third Party - <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732164158773?contentId=KM1074811&locale=en-GB" target="_blank">KM1074811</a></p>
-
-            <p>Booking Codes: 
-            Consumer All Brands and All Third Party Rectification Hire Cars - ITTP2
-            P Electric Vehicles (Special Adrenaline IT Code) - ITTPADR</p>
-        `;
-
-        instruction = decisionTreeDiv.innerText;
-        updateBreadcrumb(question, "", instruction);
-        showCopyBreadcrumbBtn();
-    }
-}
-
-function acceptsCallbacks(answer) {
-    updateBreadcrumb(question, answer);
-
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Record the answers on the claim notes to the questions asked based on Step 5 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732164158773?contentId=KM1074811&locale=en-GB" target="_blank">KM1074811</a></p>
-            <p>Advise the Third party that our Customer Support team are claim experts who are in the best position to help manage their claim with us. </p> 
-            <p>Go to Actions and set an Action Customer Query and assign to the TP Settlement Owner.</p>
-    `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Record the answers on the claim notes to the questions asked based on Step 5 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732164158773?contentId=KM1074811&locale=en-GB" target="_blank">KM1074811</a></p>
-            <p>Record the TP has refused a call back in Notes.</p> 
-            <p>Go to Actions and set an Action Customer Query and assign to the TP Settlement Owner.</p>
-    `;
-    }
-    instruction = decisionTreeDiv.innerText;
-    updateBreadcrumb(question, "", instruction);
-    showCopyBreadcrumbBtn();
-}
-
-function recSetNote(answer) {
-    updateBreadcrumb(question, answer);
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Continue to arrange the MTP Hire Car for the Third Party - <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732164158773?contentId=KM1074811&locale=en-GB" target="_blank">KM1074811</a></p>
-
-            <p>Booking Codes: 
-            Consumer All Brands and All Third Party Rectification Hire Cars - ITTP2
-            P Electric Vehicles (Special Adrenaline IT Code) - ITTPADR</p>
-        `;
-
-        instruction = decisionTreeDiv.innerText;
-        updateBreadcrumb(question, "", instruction);
-        showCopyBreadcrumbBtn();
-    } else {
-        question = "Is the Third Party vehicle insured?";
-        decisionTreeDiv.innerHTML = `
-          <p>${question}</p>
-            <button class="yes" onclick="isTPVInsured('yes')">Yes</button>
-            <button class="no" onclick="isTPVInsured('no')">No</button>
-        `;
-    }
-}
-
-function isTPVInsured(answer) {
-    updateBreadcrumb(question, answer);
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-       <p>Advise the Third Party that our Rec & Set has not given the liability outcome. Explain that they may lodge a claim to their Inurance to cover the cost of repairs of their car.</p>
-       <p>If they decline to lodge the claim through their car's insurance, explain to IO that we need to wait until Rec & Set give us the liability outcome and our insured needs to be 100% at fault for them to be eligible for a hire car.</p>
-    
-    `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-      <p>Explain to IO that we need to wait until Rec & Set give us the liability outcome and our insured needs to be 100% at fault for them to be eligible for a hire car.</p>
-
-    `;
-    }
-    instruction = decisionTreeDiv.innerText;
-    updateBreadcrumb(question, "", instruction);
-    showCopyBreadcrumbBtn();
-}
-// END MTP Logic
-
-// The existing insured functions go here...
-
-// START Insured Logic
+// ==========================
+// 1. START of Insured Logic - (LINES 250-1158)
+// ==========================
 
 // Initialize flags for Insured; 1-Yes and 0-No
 var flagCombination = "";
@@ -636,6 +327,10 @@ function getDecisionTreeText_Insured(
              <p>Once you have completed the above actions and the liability remains unclear or details of the at-fault party is incomplete, please warm transfer the call to Rec&Set - Settlement Owner.</p></div>`;
     let reminder = `<div class=reminder><p class="bold">🎗️Reminder: </p>
               <p>You may waive the excess.</p></div>`;
+
+    let notfound = `<div class=notfound><p>❗Note: The process barcode was not found.</p> 
+ <p>Please contact the web developer to update the barcode.</p></div>`;
+
     // Switch statement to handle different flag combinations
     switch (flagCombination) {
 
@@ -910,7 +605,8 @@ function getDecisionTreeText_Insured(
 
         // Add more cases based on the combination of flags
         default:
-            warning = "";
+            decisionTreeDiv.innerHTML = `<div class="mtp"><p>${notfound}</p>
+      `;
     }
 }
 
@@ -1038,7 +734,7 @@ function noteIOAFFromRecSet(answer) {
         flagIONAFInRecSetNotes = 1;
         //alert("flagIONAFInRecSetNotes: " + flagIONAFInRecSetNotes);
     } else {
-        flagTheftClaim = 0;
+        flagIONAFInRecSetNotes = 0;
         //alert("flagIONAFInRecSetNotes: " + flagIONAFInRecSetNotes);
     }
     question = "Is the excess waived?";
@@ -1457,4 +1153,989 @@ function unlimitedOption(answer) {
     showCopyHashtagBtn();
 }
 
-// END Insured Logic
+// ==========================
+// END of Insured Logic
+// ==========================
+
+
+
+
+
+
+
+
+
+// ==========================
+// 2. START of MTP Logic - LINES (1168-1535)
+// ==========================
+
+// Initialize flags for Insured; 1-Yes and 0-No
+var flagCombination = "";
+var question = "";
+var hashText = "";
+var instruction = "";
+
+var flagIOResponsible2 = 0;
+var flagTPVOutofScopeForMTP = 0;
+var flagTPAdvWillUseCreditHireCar = 0;
+var flagTPAcceptsCallBack = 0;
+var flagIOAFinRecSetNotes = 0;
+var flagTPVInsured = 0;
+
+
+function getDecisionTreeText_MTP(
+    flagIOResponsible2,
+    flagTPVOutofScopeForMTP,
+    flagTPAdvWillUseCreditHireCar,
+    flagTPAcceptsCallBack,
+    flagIOAFinRecSetNotes,
+    flagTPVInsured
+
+) {
+    // Concatenate all flag values into a single string
+    flagCombination =
+        flagIOResponsible2 +
+        "" +
+        flagTPVOutofScopeForMTP +
+        "" +
+        flagTPAdvWillUseCreditHireCar +
+        "" +
+        flagTPAcceptsCallBack +
+        "" +
+        flagIOAFinRecSetNotes +
+        "" +
+        flagTPVInsured;
+
+    //alert(flagCombination);
+
+    let mtpOOSMsg1 = `<div class="reminder">
+        <p class="bold">🎗️For MTP out of Scope Vehicle (i.e. caravans, boats, taxis, buses, ride share, emergency vehicles, machinery or trucks):</p>
+        <p>Advise TP to lodge a claim to their Insurance and provide the claim number for the settlement process.</p></div>`;
+    let liabilityMsg1 = `<div class=reminder><p class="bold">🎗️For Unclear Liability: </p>
+              <p>Advise the Third Party that our Rec & Set has not given the liability outcome. Explain that they may lodge a claim to their Insurance to cover the cost of repairs of their car.</p>
+              <p>If they decline to lodge the claim through their car's insurance, explain to IO that we need to wait until Rec & Set give us the liability outcome and our insured needs to be 100% at fault for them to be eligible for a hire car.</p></div>`;
+
+    let mtpOOSMsg2 = `<div class="reminder">
+        <p class="bold">🎗️For MTP out of Scope Vehicle (i.e. caravans, boats, taxis, buses, ride share, emergency vehicles, machinery or trucks):</p>
+        <p>Advise TP to submit 2 quotes and images to the Recoveries and Settlements team for review.  The Third Party should submit their documents to myclaim@[brand].com.au.</p></div>`;
+
+    let liabilityMsg2 = `<div class=reminder><p class="bold">🎗️For Unclear Liability: </p>
+              <p>Explain to IO that we need to wait until Rec & Set give us the liability outcome and our insured needs to be 100% at fault for them to be eligible for a hire car.</p></div>`;
+
+    let notfound = `<div class=notfound><p>❗Note: The process barcode was not found.</p> 
+ <p>Please contact the web developer to update the barcode.</p></div>`;
+    // Switch statement to handle different flag combinations
+    switch (flagCombination) {
+
+        //     Scenario 1:
+        case "101100":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Record the answers on the claim notes to the questions asked based on Step 5 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732164158773?contentId=KM1074811&locale=en-GB" target="_blank">KM1074811</a></p> 
+        <p>Advise the Third party that our Customer Support team are claim experts who are in the best position to help manage their claim with us.</p>
+        <p>Go to Actions and set an Action Customer Query and assign to the TP Settlement Owner.</p>
+           
+    `;
+            break;
+        //   Scenario 2:    
+        case "101000":
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Record the answers on the claim notes to the questions asked based on Step 5 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732164158773?contentId=KM1074811&locale=en-GB" target="_blank">KM1074811</a></p> 
+        <p>Record the TP has refused a call back in Notes.</p>
+        <p>Go to Actions and set an Action Customer Query and assign to the TP Settlement Owner.</p>
+         
+        `;
+            break;
+
+
+        //  Scenario 3 & 5: 
+        case "000010":
+        case "100000":
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Continue to arrange the MTP Hire Car for the Third Party - <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732164158773?contentId=KM1074811&locale=en-GB" target="_blank">KM1074811</a></p> 
+        <p>Booking Codes:</p>
+        <p>Consumer All Brands and All Third Party Rectification Hire Cars - ITTP2</p>
+        <p>P Electric Vehicles (Special Adrenaline IT Code) - ITTPADR</p>
+        
+          `;
+            break;
+        //    Scenario 4 & 6:
+        case "110001":
+        case "000001":
+
+            decisionTreeDiv.innerHTML = `<div class="mtp"><p>${mtpOOSMsg1}</p>
+                                <p>${liabilityMsg1}</p></div>
+          `;
+            break;
+        //    Scenario 7
+        case "000000":
+            decisionTreeDiv.innerHTML = `<div class="mtp"><p>${mtpOOSMsg2}</p>
+                                <p>${liabilityMsg2}</p></div>
+          `;
+            break;
+
+        default:
+            decisionTreeDiv.innerHTML = `<div class="mtp"><p>${notfound}</p>
+       `;
+    }
+}
+
+function selectedMTP() {
+    // Check if the liability is clear
+    question = "Is the liability clear that IO is at fault based on the incident description?";
+    hashText = "#ioResponsible";
+
+    decisionTreeDiv.innerHTML = `
+            <p>${question}</p>
+            <button class="yes" onclick="ioResponsible2('yes')">Yes</button>
+            <button class="no" onclick="ioResponsible2('no')">No</button>
+        `;
+}
+
+// Checkpoint 1
+function ioResponsible2(answer) {
+    //alert("Checkpoint 1: ioResponsible");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is the liability clear that IO is at fault based on the incident description?
+    if (answer === "yes") {
+        flagIOResponsible2 = 1;
+        //alert("flagIOResponsible2: " + flagIOResponsible2);
+    } else {
+        flagIOResponsible2 = 0;
+        //alert("flagIOResponsible2: " + flagIOResponsible2);
+    }
+
+
+    if (answer === "no") {
+        //     Jump to Checkpoint 5
+        //alert("Checkpoint 5: ioAFinRecSetNotes");
+        question = "Is there a note from Rec&Set that IO is at fault?";
+        hashText = "#ioAFinRecSetNotes";
+
+        decisionTreeDiv.innerHTML = `
+      <p>${question}</p>
+      <button class="yes" onclick="ioAFinRecSetNotes('yes')">Yes</button>
+      <button class="no" onclick="ioAFinRecSetNotes('no')">No</button>
+    `;
+    } else {
+        //     Jump to Checkpoint 2
+        question = "Is the Third Party vehicle NOT covered under the Mission Third Party process (i.e. caravans, boats, taxis, buses, ride share, emergency vehicles, machinery or trucks)?";
+        hashText = "#tpvOutofScopeForMTP";
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="tpvOutofScopeForMTP('yes')">Yes</button>
+        <button class="no" onclick="tpvOutofScopeForMTP('no')">No</button>
+      `;
+    }
+
+}
+
+// Checkpoint 2
+function tpvOutofScopeForMTP(answer) {
+    //alert("Checkpoint 2: tpvOutofScopeForMTP");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is the Third Party vehicle NOT covered under the Mission Third Party process (i.e. caravans, boats, taxis, buses, ride share, emergency vehicles, machinery or trucks)?
+    if (answer === "yes") {
+        flagTPVOutofScopeForMTP = 1;
+        //alert("flagTPVOutofScopeForMTP: " + flagTPVOutofScopeForMTP);
+    } else {
+        flagTPVOutofScopeForMTP = 0;
+        //alert("flagTPVOutofScopeForMTP: " + flagTPVOutofScopeForMTP);
+    }
+
+    if (answer === "yes") {
+
+        question = "Is the Third Party vehicle insured?";
+        hashText = "#tpvInsured";
+        decisionTreeDiv.innerHTML = `
+            <p>${question}</p>
+            <button class="yes" onclick="tpvInsured('yes')">Yes</button>
+            <button class="no" onclick="tpvInsured('no')">No</button>
+    `;
+    } else {
+
+        question = "Did the Third Party advised they currently have, have been offered or intent on accepting a Hire Car through a Credit Provider or Repairer?";
+        hashText = "#tpAdvWillUseCreditHireCar";
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="tpAdvWillUseCreditHireCar('yes')">Yes</button>
+        <button class="no" onclick="tpAdvWillUseCreditHireCar('no')">No</button>
+      `;
+
+    }
+
+
+}
+
+// Checkpoint 3
+function tpAdvWillUseCreditHireCar(answer) {
+    //alert("Checkpoint 3: tpAdvWillUseCreditHireCar");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+    // Did the Third Party advised they currently have, have been offered or intent on accepting a Hire Car through a Credit Provider or Repairer??
+    if (answer === "yes") {
+        flagTPAdvWillUseCreditHireCar = 1;
+        //alert("flagTPAdvWillUseCreditHireCar: " + flagTPAdvWillUseCreditHireCar);
+    } else {
+        flagTPAdvWillUseCreditHireCar = 0;
+        //alert("flagTPAdvWillUseCreditHireCar: " + flagTPAdvWillUseCreditHireCar);
+    }
+
+    if (answer === "yes") {
+        question = "Did the Third Party Accepts Call Back?";
+        hashText = "#tpAcceptsCallBack";
+        decisionTreeDiv.innerHTML = `
+            <p>Obtain as much information from the Third Party as possible (Step 5 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732164158773?contentId=KM1074811&locale=en-GB" target="_blank">KM1074811</a>)</p>
+            <p>Advise the Third Party that a member of our Customer Support Team will be in contact with them.</p>
+            <p>${question}</p>
+            <button class="yes" onclick="tpAcceptsCallBack('yes')">Yes</button>
+            <button class="no" onclick="tpAcceptsCallBack('no')">No</button>
+        `;
+    } else {
+
+
+        getDecisionTreeText_MTP(
+            flagIOResponsible2,
+            flagTPVOutofScopeForMTP,
+            flagTPAdvWillUseCreditHireCar,
+            flagTPAcceptsCallBack,
+            flagIOAFinRecSetNotes,
+            flagTPVInsured
+
+        );
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+        showCopyHashtagBtn();
+
+
+    }
+
+}
+
+// Checkpoint 4
+function tpAcceptsCallBack(answer) {
+    //alert("Checkpoint 4: tpAcceptsCallBack");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is the Third Party vehicle NOT covered under the Mission Third Party process (i.e. caravans, boats, taxis, buses, ride share, emergency vehicles, machinery or trucks)?
+    if (answer === "yes") {
+        flagTPAcceptsCallBack = 1;
+        //alert("flagTPAcceptsCallBack: " + flagTPAcceptsCallBack);
+    } else {
+        tpAcceptsCallBack = 0;
+        //alert("flagTPAcceptsCallBack: " + flagTPAcceptsCallBack);
+    }
+    getDecisionTreeText_MTP(
+        flagIOResponsible2,
+        flagTPVOutofScopeForMTP,
+        flagTPAdvWillUseCreditHireCar,
+        flagTPAcceptsCallBack,
+        flagIOAFinRecSetNotes,
+        flagTPVInsured
+
+    );
+
+    instruction = decisionTreeDiv.innerText;
+    updateBreadcrumb(question, "", instruction);
+    showCopyBreadcrumbBtn();
+    showCopyHashtagBtn();
+
+
+}
+
+// Checkpoint 5
+function ioAFinRecSetNotes(answer) {
+    //alert("Checkpoint 5: ioAFinRecSetNotes");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is the Third Party vehicle NOT covered under the Mission Third Party process (i.e. caravans, boats, taxis, buses, ride share, emergency vehicles, machinery or trucks)?
+    if (answer === "yes") {
+        flagIOAFinRecSetNotes = 1;
+        //alert("flagIOAFinRecSetNotes: " + flagIOAFinRecSetNotes);
+    } else {
+        ioAFinRecSetNotes = 0;
+        //alert("flagIOAFinRecSetNotes: " + flagIOAFinRecSetNotes);
+    }
+
+
+    if (answer === "yes") {
+
+        getDecisionTreeText_MTP(
+            flagIOResponsible2,
+            flagTPVOutofScopeForMTP,
+            flagTPAdvWillUseCreditHireCar,
+            flagTPAcceptsCallBack,
+            flagIOAFinRecSetNotes,
+            flagTPVInsured
+
+        );
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+        showCopyHashtagBtn();
+
+
+    } else {
+
+        question = "Is the Third Party vehicle insured?";
+        hashText = "#tpvInsured";
+        decisionTreeDiv.innerHTML = `
+            <p>${question}</p>
+            <button class="yes" onclick="tpvInsured('yes')">Yes</button>
+            <button class="no" onclick="tpvInsured('no')">No</button>
+        `;
+
+    }
+
+}
+
+function tpvInsured(answer) {
+    //alert("Checkpoint 6: tpvInsured");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    if (answer === "yes") {
+        flagTPVInsured = 1;
+        //alert("flagTPVInsured: " + flagTPVInsured);
+    } else {
+        flagTPVInsured = 0;
+        //alert("flagTPVInsured: " + flagTPVInsured);
+    }
+
+
+    getDecisionTreeText_MTP(
+        flagIOResponsible2,
+        flagTPVOutofScopeForMTP,
+        flagTPAdvWillUseCreditHireCar,
+        flagTPAcceptsCallBack,
+        flagIOAFinRecSetNotes,
+        flagTPVInsured
+
+    );
+
+    instruction = decisionTreeDiv.innerText;
+    updateBreadcrumb(question, "", instruction);
+    showCopyBreadcrumbBtn();
+    showCopyHashtagBtn();
+
+
+}
+
+// ==========================
+// 2. END of MTP Logic
+// ==========================
+
+
+
+
+
+
+
+
+
+
+// ==========================
+// 3. Rectification HC Logic - LINES(1548-1969)
+// ==========================
+
+// Initialize flags for Insured; 1-Yes and 0-No
+var flagCombination = "";
+var question = "";
+var hashText = "";
+var instruction = "";
+
+var flagRepairQualityIssue = 0;
+var flagApprovedRepairer = 0;
+var flagCashSettledRepairs = 0;
+var flagDriveableVehicle = 0;
+var flagCustomerWantsOriginalRepairer = 0;
+var flagRecommendedRepairer = 0;
+
+
+function getDecisionTreeText_RectificationHC(
+    flagRepairQualityIssue,
+    flagApprovedRepairer,
+    flagCashSettledRepairs,
+    flagDriveableVehicle,
+    flagCustomerWantsOriginalRepairer,
+    flagRecommendedRepairer
+
+) {
+    // Concatenate all flag values into a single string
+    flagCombination =
+        flagRepairQualityIssue +
+        "" +
+        flagApprovedRepairer +
+        "" +
+        flagCashSettledRepairs +
+        "" +
+        flagDriveableVehicle +
+        "" +
+        flagCustomerWantsOriginalRepairer +
+        "" +
+        flagRecommendedRepairer;
+
+    //alert(flagCombination);
+
+    let reminder = `<div class="reminder"><p class="bold">🎗️Reminder: </p>
+  <p>Do not book the rectification HC until we have the confirmed start date of repairs.</p>
+  <p>Advise IO/TP that they may use their car while waiting for the date of repairs.</p></div>`;
+
+    // Switch statement to handle different flag combinations
+    switch (flagCombination) {
+
+        //     Scenario 1:
+        case "000000":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">This path is only for QI-related scenarios.</p>
+        <p>You may clear the HCDT tool and choose the correct path based on your customer's needs.</p>
+          `;
+            break;
+
+        //   Scenario 2:    
+        case "100000":
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Advise IO/TP that the original repairer was not authorized by us; therefore, they are not eligible for the lifetime repair guarantee.</p> 
+        <p>Explain in a friendly tone that they may need to raise this issue directly back to the repairer.</p>
+        <p>If IO or TP wish to complain, follow complaint process <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704283341?contentId=KM1129605&locale=en-GB" target="_blank">KM1129605</a></p>
+        <p>Assign the complaint to the correct Team/queue <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704331985?contentId=KM1134602&locale=en-GB" target="_blank">KM1134602</a></p>
+         
+          `;
+            break;
+
+
+        //  Scenario 3: 
+        case "111000":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Advise IO/TP that the damage to their vehicle was not repaired but was cash-settled instead.</p> 
+        <p>Explain in a friendly tone that they may need to raise this issue directly back to the repairer.</p>
+        <p>If IO or TP wish to complain, follow complaint process <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704283341?contentId=KM1129605&locale=en-GB" target="_blank">KM1129605</a></p>
+        <p>Assign the complaint to the correct Team/queue <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704331985?contentId=KM1134602&locale=en-GB" target="_blank">KM1134602</a></p>
+         
+          `;
+            break;
+
+        //  Scenario 4: 
+        case "110111":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Record QI and book a Rectification Hire Car for 3 Business Days on the same date that the customer will drop off the vehicle back to the repairer for repairs.</p> 
+        <p>Follow Step 10 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704756245?contentId=KM1141250&locale=en-GB" target="_blank">KM1141250</a></p>
+        <p>Automatic Extension must be turned off for all Integrated Hire Car bookings for Rectification Hire Cars. The Assessor will then determine if the Hire Car needs to be extended.</p>
+        <p>${reminder}</p>
+                 
+          `;
+            break;
+
+        //  Scenario 5: 
+        case "110110":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Record the quality issue and advise the customer needs to call his repairer for the reinspection process.</p>
+        <p>Once we have the confimed start date of repairs, book Rectification Hire Car for 3 Business Days on the same date that the customer will drop off the vehicle back to the repairer for QI.</p>
+        <p>Follow Step 7 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704756245?contentId=KM1141250&locale=en-GB" target="_blank">KM1141250</a></p>
+        <p>${reminder}</p>
+        
+      `;
+            break;
+
+        //  Scenario 6: 
+        case "110101":
+
+            decisionTreeDiv.innerHTML = `
+        <p>Follow Step 9 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704756245?contentId=KM1141250&locale=en-GB" target="_blank">KM1141250</a></p>
+        <p>No booking of the Rectification HC until ASCO or Assessor approves the reinspection.</p>
+        
+    `;
+            break;
+
+        //  Scenario 7: 
+        case "110100":
+
+            decisionTreeDiv.innerHTML = `
+        <p>Follow Step 8 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704756245?contentId=KM1141250&locale=en-GB" target="_blank">KM1141250</a></p>
+        <p>No booking of the Rectification HC until ASCO or Assessor approves the reinspection.</p>
+        
+    `;
+            break;
+
+        //  Scenario 8: 
+        case "110011":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Record QI and book Rectification Hire Car for 3 Business Days on the date the customer wishes to pick it up.</p> 
+        <p>Follow Step 10 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704756245?contentId=KM1141250&locale=en-GB" target="_blank">KM1141250</a></p>
+        <p>Automatic Extension must be turned off for all Integrated Hire Car bookings for Rectification Hire Cars. The Assessor will then determine if the Hire Car needs to be extended.</p>
+                 
+          `;
+            break;
+
+        //  Scenario 9: 
+        case "110010":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Record QI and book Rectification Hire Car for 3 Business Days on the date the customer wishes to pick it up.</p> 
+        <p>Follow Step 7 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704756245?contentId=KM1141250&locale=en-GB" target="_blank">KM1141250</a></p>
+        <p>Automatic Extension must be turned off for all Integrated Hire Car bookings for Rectification Hire Cars. The Assessor will then determine if the Hire Car needs to be extended.</p>
+                 
+          `;
+            break;
+
+
+        //  Scenario 10: 
+        case "110000":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Record QI and book Rectification Hire Car for 3 Business Days on the date the customer wishes to pick it up.</p> 
+        <p>Follow Step 8 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704756245?contentId=KM1141250&locale=en-GB" target="_blank">KM1141250</a></p>
+        <p>Automatic Extension must be turned off for all Integrated Hire Car bookings for Rectification Hire Cars. The Assessor will then determine if the Hire Car needs to be extended.</p>
+                 
+          `;
+            break;
+
+
+        //  Scenario 11: 
+        case "110001":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Record QI and book Rectification Hire Car for 3 Business Days on the date the customer wishes to pick it up.</p> 
+        <p>Follow Step 9 of <a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1733704756245?contentId=KM1141250&locale=en-GB" target="_blank">KM1141250</a></p>
+        <p>Automatic Extension must be turned off for all Integrated Hire Car bookings for Rectification Hire Cars. The Assessor will then determine if the Hire Car needs to be extended.</p>
+                 
+          `;
+            break;
+
+        default:
+            decisionTreeDiv.innerHTML = `<div class="mtp"><p>${notfound}</p>
+       `;
+    }
+}
+
+
+function selectedRectificationHC() {
+    //   Check if repairs is related to QI
+    question = "Is the customer calling about an issue with the quality of the repairs?"
+    hashText = "#repairQualityIssue"
+
+    decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="repairQualityIssue('yes')">Yes</button>
+        <button class="no" onclick="repairQualityIssue('no')">No</button>
+    `;
+}
+
+// Checkpoint 1
+function repairQualityIssue(answer) {
+    //alert("Checkpoint 1: repairQualityIssue");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is the customer calling about an issue with the quality of the repairs?
+    if (answer === "yes") {
+        flagRepairQualityIssue = 1;
+        //alert("flagRepairQualityIssue: " + flagRepairQualityIssue);
+    } else {
+        flagRepairQualityIssue = 0;
+        //alert("flagRepairQualityIssue: " + flagRepairQualityIssue);
+    }
+
+
+    if (answer === "no") {
+        getDecisionTreeText_RectificationHC(
+            flagRepairQualityIssue,
+            flagApprovedRepairer,
+            flagCashSettledRepairs,
+            flagDriveableVehicle,
+            flagCustomerWantsOriginalRepairer,
+            flagRecommendedRepairer
+
+        );
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+        showCopyHashtagBtn();
+    } else {
+        //     Jump to Checkpoint 2
+        question = "Was the original repairer approved by our assessors?";
+        hashText = "#approvedRepairer";
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="approvedRepairer('yes')">Yes</button>
+        <button class="no" onclick="approvedRepairer('no')">No</button>
+      `;
+    }
+}
+
+// Checkpoint 2
+function approvedRepairer(answer) {
+    //alert("Checkpoint 2: approvedRepairer");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Was the original repairer approved by our assessors?
+    if (answer === "yes") {
+        flagApprovedRepairer = 1;
+        //alert("flagApprovedRepairer: " + flagApprovedRepairer);
+    } else {
+        flagApprovedRepairer = 0;
+        //alert("flagApprovedRepairer: " + flagApprovedRepairer);
+    }
+
+    if (answer === "no") {
+
+        getDecisionTreeText_RectificationHC(
+            flagRepairQualityIssue,
+            flagApprovedRepairer,
+            flagCashSettledRepairs,
+            flagDriveableVehicle,
+            flagCustomerWantsOriginalRepairer,
+            flagRecommendedRepairer
+
+        );
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+        showCopyHashtagBtn();
+
+    } else {
+
+        question = "Were the repairs cash-settled?"
+        hashText = "#cashSettledRepairs"
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="cashSettledRepairs('yes')">Yes</button>
+        <button class="no" onclick="cashSettledRepairs('no')">No</button>
+    `;
+
+    }
+
+}
+
+// Checkpoint 3
+function cashSettledRepairs(answer) {
+    //alert("Checkpoint 3: cashSettledRepairs");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Were the repairs cash-settled?
+    if (answer === "yes") {
+        flagCashSettledRepairs = 1;
+        //alert("flagCashSettledRepairs: " + flagCashSettledRepairs);
+    } else {
+        flagCashSettledRepairs = 0;
+        //alert("flagCashSettledRepairs: " + flagCashSettledRepairs);
+    }
+
+    if (answer === "yes") {
+
+        getDecisionTreeText_RectificationHC(
+            flagRepairQualityIssue,
+            flagApprovedRepairer,
+            flagCashSettledRepairs,
+            flagDriveableVehicle,
+            flagCustomerWantsOriginalRepairer,
+            flagRecommendedRepairer
+
+        );
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+        showCopyHashtagBtn();
+
+    } else {
+
+        question = "Is the vehicle driveable?"
+        hashText = "#driveableVehicle"
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="driveableVehicle('yes')">Yes</button>
+        <button class="no" onclick="driveableVehicle('no')">No</button>
+    `;
+    }
+}
+
+//   Checkpoint 4
+function driveableVehicle(answer) {
+
+    //alert("Checkpoint 4: driveableVehicle");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is the vehicle driveable?
+    if (answer === "yes") {
+        flagDriveableVehicle = 1;
+        //alert("flagDriveableVehicle: " + flagDriveableVehicle);
+    } else {
+        flagDriveableVehicle = 0;
+        //alert("flagDriveableVehicle: " + flagDriveableVehicle);
+    }
+
+    question = "Does the customer want to go back to the original repairer?"
+    hashText = "#customerWantsOriginalRepairer"
+
+    decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="customerWantsOriginalRepairer('yes')">Yes</button>
+        <button class="no" onclick="customerWantsOriginalRepairer('no')">No</button>
+    `;
+
+}
+
+//   Checkpoint 5
+function customerWantsOriginalRepairer(answer) {
+
+    //alert("Checkpoint 5: customerWantsOriginalRepairer");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Does the customer want to go back to the original repairer?
+    if (answer === "yes") {
+        flagCustomerWantsOriginalRepairer = 1;
+        //alert("flagCustomerWantsOriginalRepairer: " + flagCustomerWantsOriginalRepairer);
+    } else {
+        flagCustomerWantsOriginalRepairer = 0;
+        //alert("flagCustomerWantsOriginalRepairer: " + flagCustomerWantsOriginalRepairer);
+    }
+
+    question = "Is the original repairer one of our recommended repairers?"
+    hashText = "#recommendedRepairer"
+
+    decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="recommendedRepairer('yes')">Yes</button>
+        <button class="no" onclick="recommendedRepairer('no')">No</button>
+    `;
+
+}
+
+//   Checkpoint 6
+function recommendedRepairer(answer) {
+
+    //alert("Checkpoint 6: recommendedRepairer");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Does the customer want to go back to the original repairer?
+    if (answer === "yes") {
+        flagRecommendedRepairer = 1;
+        //alert("flagRecommendedRepairer: " + flagRecommendedRepairer);
+    } else {
+        flagRecommendedRepairer = 0;
+        //alert("flagRecommendedRepairer: " + flagRecommendedRepairer);
+    }
+
+
+    getDecisionTreeText_RectificationHC(
+        flagRepairQualityIssue,
+        flagApprovedRepairer,
+        flagCashSettledRepairs,
+        flagDriveableVehicle,
+        flagCustomerWantsOriginalRepairer,
+        flagRecommendedRepairer
+
+    );
+
+    instruction = decisionTreeDiv.innerText;
+    updateBreadcrumb(question, "", instruction);
+    showCopyBreadcrumbBtn();
+    showCopyHashtagBtn();
+
+
+}
+
+
+
+// ==========================
+// 3. END of Rectification Hire Car Logic
+// ==========================
+
+
+
+
+
+
+
+
+
+// ==========================
+// 4. Start of WP Claims Logic - (LINES 1376-1538)
+// ==========================
+function selectedWPClaims() {
+    decisionTreeDiv.innerHTML = `
+        <p>What's the reason for the claim to be WP?</p>
+        <button class="authorization" onclick="authorization()">Further Information Required</button>
+        <button class="mechanical" onclick="mechanicalIssue()">Mechanical Issue</button>
+        <button class="investigation" onclick="investigation()">Referred to Investigation</button>
+    `;
+}
+
+// ==========================
+// 4.1. Authorization Logic (Handling Policy Holder Authorization)
+// ==========================
+function authorization() {
+    decisionTreeDiv.innerHTML = `
+        <p>Have you secured authorization from the Policy Holder and accepted the claim?</p>
+        <button class="yes" onclick="policyHolderAuthorization('yes')">Yes</button>
+        <button class="no" onclick="policyHolderAuthorization('no')">No</button>
+    `;
+}
+
+function policyHolderAuthorization(answer) {
+    if (answer === "yes") {
+        decisionTreeDiv.innerHTML = `
+            <p>Does the customer have a rental car option added on the policy?</p>
+            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
+            <button class="no" onclick="rentalCarOption('no')">No</button>
+        `;
+    } else {
+        decisionTreeDiv.innerHTML = `
+            <p>Explain to our customer that we need to secure authorization from the Policy Holder before we can proceed with the claim.</p>
+            <p class="bold">No Hire Car Booking is required.</p>
+            <p>End Process.</p>
+        `;
+    }
+}
+
+// ==========================
+// 4.2. Rental Car Option Logic (Handling Rental Car Eligibility)
+// ==========================
+function rentalCarOption(answer) {
+    if (answer === "yes") {
+        decisionTreeDiv.innerHTML = `
+            <p class="bold">Book IO according to the type of HC Cover.</p>
+		<p class="italics">A customer must not be refused a policy benefit due to their claim being in a WP status due to Investigation</p>
+            <p>End Process.</p>
+        `;
+    } else {
+        decisionTreeDiv.innerHTML = `
+            <p>Is the customer entitled to a NAF HC?</p>
+            <button class="yes" onclick="nafEligibility('yes')">Yes</button>
+            <button class="no" onclick="nafEligibility('no')">No</button>
+        `;
+    }
+}
+
+function nafEligibility(answer) {
+    if (answer === "yes") {
+        decisionTreeDiv.innerHTML = `
+            <p>Book IO according to the NAF HC Process.</p>
+            <p>End Process.</p>
+        `;
+    } else {
+        decisionTreeDiv.innerHTML = `
+            <p>Explain to IO that they don't have the HC Option on their policy.<br>
+            Offer the CDP Code - Step 1 of 
+<a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
+            <p>End Process.</p>
+        `;
+    }
+}
+
+// ==========================
+// 4.3. Mechanical Issue Logic (Handling Mechanical Report and ASCO Approval)
+// ==========================
+function mechanicalIssue() {
+    decisionTreeDiv.innerHTML = `
+        <p>Did IO send a Mechanical Report?</p>
+        <button class="yes" onclick="mechanicalReport('yes')">Yes</button>
+        <button class="no" onclick="mechanicalReport('no')">No</button>
+    `;
+}
+
+function mechanicalReport(answer) {
+    if (answer === "yes") {
+        decisionTreeDiv.innerHTML = `
+            <p>Did ASCO give approval for the Mechanical Report and accept the claim?</p>
+            <button class="yes" onclick="ascoApproval('yes')">Yes</button>
+            <button class="no" onclick="ascoApproval('no')">No</button>
+        `;
+    } else {
+        decisionTreeDiv.innerHTML = `
+            <p>Explain to IO that we need to have the mechanical report for ASCO Team to review.</p>
+            <p class="bold">No Hire Car Booking is required.</p>
+            <p>End Process.</p>
+        `;
+    }
+}
+
+function ascoApproval(answer) {
+    if (answer === "yes") {
+        decisionTreeDiv.innerHTML = `
+            <p>Does the customer have a rental car option added on the policy?</p>
+            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
+            <button class="no" onclick="rentalCarOption('no')">No</button>
+        `;
+    } else {
+        decisionTreeDiv.innerHTML = `
+            <p>Explain to IO that the claim is under review.</p>
+            <p class="bold">No Hire Car Booking is required.</p>
+            <p>End Process.</p>
+        `;
+    }
+}
+
+// ==========================
+// 4.4. Investigation Logic (Handling the Investigation Outcome)
+// ==========================
+function investigation() {
+    decisionTreeDiv.innerHTML = `
+        <p>Do we have a review outcome?</p>
+        <button class="yes" onclick="reviewOutcome('yes')">Yes</button>
+        <button class="no" onclick="reviewOutcome('no')">No</button>
+    `;
+}
+
+function reviewOutcome(answer) {
+    if (answer === "yes") {
+        decisionTreeDiv.innerHTML = `
+            <p>Is the claim rejected?</p>
+            <button class="yes" onclick="claimRejected('yes')">Yes</button>
+            <button class="no" onclick="claimRejected('no')">No</button>
+        `;
+    } else {
+        decisionTreeDiv.innerHTML = `
+            <p>Does the customer have a rental car option added on the policy?</p>
+            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
+            <button class="no" onclick="rentalCarOption('no')">No</button>
+        `;
+    }
+}
+
+function claimRejected(answer) {
+    if (answer === "yes") {
+        decisionTreeDiv.innerHTML = `
+            <p>Explain the claim outcome to IO.</p>
+            <p class="bold">No Hire Car Booking Required.</p>
+            <p>End Process.</p>
+        `;
+    } else {
+        decisionTreeDiv.innerHTML = `
+            <p>Does the customer have a rental car option added on the policy?</p>
+            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
+            <button class="no" onclick="rentalCarOption('no')">No</button>
+        `;
+    }
+}
+
+// ==========================
+// 4. End of WP Claims Logic
+// ==========================
