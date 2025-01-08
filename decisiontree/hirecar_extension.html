@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html lang="en-US">
 
 <head>
@@ -39,6 +41,7 @@
                 <li><a href="about.html">About</a></li> <!-- Fixed link -->
                 <li><a href="hirecar_booking.html">HC Booking DT</a></li>
                 <li><a href="hirecar_extension.html" class="active">HC Extension DT</a></li>
+                <li><a href="km.html">KM References</a></li>
             </ul>
 
             <button id="menu" aria-label="menu"></button>
@@ -46,9 +49,9 @@
     </header>
     <main>
         <div class="container">
-            <h1>HC Extension Decision Tree</h1>
+            <h2>HC Extension Decision Tree</h2>
             <div class="tree-selection">
-                <h2>Select a Decision Tree:</h2>
+                <h3>Select a Decision Tree:</h3>
                 <label><input type="radio" name="tree" id="ecd" value="ecd" checked> Extension based on ECD</label><br>
                 <label><input type="radio" name="tree" id="total_loss" value="totalLoss"> Extension for a Total Loss
                     Car</label><br>
@@ -66,13 +69,15 @@
 
 
             <div class="footer-text">
-                &copy;<span id="currentyear"></span> HC Decision Tree <p class="lastmodified">Last Modified:
+                HC Decision Tree &copy;<span class="currentyear"></span>
+                <p class="lastmodified">Last Modified:
                     <span id="lastModified"></span>
                 </p>
             </div>
 
             <div class="mysite">
-                <a class="branding" href="https://www.jamesdeguzman.com/" target="_blank">&copy;2024besys.tech</a>
+                <a class="branding" href="https://jamesdeguzman.com/" target="_blank">besys.tech&copy;<span
+                        class="currentyear"></span></a>
 
 
             </div>
