@@ -1,85 +1,81 @@
-// Hamburger menu click event
+document.addEventListener('DOMContentLoaded', () => {
 
-const hamburgerBtn = document.querySelector('#menu');
-const navigationBtn = document.querySelector('.toplinks');
+    // Hamburger menu click event
+    const hamburgerBtn = document.querySelector('#menu');
+    const navigationBtn = document.querySelector('.toplinks');
 
+    hamburgerBtn.addEventListener('click', () => {
+        hamburgerBtn.classList.toggle('open');
+        navigationBtn.classList.toggle('open');
+    });
 
+    // Get the year
+    const todaysDate = new Date();
+    const dateFormat = { year: 'numeric', month: 'short', day: 'numeric' };
+    const timeFormat = todaysDate.toLocaleTimeString();
+    const formattedDate = todaysDate.toLocaleDateString('en-US', dateFormat);
+    const formattedDateTime = formattedDate + " " + timeFormat;
 
+    const timestamp = document.querySelector('#timestamp');
 
-hamburgerBtn.addEventListener('click', () => {
-    hamburgerBtn.classList.toggle('open');
-    navigationBtn.classList.toggle('open');
-});
+    // Set the current year for all elements with class 'currentyear'
+    const yearElements = document.querySelectorAll('.currentyear');
+    yearElements.forEach((element) => {
+        element.textContent = todaysDate.getFullYear(); // simplified approach
+    });
 
+    const lastModified = document.querySelector('#lastModified');
+    lastModified.innerHTML = `<span class="highlight">${formattedDateTime}</span>`; // using formatted date-time
 
-// Get the year
-const todaysDate = new Date();
-const dateFormat = { year: 'numeric', month: 'short', day: 'numeric' };
-const timeFormat = todaysDate.toLocaleTimeString();
-const formattedDate = todaysDate.toLocaleDateString('en-US', dateFormat);
-const formattedDateTime = formattedDate + " " + timeFormat;
+    // Function to store the current local date, time, and username based on User Agent
+    function storeAccessInfo() {
+        const currentDateTime = new Date().toLocaleString(); // Get current local date and time
+        const userId = getUserId() || 'Guest'; // Retrieve user ID or default to 'Guest'
 
-const timestamp = document.querySelector('#timestamp');
+        // Retrieve existing access times from local storage
+        const accessTimes = JSON.parse(localStorage.getItem('accessTimes')) || [];
 
+        // Add the current date, time, user ID to the array
+        accessTimes.push({ dateTime: currentDateTime, userId: userId });
 
-
-const year = document.querySelectorAll('.currentyear');
-// iterate over each span element with the class currentyear
-year.forEach((element) => {
-    // element.innerHTML = `<span class="highlight">${todaysDate.getFullYear()}</span>`;
-    element.textContent = todaysDate.getFullYear(); // simplified approach
-})
-
-
-
-const lastModified = document.querySelector('#lastModified');
-lastModified.innerHTML = `<span class="highlight">${formattedDateTime}</span>`;
-
-// Function to retrieve user ID from cookies or query parameters
-function getUserId() {
-    // Check for user ID in cookies
-    const cookieMatch = document.cookie.match(/userId=([^;]+)/);
-    if (cookieMatch) {
-        return cookieMatch[1]; // Return user ID from cookie
+        // Store the updated array back in local storage
+        localStorage.setItem('accessTimes', JSON.stringify(accessTimes));
     }
 
-    // Check for user ID in the query string
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('userId'); // Return user ID from query string, if it exists
-}
+    // Function to retrieve user ID from cookies or query parameters
+    function getUserId() {
+        // Check for user ID in cookies
+        const cookieMatch = document.cookie.match(/userId=([^;]+)/);
+        if (cookieMatch) {
+            return cookieMatch[1]; // Return user ID from cookie
+        }
 
-// Function to store the current local date, time, user ID, and username based on User Agent
-function storeAccessInfo() {
-    const currentDateTime = new Date().toLocaleString(); // Get current local date and time
-    // const username = navigator.userAgent; // Get the User Agent string
-    const userId = getUserId() || 'Guest'; // Retrieve user ID or default to 'Guest'
+        // Check for user ID in the query string
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('userId'); // Return user ID from query string, if it exists
+    }
 
-    // Retrieve existing access times from local storage
-    const accessTimes = JSON.parse(localStorage.getItem('accessTimes')) || [];
-
-    // Add the current date, time, user ID, and username to the array
-    // accessTimes.push({ dateTime: currentDateTime, userId: userId, username: username });
-    accessTimes.push({ dateTime: currentDateTime, userId: userId });
-
-    // Store the updated array back in local storage
-    localStorage.setItem('accessTimes', JSON.stringify(accessTimes));
-}
-
-// Call the function when the page loads
-window.onload = function () {
+    // Call the function when the page loads
     storeAccessInfo();
     logLastAccess();
-};
 
-// Function to log all access times and usernames
-function logLastAccess() {
-    const accessTimes = JSON.parse(localStorage.getItem('accessTimes')) || [];
+    // Function to log all access times and user IDs
+    function logLastAccess() {
+        const accessTimes = JSON.parse(localStorage.getItem('accessTimes')) || [];
 
-    if (accessTimes.length > 0) {
-        accessTimes.forEach((entry, index) => {
-            console.log(`Access #${index + 1}: ${entry.dateTime}, User ID: ${entry.userId}, Username (User Agent): ${entry.username}`);
-        });
-    } else {
-        console.log('This is your first visit.');
+        if (accessTimes.length > 0) {
+            accessTimes.forEach((entry, index) => {
+                console.log(`Access #${index + 1}: ${entry.dateTime}, User ID: ${entry.userId}`);
+            });
+        } else {
+            console.log('This is your first visit.');
+        }
     }
-};
+
+    // Function to navigate to another URL
+    const sosApp = document.querySelector('.sos-app');
+    sosApp.addEventListener('click', () => {
+        window.location.href = 'https://apps.powerapps.com/play/e/default-43f93f8a-55a8-4263-bd84-e03688a2ab2d/a/7f81a035-8f70-464b-844f-34cb91e8d21e?tenantId=43f93f8a-55a8-4263-bd84-e03688a2ab2d&hint=5653abc4-556e-4c76-a02c-8261be95544f&sourcetime=1727750583995&source=portal';
+    });
+
+});
