@@ -1,0 +1,59 @@
+[33m1d05cc2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Reinstated all files for HCDT and made current year dynamic
+[33m59e06fe[m Merge branch 'main' of https://github.com/jamesphillipdeguzman/website-project
+[33mfde6711[m Reinstated code for HC Decision Tree and fixed year to 2025 for class currentyear
+[33m84a5204[m Added Rectification HC logic
+[33mb45fb1c[m Added emojis
+[33m124ee57[m adjusted font size for hashtag content when media query max-width is 430px
+[33m5104885[m updated copytext2 css
+[33ma2d3869[m udpated css for hashtag and hastagcontent classes
+[33ma46ffc7[m updated css file with styling for warning and reminder
+[33m05a39af[m finished insured logic for hc booking
+[33medba707[m Fixed contact.html's contact page width to be responsive to mobile view
+[33m3543745[m Added logic for MTP and breadcrumbs
+[33m1c67f0b[m Updated og-title and og: site-name
+[33m2ea2136[m Added km.html
+[33m37c75c9[m Fixed portfolio size when searching
+[33m775e2db[m Fixed hamburger menu in product.html
+[33m74549f4[m Fixed sample form in product.html
+[33m09a132f[m Tried to fix the sample product form
+[33mfac954c[m Fixed css on contact and about page
+[33mb256eef[m Fixed besys logo on each page to be vertically aligned; fixed signup page and thank you page
+[33m7373a37[m Fixed copyright in footer
+[33m8d35742[m fixed branding on footer
+[33m0e1f471[m fixed css for hc dt
+[33m3d92965[m fixed hamburger top property
+[33mb5e6354[m removed www in jamesdeguzman.com in the footer links
+[33mc51979d[m Fixed media query for mobile
+[33ma9ca493[m fixing hamburger button again
+[33med814db[m fixing the hamburger alignment
+[33mbdd6808[m Added breadcrumb for insured decision tree
+[33m8daf882[m Updated the site urls for quote vitamins
+[33ma7569c4[m Updated site url for HC Decision Tree
+[33m44c5e8a[m Added picture when filtering website portfolios
+[33mbb1fecc[m Added Portfolio 10: HC Decision Tree
+[33mc37bf72[m Deleted png files for portfolio 8 and 9
+[33mfb1ac31[m added base.css to portfolios.html
+[33m14c0ed1[m Merge branch 'main' of https://github.com/jamesphillipdeguzman/website-project
+[33m989202a[m Added chamber of commerce website and quote vitamins website to my portfolio web projects
+[33md14e281[m Added local storage to track username and history
+[33m789bd4b[m Updateed titles for each page
+[33mea4448d[m Updated hirecar_booking.js logic code for insured
+[33m75f25bd[m Updated og tags for image for decisiontree as new path
+[33m3ffee08[m Fixed hamburger button
+[33ma3c467f[m Merge branch 'main' of https://github.com/jamesphillipdeguzman/website-project
+[33mce3e6e9[m Changed folder name from decision-tree to decisiontree
+[33m8cca59e[m Create static.yml
+[33m5d2e192[m hc decision tree og:image url updated
+[33m29d14c2[m decision tree moved under website-project for easier access
+[33m3e31db6[m hc decision tree folder renamed to decision-tree
+[33meb53acb[m hc decision tree - initial commit
+[33md3ee82a[m added favicon on all pages for jamesdeguzman.com
+[33mfc20eb9[m Added new "B" favicon for jameseguzman.com
+[33m52ddfbf[m Added my web-project folder to my personal repository - jamesphillipdeguzman
+[33m22c7727[m Update README.md
+[33m4c67ecd[m Fixed calculator for burned calories
+[33m6b17fb3[m Removed data type from async calories-burned-calculator as it was not needed according to html validator.
+[33mfe09948[m removed stray span tag in index.html
+[33m5010e03[m fixed css errors in base.css
+[33m4ab708f[m "Initial commit"
+[33mbfc53b2[m first commit

@@ -17,6 +17,8 @@ let hashtagHistory = [];
 
 // Function to update the hashtag trail
 function updateHashtag(hashText, answer) {
+    // alert(`hashText:  ${hashText}`);
+    // alert(`answer:  ${answer}`);  
     showHashTags();
     const hashtagItem =
         answer === ""
@@ -232,6 +234,9 @@ document
 // Attach the copy function to the "Copy Hashtag" button
 document.querySelector("#copy-hashtag").addEventListener("click", copyHashtag);
 
+// Default not found message is the process code is not found
+var notfound = `<div class=notfound><p>❗Note: The process barcode was not found.</p> 
+ <p>Please contact the web developer to update the barcode.</p></div>`;
 // ==========================
 // C. END of Helper Functions (Reusable Utilities)
 // ==========================
@@ -247,8 +252,9 @@ document.querySelector("#copy-hashtag").addEventListener("click", copyHashtag);
 
 
 
+
 // ==========================
-// 1. START of Insured Logic - (LINES 250-1158)
+// 1. START of Insured Logic - (LINES 255-1158)
 // ==========================
 
 // Initialize flags for Insured; 1-Yes and 0-No
@@ -278,6 +284,7 @@ var flagHireCarCoverType = "Z";
 // G - #cannotBookHasTPDetailsButLiabilityUnclear
 // H - #cannotBookNoTPDetailsButLiabilityUnclear
 // Z - #default
+
 
 function getDecisionTreeText_Insured(
     flagIOResponsible,
@@ -328,8 +335,7 @@ function getDecisionTreeText_Insured(
     let reminder = `<div class=reminder><p class="bold">🎗️Reminder: </p>
               <p>You may waive the excess.</p></div>`;
 
-    let notfound = `<div class=notfound><p>❗Note: The process barcode was not found.</p> 
- <p>Please contact the web developer to update the barcode.</p></div>`;
+
 
     // Switch statement to handle different flag combinations
     switch (flagCombination) {
@@ -1975,167 +1981,454 @@ function recommendedRepairer(answer) {
 
 
 
-
 // ==========================
 // 4. Start of WP Claims Logic - (LINES 1376-1538)
 // ==========================
+
+
+// Initialize flags for Insured; 1-Yes and 0-No
+var flagCombination = "";
+var question = "";
+var hashText = "";
+var instruction = "";
+
+
+var flagClaimReferredToInvestigation = 0;
+var flagIROAssigned = 0;
+var flagIRONoteClaimAccepted = 0;
+var flagIRONoteClaimRejected = 0;
+var flagRentalCarOptionOnThePolicy = 0;
+var flagEntitledToNAFHC = 0;
+
+function getDecisionTreeText_WPClaims(
+    flagClaimReferredToInvestigation,
+    flagIROAssigned,
+    flagIRONoteClaimAccepted,
+    flagIRONoteClaimRejected,
+    flagRentalCarOptionOnThePolicy,
+    flagEntitledToNAFHC
+
+) {
+    // Concatenate all flag values into a single string
+    flagCombination =
+        flagClaimReferredToInvestigation +
+        "" +
+        flagIROAssigned +
+        "" +
+        flagIRONoteClaimAccepted +
+        "" +
+        flagIRONoteClaimRejected +
+        "" +
+        flagRentalCarOptionOnThePolicy +
+        "" +
+        flagEntitledToNAFHC;
+
+    // alert(flagCombination);
+
+    let reminder = `<div class="reminder"><p class="bold">🎗️Reminder: </p>
+  <p><span class="bold">Warm Transfer the call to the Investigations Review Officer (IRO) allocated on the claim.</p>
+        <p>If the officer is unavailable, please leave a voice message and advise the insured someone will return their call within 1 business day </p>
+        <p>These calls will be returned by the IRO within 1 bus day . If the matter is escalated, please contact the IRO's Team Leader.</p></div>`;
+
+    let reminder2 = `<div class="reminder"><p class="bold">🎗️Reminder: </p>
+  <p><span class="bold">Please email a request to fraudtriage@suncorp.com.au to assign an IRO on the claim. </p>
+        <p>These calls will be returned by the IRO within 1 bus day . If the matter is escalated, please contact the IRO's Team Leader.</p></div>`;
+
+    // Switch statement to handle different flag combinations
+    switch (flagCombination) {
+
+        //     Scenario 1:
+        case "111010":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Book IO based on their Hire Car Coverage.</p>
+        <p><a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1736476666706?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> - MC – Hire Car Vehicle Types, Booking Codes and Rates</p>
+          `;
+            break;
+
+        //     Scenario 5:
+        case "110010":
+
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Book IO based on their Hire Car Coverage.</p>
+        <p><a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1736476666706?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> - MC – Hire Car Vehicle Types, Booking Codes and Rates</p>
+        <p>${reminder}</p>
+          `;
+
+            break;
+
+
+        //   Scenario 2:    
+        case "111001":
+
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Book IO for a NAF HC.</p> 
+        <p><a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1736476666706?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> - MC – Hire Car Vehicle Types, Booking Codes and Rates
+</p>
+        
+         
+          `;
+            break;
+
+        //   Scenario 6:    
+        case "110001":
+
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Book IO for a NAF HC.</p> 
+        <p><a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1736476666706?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> - MC – Hire Car Vehicle Types, Booking Codes and Rates
+</p>
+<p>${reminder}</p>
+        
+         
+          `;
+            break;
+
+        //  Scenario 3, 4: 
+        case "111000":
+        case "110100":
+
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">No HC Booking Required - Offer CDP Code.</p> 
+        <p><a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1736476666706?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> - MC – Hire Car Vehicle Types, Booking Codes and Rates
+</p>
+         
+          `;
+            break;
+
+        //  Scenario 7: 
+        case "110000":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">No HC Booking Required - Offer CDP Code.</p> 
+        <p><a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1736476666706?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> - MC – Hire Car Vehicle Types, Booking Codes and Rates
+</p>
+         ${reminder};
+          `;
+            break;
+
+
+        //  Scenario 8: 
+        case "100010":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Book IO based on their Hire Car Coverage.</p>
+        <p>If an IRO has not yet been assigned to the claim (there is no note in ClaimCenter with IRO details), please email <a href="mailto:fraudtriage@suncorp.com.au">fraudtriage@suncorp.com.au</a> and request customer contact.</p>
+        <p>${reminder2}</p>
+        
+      `;
+            break;
+
+        //  Scenario 9: 
+        case "100001":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Book IO for a NAF HC.</p> 
+        <p><a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1736476666706?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> - MC – Hire Car Vehicle Types, Booking Codes and Rates
+</p>
+        <p>${reminder2}</p>
+        
+    `;
+            break;
+
+        //  Scenario 10: 
+        case "100000":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">No HC Booking Required - Offer CDP Code.</p> 
+        <p><a href="https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1736476666706?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a> - MC – Hire Car Vehicle Types, Booking Codes and Rates
+</p>
+        <p>${reminder2}</p>
+        
+    `;
+            break;
+
+
+        //  Scenario 11: 
+        case "000000":
+
+            decisionTreeDiv.innerHTML = `
+        <p><span class="bold">Please select the appropriate path for your claim. You have currently selected the HCDT path for claims under investigation.</p> 
+                 
+          `;
+            break;
+
+        default:
+            decisionTreeDiv.innerHTML = `<div class="mtp"><p>${notfound}</p>
+       `;
+    }
+}
+
 function selectedWPClaims() {
+    //   Check if WP Claims Under Investigations
+    question = "Has the claim been referred to Investigations?"
+    hashText = "#claimReferredToInvestigation"
+
     decisionTreeDiv.innerHTML = `
-        <p>What's the reason for the claim to be WP?</p>
-        <button class="authorization" onclick="authorization()">Further Information Required</button>
-        <button class="mechanical" onclick="mechanicalIssue()">Mechanical Issue</button>
-        <button class="investigation" onclick="investigation()">Referred to Investigation</button>
+        <p>${question}</p>
+        <button class="yes" onclick="claimReferredToInvestigation('yes')">Yes</button>
+        <button class="no" onclick="claimReferredToInvestigation('no')">No</button>
     `;
 }
 
-// ==========================
-// 4.1. Authorization Logic (Handling Policy Holder Authorization)
-// ==========================
-function authorization() {
-    decisionTreeDiv.innerHTML = `
-        <p>Have you secured authorization from the Policy Holder and accepted the claim?</p>
-        <button class="yes" onclick="policyHolderAuthorization('yes')">Yes</button>
-        <button class="no" onclick="policyHolderAuthorization('no')">No</button>
+function claimReferredToInvestigation(answer) {
+    // alert("Checkpoint 1: ClaimReferredToInvestigation");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Has the claim been referred to Investigations?
+    if (answer === "yes") {
+        flagClaimReferredToInvestigation = 1;
+        // alert("flagClaimReferredToInvestigation: " + flagClaimReferredToInvestigation);
+    } else {
+        flagClaimReferredToInvestigation = 0;
+        // alert("flagClaimReferredToInvestigation: " + flagClaimReferredToInvestigation);
+    }
+
+
+    if (answer === "no") {
+        getDecisionTreeText_WPClaims(
+            flagClaimReferredToInvestigation,
+            flagIROAssigned,
+            flagIRONoteClaimAccepted,
+            flagIRONoteClaimRejected,
+            flagRentalCarOptionOnThePolicy,
+            flagEntitledToNAFHC
+
+        );
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+        showCopyHashtagBtn();
+    } else {
+        //     Jump to Checkpoint 2
+        question = "Has an IRO been assigned to the claim?";
+        hashText = "#IROAssigned";
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="IROAssigned('yes')">Yes</button>
+        <button class="no" onclick="IROAssigned('no')">No</button>
+      `;
+    }
+}
+
+// Checkpoint 2
+function IROAssigned(answer) {
+    // alert("Checkpoint 2: IROAssigned");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Has an IRO been assigned to the claim?
+    if (answer === "yes") {
+        flagIROAssigned = 1;
+        // alert("flagIROAssigned: " + flagIROAssigned);
+    } else {
+        flagIROAssigned = 0;
+        // alert("flagIROAssigned: " + flagIROAssigned);
+    }
+
+    if (answer === "no") {
+
+        //     Jump to Checkpoint 5
+        question = "Does the customer have a rental car option added to their policy?"
+        hashText = "#rentalCarOptionOnThePolicy"
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="rentalCarOptionOnThePolicy('yes')">Yes</button>
+        <button class="no" onclick="rentalCarOptionOnThePolicy('no')">No</button>
+        `;
+
+    } else {
+        //     Jump to Checkpoint 3
+        question = "Is there a note from the IRO indicating that the claim has been accepted?"
+        hashText = "#IRONoteClaimAccepted"
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="IRONoteClaimAccepted('yes')">Yes</button>
+        <button class="no" onclick="IRONoteClaimAccepted('no')">No</button>
     `;
-}
 
-function policyHolderAuthorization(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Does the customer have a rental car option added on the policy?</p>
-            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
-            <button class="no" onclick="rentalCarOption('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain to our customer that we need to secure authorization from the Policy Holder before we can proceed with the claim.</p>
-            <p class="bold">No Hire Car Booking is required.</p>
-            <p>End Process.</p>
-        `;
     }
+
 }
 
-// ==========================
-// 4.2. Rental Car Option Logic (Handling Rental Car Eligibility)
-// ==========================
-function rentalCarOption(answer) {
+
+// Checkpoint 3
+function IRONoteClaimAccepted(answer) {
+    // alert("Checkpoint 3: IRONoteClaimAccepted");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is there a note from the IRO indicating that the claim has been accepted?
     if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p class="bold">Book IO according to the type of HC Cover.</p>
-		<p class="italics">A customer must not be refused a policy benefit due to their claim being in a WP status due to Investigation</p>
-            <p>End Process.</p>
-        `;
+        flagIRONoteClaimAccepted = 1;
+        // alert("flagIRONoteClaimAccepted: " + flagIRONoteClaimAccepted);
     } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Is the customer entitled to a NAF HC?</p>
-            <button class="yes" onclick="nafEligibility('yes')">Yes</button>
-            <button class="no" onclick="nafEligibility('no')">No</button>
-        `;
+        flagIRONoteClaimAccepted = 0;
+        // alert("flagIRONoteClaimAccepted: " + flagIRONoteClaimAccepted);
     }
-}
 
-function nafEligibility(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Book IO according to the NAF HC Process.</p>
-            <p>End Process.</p>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain to IO that they don't have the HC Option on their policy.<br>
-            Offer the CDP Code - Step 1 of 
-<a href="https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1143067&locale=en-GB" target="_blank">KM1143067</a></p>
-            <p>End Process.</p>
-        `;
-    }
-}
+    if (answer === "no") {
 
-// ==========================
-// 4.3. Mechanical Issue Logic (Handling Mechanical Report and ASCO Approval)
-// ==========================
-function mechanicalIssue() {
-    decisionTreeDiv.innerHTML = `
-        <p>Did IO send a Mechanical Report?</p>
-        <button class="yes" onclick="mechanicalReport('yes')">Yes</button>
-        <button class="no" onclick="mechanicalReport('no')">No</button>
+        //     Jump to Checkpoint 4
+        question = "Is there a note from the IRO indicating that the claim has been rejected?"
+        hashText = "#IRONoteClaimRejected"
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="IRONoteClaimRejected('yes')">Yes</button>
+        <button class="no" onclick="IRONoteClaimRejected('no')">No</button>
     `;
-}
 
-function mechanicalReport(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Did ASCO give approval for the Mechanical Report and accept the claim?</p>
-            <button class="yes" onclick="ascoApproval('yes')">Yes</button>
-            <button class="no" onclick="ascoApproval('no')">No</button>
-        `;
+
     } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain to IO that we need to have the mechanical report for ASCO Team to review.</p>
-            <p class="bold">No Hire Car Booking is required.</p>
-            <p>End Process.</p>
-        `;
-    }
-}
+        //     Jump to Checkpoint 5
+        question = "Does the customer have a rental car option added to their policy?"
+        hashText = "#rentalCarOptionOnThePolicy"
 
-function ascoApproval(answer) {
-    if (answer === "yes") {
         decisionTreeDiv.innerHTML = `
-            <p>Does the customer have a rental car option added on the policy?</p>
-            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
-            <button class="no" onclick="rentalCarOption('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain to IO that the claim is under review.</p>
-            <p class="bold">No Hire Car Booking is required.</p>
-            <p>End Process.</p>
-        `;
-    }
-}
-
-// ==========================
-// 4.4. Investigation Logic (Handling the Investigation Outcome)
-// ==========================
-function investigation() {
-    decisionTreeDiv.innerHTML = `
-        <p>Do we have a review outcome?</p>
-        <button class="yes" onclick="reviewOutcome('yes')">Yes</button>
-        <button class="no" onclick="reviewOutcome('no')">No</button>
+        <p>${question}</p>
+        <button class="yes" onclick="rentalCarOptionOnThePolicy('yes')">Yes</button>
+        <button class="no" onclick="rentalCarOptionOnThePolicy('no')">No</button>
     `;
-}
 
-function reviewOutcome(answer) {
-    if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Is the claim rejected?</p>
-            <button class="yes" onclick="claimRejected('yes')">Yes</button>
-            <button class="no" onclick="claimRejected('no')">No</button>
-        `;
-    } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Does the customer have a rental car option added on the policy?</p>
-            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
-            <button class="no" onclick="rentalCarOption('no')">No</button>
-        `;
     }
+
 }
 
-function claimRejected(answer) {
+// Checkpoint 4
+function IRONoteClaimRejected(answer) {
+    // alert("Checkpoint 4: IRONoteClaimRejected");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is there a note from the IRO indicating that the claim has been rejected?
     if (answer === "yes") {
-        decisionTreeDiv.innerHTML = `
-            <p>Explain the claim outcome to IO.</p>
-            <p class="bold">No Hire Car Booking Required.</p>
-            <p>End Process.</p>
-        `;
+        flagIRONoteClaimRejected = 1;
+        // alert("flagIRONoteClaimRejected: " + flagIRONoteClaimRejected);
     } else {
-        decisionTreeDiv.innerHTML = `
-            <p>Does the customer have a rental car option added on the policy?</p>
-            <button class="yes" onclick="rentalCarOption('yes')">Yes</button>
-            <button class="no" onclick="rentalCarOption('no')">No</button>
-        `;
+        flagIRONoteClaimRejected = 0;
+        // alert("flagIRONoteClaimRejected: " + flagIRONoteClaimRejected);
     }
+
+    if (answer === "yes") {
+
+        getDecisionTreeText_WPClaims(
+            flagClaimReferredToInvestigation,
+            flagIROAssigned,
+            flagIRONoteClaimAccepted,
+            flagIRONoteClaimRejected,
+            flagRentalCarOptionOnThePolicy,
+            flagEntitledToNAFHC
+
+        );
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+        showCopyHashtagBtn();
+
+    } else {
+        //     Jump to Checkpoint 5
+        question = "Does the customer have a rental car option added to their policy?"
+        hashText = "#rentalCarOptionOnThePolicy"
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="rentalCarOptionOnThePolicy('yes')">Yes</button>
+        <button class="no" onclick="rentalCarOptionOnThePolicy('no')">No</button>
+    `;
+
+    }
+
 }
 
+// Checkpoint 5
+function rentalCarOptionOnThePolicy(answer) {
+    // alert("Checkpoint 5: rentalCarOptionOnThePolicy");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is there a note from the IRO indicating that the claim has been rejected?
+    if (answer === "yes") {
+        flagRentalCarOptionOnThePolicy = 1;
+        // alert("flagRentalCarOptionOnThePolicy: " + flagRentalCarOptionOnThePolicy);
+    } else {
+        flagRentalCarOptionOnThePolicy = 0;
+        // alert("flagRentalCarOptionOnThePolicy: " + flagRentalCarOptionOnThePolicy);
+    }
+
+    if (answer === "yes") {
+
+        getDecisionTreeText_WPClaims(
+            flagClaimReferredToInvestigation,
+            flagIROAssigned,
+            flagIRONoteClaimAccepted,
+            flagIRONoteClaimRejected,
+            flagRentalCarOptionOnThePolicy,
+            flagEntitledToNAFHC
+
+        );
+
+        instruction = decisionTreeDiv.innerText;
+        updateBreadcrumb(question, "", instruction);
+        showCopyBreadcrumbBtn();
+        showCopyHashtagBtn();
+
+    } else {
+        //     Jump to Checkpoint 6
+        question = "Is the IO entitled to a NAF HC?"
+        hashText = "#entitledToNAFHC"
+
+        decisionTreeDiv.innerHTML = `
+        <p>${question}</p>
+        <button class="yes" onclick="entitledToNAFHC('yes')">Yes</button>
+        <button class="no" onclick="entitledToNAFHC('no')">No</button>
+    `;
+
+    }
+
+}
+
+
+// Checkpoint 6
+function entitledToNAFHC(answer) {
+    // alert("Checkpoint 6: entitledToNAFHC");
+    updateBreadcrumb(question, answer);
+    updateHashtag(hashText, answer);
+
+    // Is the IO entitled to a NAF HC?
+    if (answer === "yes") {
+        flagEntitledToNAFHC = 1;
+        // alert("flagEntitledToNAFHC: " + flagEntitledToNAFHC);
+    } else {
+        flagEntitledToNAFHC = 0;
+        // alert("flagEntitledToNAFHC: " + flagEntitledToNAFHC);
+    }
+
+    getDecisionTreeText_WPClaims(
+        flagClaimReferredToInvestigation,
+        flagIROAssigned,
+        flagIRONoteClaimAccepted,
+        flagIRONoteClaimRejected,
+        flagRentalCarOptionOnThePolicy,
+        flagEntitledToNAFHC
+
+    );
+
+    instruction = decisionTreeDiv.innerText;
+    updateBreadcrumb(question, "", instruction);
+    showCopyBreadcrumbBtn();
+    showCopyHashtagBtn();
+
+}
 // ==========================
 // 4. End of WP Claims Logic
 // ==========================
