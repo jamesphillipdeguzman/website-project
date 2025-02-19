@@ -1,0 +1,58 @@
+Sample Use Case:
+Scenario:
+A customer calls a support center regarding an insurance claim for a car accident. The agent needs to determine if the customer (IO - "insured owner") is eligible for a hire car, what kind of hire car, and under which policy terms.
+
+Flow of the Use Case:
+Step 1: Is IO responsible for the accident/incident?
+
+Agent asks: "Were you at fault in the incident?"
+Customer answers: "No" (IO is not at fault).
+Step 2: Is this a Theft Claim?
+
+Agent asks: "Was the car stolen, or is it a theft-related claim?"
+Customer answers: "Yes" (The car was stolen).
+Step 3: What kind of HC (Hire Car) Coverage does the customer have?
+
+Based on the customer’s claim type, the system checks the coverage type from the policy.
+Customer has limited hire car coverage for 21 days (as indicated by their policy).
+Step 4: Check if the customer has an available hire car option under their policy (determined from the flags set in the flow).
+
+Since the customer has limited coverage, the system selects case ID 010000000D to suggest the hire car options for theft.
+Step 5: System Returns the Response:
+
+System responds:
+vbnet
+Copy
+Book a Theft HC for 21 days only.
+Note: If IO has a HC cover, we can extend the HC until their car is repaired or the claim is settled. If IO does not have the HC cover, they can only use the HC after Theft for 21 days.
+This response guides the agent to inform the customer about their hire car eligibility.
+Decision Flow:
+JSON Workflow:
+
+The question “Is IO responsible for the accident/incident?” initiates the flow.
+Based on the response “No,” the system goes to the next checkpoint (Is this a Theft Claim?).
+The answer “Yes” triggers the use of the case ID 010000000D, which corresponds to the response for a theft claim.
+The agent uses the response from the system to explain to the customer that they are eligible for a hire car for 21 days because the incident was theft-related.
+How the System Works:
+The agent enters customer details (like claim type and policy type).
+The system processes the JSON data:
+Starts with "Is IO responsible for the accident?".
+Based on customer answers, it proceeds to the next relevant checkpoint.
+The appropriate case ID is identified for the specific customer scenario.
+The system outputs the corresponding response to the agent, who then communicates the necessary information to the customer.
+Why the JSON Structure is Useful:
+Dynamic Interaction: The JSON structure allows for a dynamic flow based on the customer’s responses. It doesn’t just give a fixed set of answers but adapts based on the scenario.
+
+Consistency: Each case ID leads to a consistent and clear response that the agent can provide to the customer, making the process more efficient and less prone to human error.
+
+Centralized Knowledge Base: By using this JSON structure, the entire decision-making process can be centralized, ensuring all agents follow the same rules and processes.
+
+Scalability: This system can easily scale. If new policy types or coverage scenarios are added, new cases and checkpoints can be integrated into this structure without affecting existing workflows.
+
+Limitations or Improvements:
+Data Validation: The system needs to handle edge cases, like missing or incomplete data (e.g., missing at-fault party details). The flow should allow for these cases and give instructions to the agent to request more info from the customer.
+
+Integration with CRM/Claims Systems: To fully utilize this in an operational setting, the system would need to integrate with other backend systems like CRM, claims management, or policy management to pull customer data dynamically.
+
+Final Thoughts:
+This JSON structure is highly usable for a decision-support system in insurance claims, and the sample use case highlights its ability to guide the process efficiently based on customer responses. The responses are structured in a way that agents can easily follow, ensuring consistent customer interactions.

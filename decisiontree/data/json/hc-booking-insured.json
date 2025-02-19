@@ -1,0 +1,178 @@
+{
+  "questions": {
+    "isIORResponsible": {
+      "question": "Is IO responsible for the accident/incident based on the incident description?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "hireCarOption"
+        },
+        {
+          "text": "No",
+          "nextStep": "theftClaim"
+        }
+      ]
+    },
+    "hireCarOption": {
+      "question": "Did the customer add a Hire Car Option on their Policy?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "ioHasHCCover"
+        },
+        {
+          "text": "No",
+          "nextStep": "noHCCover"
+        }
+      ]
+    },
+    "ioHasHCCover": {
+      "question": "Does IO have Hire Car Cover?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "ionafCase"
+        },
+        {
+          "text": "No",
+          "nextStep": "ioNoHCCover"
+        }
+      ]
+    },
+    "noHCCover": {
+      "question": "Does the policy holder have any other coverage?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "ionafCase"
+        },
+        {
+          "text": "No",
+          "nextStep": "noCoverage"
+        }
+      ]
+    },
+    "theftClaim": {
+      "question": "Is this a Theft Claim?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "hireCarOption"
+        },
+        {
+          "text": "No",
+          "nextStep": "incidentDescription"
+        }
+      ]
+    },
+    "incidentDescription": {
+      "question": "Is the incident description clear that IO is NOT at fault?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "flagIONAFOnIncidentDesc"
+        },
+        {
+          "text": "No",
+          "nextStep": "noteIOAFFromRecSet"
+        }
+      ]
+    },
+    "flagIONAFOnIncidentDesc": {
+      "question": "Should we flag IO as Not At Fault on the incident description?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "closeCase"
+        },
+        {
+          "text": "No",
+          "nextStep": "notifyIOAF"
+        }
+      ]
+    },
+    "noteIOAFFromRecSet": {
+      "question": "Should we note IO as At Fault from the record set?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "closeCase"
+        },
+        {
+          "text": "No",
+          "nextStep": "escalateCase"
+        }
+      ]
+    },
+    "ioNoHCCover": {
+      "question": "Should the customer be notified that they don’t have Hire Car Cover?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "escalateCase"
+        },
+        {
+          "text": "No",
+          "nextStep": "closeCase"
+        }
+      ]
+    },
+    "ionafCase": {
+      "question": "Is this case ready to be closed as IO Not At Fault?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "closeCase"
+        },
+        {
+          "text": "No",
+          "nextStep": "escalateCase"
+        }
+      ]
+    },
+    "noCoverage": {
+      "question": "Is the customer willing to pay out-of-pocket for a hire car?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "hireCarOption"
+        },
+        {
+          "text": "No",
+          "nextStep": "escalateCase"
+        }
+      ]
+    },
+    "closeCase": {
+      "question": "The case is ready to be closed.",
+      "answers": [
+        {
+          "text": "Close the case",
+          "nextStep": null
+        }
+      ]
+    },
+    "escalateCase": {
+      "question": "This case needs escalation.",
+      "answers": [
+        {
+          "text": "Escalate",
+          "nextStep": null
+        }
+      ]
+    },
+    "notifyIOAF": {
+      "question": "Notify IO as At Fault?",
+      "answers": [
+        {
+          "text": "Yes",
+          "nextStep": "closeCase"
+        },
+        {
+          "text": "No",
+          "nextStep": "escalateCase"
+        }
+      ]
+    }
+  }
+}

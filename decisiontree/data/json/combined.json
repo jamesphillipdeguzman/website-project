@@ -1,0 +1,260 @@
+{
+  "question": "Is IO responsible for the accident/incident based on the incident description?",
+  "hashText": "#ioResponsible",
+  "responses": {
+    "yes": {
+      "nextQuestion": "Did the customer add a Hire Car Option on their Policy?",
+      "hashText": "#ioHasHCCover",
+      "checkpoint": 7
+    },
+    "no": {
+      "nextQuestion": "Is this a Theft Claim?",
+      "hashText": "#theftClaim",
+      "checkpoint": 2
+    }
+  },
+  "checkpoints": {
+    "1": {
+      "question": "Is IO responsible for the accident/incident based on the incident description?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint7",
+          "flag": {
+            "IOResponsible": 1
+          },
+          "case": "100000001A"
+        },
+        "no": {
+          "next": "checkpoint2",
+          "flag": {
+            "IOResponsible": 0
+          },
+          "case": "100000000C"
+        }
+      }
+    },
+    "2": {
+      "question": "Is this a Theft Claim?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint9",
+          "flag": {
+            "TheftClaim": 1
+          },
+          "case": "010000000D"
+        },
+        "no": {
+          "next": "checkpoint3",
+          "flag": {
+            "TheftClaim": 0
+          },
+          "case": "001100000F"
+        }
+      }
+    },
+    "3": {
+      "question": "Is the incident description clear that IO is NOT at fault?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint4",
+          "flag": {
+            "IONAFOnIncidentDesc": 1
+          },
+          "case": "100000001A"
+        },
+        "no": {
+          "next": "checkpoint4",
+          "flag": {
+            "IONAFOnIncidentDesc": 0
+          },
+          "case": "001110000F"
+        }
+      }
+    },
+    "4": {
+      "question": "Is there a note from Rec&Set that IO is NOT at fault?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint5",
+          "flag": {
+            "IONAFInRecSetNotes": 1
+          },
+          "case": "100000001A"
+        },
+        "no": {
+          "next": "checkpoint5",
+          "flag": {
+            "IONAFInRecSetNotes": 0
+          },
+          "case": "001111000E"
+        }
+      }
+    },
+    "5": {
+      "question": "Is the excess waived?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint6",
+          "flag": {
+            "ExcessWaived": 1
+          },
+          "case": "001111000E"
+        },
+        "no": {
+          "next": "checkpoint6",
+          "flag": {
+            "ExcessWaived": 0
+          },
+          "case": "001110100A"
+        }
+      }
+    },
+    "6": {
+      "question": "Did IO provide the complete details of the at fault-party? Fullname, address, and rego?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint7",
+          "flag": {
+            "TPDetailsAcquired": 1
+          },
+          "case": "001110100A"
+        },
+        "no": {
+          "next": "checkpoint7",
+          "flag": {
+            "TPDetailsAcquired": 0
+          },
+          "case": "001100000F"
+        }
+      }
+    },
+    "7": {
+      "question": "Did the customer add a Hire Car Option on their Policy?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint8",
+          "flag": {
+            "IOHasHCCover": 1
+          },
+          "case": "100000001B"
+        },
+        "no": {
+          "next": "checkpoint8",
+          "flag": {
+            "IOHasHCCover": 0
+          },
+          "case": "100000000C"
+        }
+      }
+    },
+    "8": {
+      "question": "Is this a Bingle policy?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint9",
+          "flag": {
+            "BinglePolicy": 1
+          },
+          "case": "100000001B"
+        },
+        "no": {
+          "next": "checkpoint9",
+          "flag": {
+            "BinglePolicy": 0
+          },
+          "case": "100000001B"
+        }
+      }
+    },
+    "9": {
+      "question": "What kind of HC Coverage does the customer have?",
+      "answers": {
+        "limited": {
+          "next": "checkpoint10",
+          "hash": "#limitedHireCarCover",
+          "flag": {
+            "HireCarCoverType": "A"
+          },
+          "case": "100000001A"
+        },
+        "unlimited": {
+          "next": "checkpoint10",
+          "hash": "#unlimitedHireCarCover",
+          "flag": {
+            "HireCarCoverType": "B"
+          },
+          "case": "100000001B"
+        }
+      }
+    },
+    "10": {
+      "question": "Was excess waived?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint11",
+          "flag": {
+            "ExcessWaived": 1
+          },
+          "case": "001111000E"
+        },
+        "no": {
+          "next": "checkpoint11",
+          "flag": {
+            "ExcessWaived": 0
+          },
+          "case": "001110100A"
+        }
+      }
+    }
+  },
+  "cases": {
+    "100000001A": {
+      "response": "<p><span class=\"bold\">Book a Limited Hire Car for IO</span></p> <p>Limited HC for 21 days Only:</p> <p>Suncorp: ITSUN75</p> <p>GIO: ITGIO75</p> <p class=\"bold red\">❗IMPORTANT NOTE: </p><p>Where a customer has a purchased a limited 21-day benefit and is entitled to a Not at Fault hire car on their policy, we are to use the Not at Fault Benefit first. NAF HC Code: ITNAF (All Brands)</p>"
+    },
+    "001110100A": {
+      "response": "<p><span class=\"bold\">Book a Limited Hire Car for IO</span></p> <p>Limited HC for 21 days Only:</p> <p>Suncorp: ITSUN75</p> <p>GIO: ITGIO75</p> <p class=\"bold red\">❗IMPORTANT NOTE: </p><p>Where a customer has a purchased a limited 21-day benefit and is entitled to a Not at Fault hire car on their policy, we are to use the Not at Fault Benefit first. NAF HC Code: ITNAF (All Brands)</p> <p>${warning}</p>"
+    },
+    "001101100A": {
+      "response": "<p><span class=\"bold\">Book a Limited Hire Car for IO</span></p> <p>Limited HC for 21 days Only:</p> <p>Suncorp: ITSUN75</p> <p>GIO: ITGIO75</p> <p class=\"bold red\">❗IMPORTANT NOTE: </p><p>Where a customer has a purchased a limited 21-day benefit and is entitled to a Not at Fault hire car on their policy, we are to use the Not at Fault Benefit first. NAF HC Code: ITNAF (All Brands)</p> <p>${reminder}</p>"
+    },
+    "100000001B": {
+      "response": "<p><span class=\"bold\">Book an Unlimited HC for IO according to their Policy Coverage.</span></p><ul><li>AAMI - ITHCOAAMI90</li><li>APIA - ITHCOAPIA90</li><li>SUNCORP - ITSUNUNLI100</li><li>GIO - ITGIOPLAT100</li><li>Bingle - ITLLDU</li></ul><br><p class=\"bold red\">❗IMPORTANT NOTE: </p><p>Where a customer has purchased an Unlimited benefit and is entitled to the Not at Fault Hire Car on their policy, we are to use the Not at Fault Benefit first.</p><p>Initial Booking based on the Repairer:</p><p class=\"bold\">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p>"
+    },
+    "001110100B": {
+      "response": "<p><span class=\"bold\">Book an Unlimited HC for IO according to their Policy Coverage.</span></p><ul><li>AAMI - ITHCOAAMI90</li><li>APIA - ITHCOAPIA90</li><li>SUNCORP - ITSUNUNLI100</li><li>GIO - ITGIOPLAT100</li><li>Bingle - ITLLDU</li></ul><br><p class=\"bold red\">❗IMPORTANT NOTE: </p><p>Where a customer has purchased an Unlimited benefit and is entitled to the Not at Fault Hire Car on their policy, we are to use the Not at Fault Benefit first.</p><p>Initial Booking based on the Repairer:</p><p class=\"bold\">SMART or cAre: 14 days<br>Other Repair Type: 21 days</p><p>${warning}</p>"
+    },
+    "100000000C": {
+      "response": "<p>Explain to IO that they don't have the HC Option on their policy. Offer the CDP Code - Step 1 of <a href=\"https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB\" target=\"_blank\">KM1143067</a></p>"
+    },
+    "001110010C": {
+      "response": "<p>Explain to IO that they don't have the HC Option on their policy. Offer the CDP Code - Step 1 of <a href=\"https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB\" target=\"_blank\">KM1143067</a></p><p>${warning}</p>"
+    },
+    "001101010C": {
+      "response": "<p>Explain to IO that they don't have the HC Option on their policy. Offer the CDP Code - Step 1 of <a href=\"https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1729208836940?contentId=KM1143067&locale=en-GB\" target=\"_blank\">KM1143067</a></p><p>${reminder}</p>"
+    },
+    "010000000D": {
+      "response": "<p>Book a Theft HC for 21 days only.</p><p>Note: If IO has a HC cover, we can extend the HC until their car is repaired or the claim is settled. If IO does not have the HC cover, they can only use the HC After Theft for 21 days.</p>"
+    },
+    "001111000E": {
+      "response": "<p>Book a Not at Fault Hire Car for unlimited days with a car that suits our customer's needs.</p><p>AAMI, APIA, Suncorp, and GIO. Follow the initial booking days <a href=\"https://cwb.int.corp.sun/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1732856454622?contentId=KM1074602&locale=en-GB\" target=\"_blank\">KM1074602</a></p><p class=\"bold\">SMART or cAre: 14 days</p><p class=\"bold\">Other Repair Type: 21 days</p>"
+    },
+    "001101000E": {
+      "response": "<p>Waive the excess and book IO for a Not At Fault HC. Initial Booking base on the Repairer:</p><p class=\"bold\">SMART or cAre: 14 days</p><p class=\"bold\">Other Repair Type: 21 days</p>"
+    },
+    "001100000F": {
+      "response": "<p>Explain to IO that we cannot book them a Hire Car because details of the at fault party are not complete. We need to have the fullname, address, and rego for us to cover them for a Not at fault hire car. Offer the CDP Code - Step 1 of <a href=\"https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1143067&locale=en-GB\" target=\"_blank\">KM1143067</a></p>"
+    },
+    "001110000F": {
+      "response": "<p>Explain to IO that we cannot book them a Hire Car because details of the at fault party are not complete. We need to have the fullname, address, and rego for us to cover them for a Not at fault hire car. Offer the CDP Code - Step 1 of <a href=\"https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1143067&locale=en-GB\" target=\"_blank\">KM1143067</a></p><p>${warning}</p>"
+    },
+    "000001000G": {
+      "response": "<p>Explain to IO that we cannot book them a Hire Car because we don't have the liability outcome.</p><p>IO needs to be 100% not at fault to be eligible for the not at fault HC.</p><p>Offer the CDP Code - Step 1 of <a href=\"https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1143067&locale=en-GB\" target=\"_blank\">KM1143067</a></p>"
+    },
+    "000011000G": {
+      "response": "<p>Explain to IO that we cannot book them a Hire Car because we don't have the liability outcome.</p><p>IO needs to be 100% not at fault to be eligible for the not at fault HC.</p><p>Offer the CDP Code - Step 1 of <a href=\"https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1143067&locale=en-GB\" target=\"_blank\">KM1143067</a></p><p>${warning}</p>"
+    },
+    "000000000H": {
+      "response": "<p>Explain to IO that we cannot book them a Hire Car because we don't have the liability outcome.</p><p>IO needs to be 100% not at fault to be eligible for the not at fault HC.</p><p>We will also need complete details of the at fault party (fullname, address, and rego)</p><p>Offer the CDP Code - Step 1 of <a href=\"https://cwb.int.corp.sun:443/GTConnect/UnifiedAcceptor/AddKnowContentBase.ViewContentMain/1662359586318?contentId=KM1143067&locale=en-GB\" target=\"_blank\">KM1143067</a></p>"
+    }
+  }
+}

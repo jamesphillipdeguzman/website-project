@@ -1,0 +1,190 @@
+{
+  "question": "Is IO responsible for the accident/incident based on the incident description?",
+  "hashText": "#ioResponsible",
+  "responses": {
+    "yes": {
+      "nextQuestion": "Did the customer add a Hire Car Option on their Policy?",
+      "hashText": "#ioHasHCCover",
+      "checkpoint": 7
+    },
+    "no": {
+      "nextQuestion": "Is this a Theft Claim?",
+      "hashText": "#theftClaim",
+      "checkpoint": 2
+    }
+  },
+  "checkpoints": {
+    "1": {
+      "question": "Is IO responsible for the accident/incident based on the incident description?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint7",
+          "flag": {
+            "IOResponsible": 1
+          }
+        },
+        "no": {
+          "next": "checkpoint2",
+          "flag": {
+            "IOResponsible": 0
+          }
+        }
+      }
+    },
+    "2": {
+      "question": "Is this a Theft Claim?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint9",
+          "flag": {
+            "TheftClaim": 1
+          }
+        },
+        "no": {
+          "next": "checkpoint3",
+          "flag": {
+            "TheftClaim": 0
+          }
+        }
+      }
+    },
+    "3": {
+      "question": "Is the incident description clear that IO is NOT at fault?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint4",
+          "flag": {
+            "IONAFOnIncidentDesc": 1
+          }
+        },
+        "no": {
+          "next": "checkpoint4",
+          "flag": {
+            "IONAFOnIncidentDesc": 0
+          }
+        }
+      }
+    },
+    "4": {
+      "question": "Is there a note from Rec&Set that IO is NOT at fault?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint5",
+          "flag": {
+            "IONAFInRecSetNotes": 1
+          }
+        },
+        "no": {
+          "next": "checkpoint5",
+          "flag": {
+            "IONAFInRecSetNotes": 0
+          }
+        }
+      }
+    },
+    "5": {
+      "question": "Is the excess waived?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint6",
+          "flag": {
+            "ExcessWaived": 1
+          }
+        },
+        "no": {
+          "next": "checkpoint6",
+          "flag": {
+            "ExcessWaived": 0
+          }
+        }
+      }
+    },
+    "6": {
+      "question": "Did IO provide the complete details of the at fault-party? Fullname, address, and rego?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint7",
+          "flag": {
+            "TPDetailsAcquired": 1
+          }
+        },
+        "no": {
+          "next": "checkpoint7",
+          "flag": {
+            "TPDetailsAcquired": 0
+          }
+        }
+      }
+    },
+    "7": {
+      "question": "Did the customer add a Hire Car Option on their Policy?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint8",
+          "flag": {
+            "IOHasHCCover": 1
+          }
+        },
+        "no": {
+          "next": "checkpoint8",
+          "flag": {
+            "IOHasHCCover": 0
+          }
+        }
+      }
+    },
+    "8": {
+      "question": "Is this a Bingle policy?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint9",
+          "flag": {
+            "BinglePolicy": 1
+          }
+        },
+        "no": {
+          "next": "checkpoint9",
+          "flag": {
+            "BinglePolicy": 0
+          }
+        }
+      }
+    },
+    "9": {
+      "question": "What kind of HC Coverage does the customer have?",
+      "answers": {
+        "limited": {
+          "next": "checkpoint10",
+          "hash": "#limitedHireCarCover",
+          "flag": {
+            "HireCarCoverType": "A"
+          }
+        },
+        "unlimited": {
+          "next": "checkpoint10",
+          "hash": "#unlimitedHireCarCover",
+          "flag": {
+            "HireCarCoverType": "B"
+          }
+        }
+      }
+    },
+    "10": {
+      "question": "Was excess waived?",
+      "answers": {
+        "yes": {
+          "next": "checkpoint11",
+          "flag": {
+            "ExcessWaived": 1
+          }
+        },
+        "no": {
+          "next": "checkpoint11",
+          "flag": {
+            "ExcessWaived": 0
+          }
+        }
+      }
+    }
+  }
+}
