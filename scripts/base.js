@@ -140,11 +140,18 @@ document.addEventListener('DOMContentLoaded', () => {
             imageURL: 'https://jamesphillipdeguzman.github.io/wdd231/web-project/index.html',
         },
         {
-            pTitle: 'Hire Car Decision Tree',
+            pTitle: 'SleepOutside (WDD330-Team Project)',
             fileName: 'index.html',
             sourceImg: "images/project-images/portfolio-10.webp",
-            description: 'This is a decision tree to help agents path bookings and extensions hire car efficiently.',
-            imageURL: 'https://jamesphillipdeguzman.github.io/website-project/decisiontree/index.html',
+            description: 'SleepOutside is an e-commerce website that sells outdoor camping gears. This is our team project in WDD330.',
+            imageURL: 'https://comforting-rugelach-ca25e6.netlify.app/',
+        },
+        {
+            pTitle: 'Foodexer (WDD330)',
+            fileName: 'index.html',
+            sourceImg: "images/project-images/portfolio-11.webp",
+            description: 'This is my final project in WDD330 - Food and Exercise API',
+            imageURL: 'https://foodexer.netlify.app/',
         },
     ];
 
@@ -178,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadImages(portfolio) {
+        debugger;
         clearImages(); // Clear previous images
 
         // Create and append the image

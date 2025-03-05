@@ -509,19 +509,12 @@ span#color2 {
 
 
 form.join-form {
-    /* display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr); */
-    color: var(--accent1-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* border: 1px solid rgba(0, 0, 0, 0.6); */
-
-    align-content: center;
     align-items: center;
     margin: 2.2rem auto;
-    max-width: 100vw;
+    max-width: 600px;
     width: 100%;
 
 }
@@ -530,26 +523,38 @@ form.join-form {
 
 
 label {
-    display: block;
-    margin: 10px;
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 0.8rem;
 
 }
 
-input {
+input,
+select,
+textarea {
 
-    padding: 10px;
-    max-width: 60vw;
+    padding: 12px;
+    margin: 8px 0;
     width: 100%;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Input and Select Height */
+input[type="text"],
+input[type="email"],
+select {
     height: 44px;
 }
 
-select {
-    display: flex;
-    margin: 7px;
-    padding: 10px;
-    width: 30vw;
-    height: 40px;
+/* Textarea */
+textarea {
+    height: 120px;
+    resize: vertical;
+    /* Allow resizing vertically only */
 }
+
 
 fieldset {
     border-radius: 5px;
@@ -567,19 +572,33 @@ fieldset label {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-textarea {
-    width: 100%;
 
-    height: 100px;
+/* Button Styling */
+button {
+    padding: 12px 20px;
+    background-color: rebeccapurple;
+    color: whitesmoke;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+    max-width: 200px;
+    margin-top: 15px;
+    font-size: 1.1rem;
+    border: none;
 }
 
+/* Button Hover */
+button:hover {
+    background-color: #4cae4c;
+    transition: background-color 0.3s ease;
+}
 
 
 .radio-label {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    margin: 15px auto;
-    font-size: 16px;
+    margin: 15px 0;
+    font-size: 1rem;
 
 }
 
@@ -595,9 +614,7 @@ textarea {
 input[type="radio"] {
 
 
-    height: 20px;
-    margin: 0;
-    padding: 0;
+    margin-right: 8px;
 
 }
 
@@ -654,11 +671,11 @@ input[type="radio"] {
     max-width: 120px;
 }
 
-input[type="text"],
+/* input[type="text"],
 input[type="email"] {
 
     margin: 0 10px;
-}
+} */
 
 .dropdown-container {
     display: flex;
@@ -781,6 +798,15 @@ footer {
 
 /* ================== MOBILE VIEW ====================== */
 @media (max-width: 400px) {
+
+    form.join-form {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+
     #my-portfolios {
         font-size: 0.9rem;
     }
@@ -801,6 +827,20 @@ footer {
 
 @media (max-width: 987px) {
 
+    form.join-form {
+        width: 90%;
+    }
+
+    input,
+    select,
+    textarea {
+        max-width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+
     p.project-desc {
         font-size: 0.8rem;
     }
@@ -816,7 +856,7 @@ footer {
         border: 0;
         position: absolute;
         top: 10px;
-        right: 30px;
+        right: -30px;
         color: whitesmoke;
         background: none;
         flex: 1 1 auto;
