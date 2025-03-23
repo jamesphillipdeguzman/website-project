@@ -825,6 +825,33 @@ footer {
     }
 }
 
+@media (max-width: 600px) {
+    #menu {
+        font-size: 2rem;
+        border: 0;
+        position: absolute;
+        top: 10px;
+        right: -30px;
+        color: whitesmoke;
+        background: none;
+        /* flex: 1 1 auto; */
+        display: block;
+
+    }
+
+    #menu::before {
+        content: "☰";
+        /* When menu is closed, display the hamburger icon */
+
+    }
+
+    #menu.open::before {
+        content: "X";
+        /* When menus is opened, display the 'X' button to close the menu */
+
+    }
+}
+
 @media (max-width: 987px) {
 
     form.join-form {
@@ -851,30 +878,11 @@ footer {
 
     }
 
-    #menu {
-        font-size: 2rem;
-        border: 0;
-        position: absolute;
-        top: 10px;
-        right: -30px;
-        color: whitesmoke;
-        background: none;
-        flex: 1 1 auto;
-        display: block;
-
+    .navigation {
+        position: relative;
     }
 
-    #menu::before {
-        content: "☰";
-        /* When menu is closed, display the hamburger icon */
 
-    }
-
-    #menu.open::before {
-        content: "X";
-        /* When menus is opened, display the 'X' button to close the menu */
-
-    }
 
     .navigation {
         display: flex;
