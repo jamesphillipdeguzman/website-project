@@ -14,11 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
     navigation.classList.toggle('open');
   });
   const products = [
-    { id: "fc-1888", name: "flux capacitor", averagerating: 4.5 },
-    { id: "fc-2050", name: "power laces", averagerating: 4.7 },
-    { id: "fs-1987", name: "time circuits", averagerating: 3.5 },
-    { id: "ac-2000", name: "low voltage reactor", averagerating: 3.9 },
-    { id: "jj-1969", name: "warp equalizer", averagerating: 5.0 }
+    { id: "pg-001", name: "Place page", averagerating: 4.5 },
+    { id: "pg-002", name: "WDD131 home page", averagerating: 4.7 },
+    { id: "pg-003", name: "Filtered temples page", averagerating: 3.5 },
+    { id: "pg-004", name: "Unfiltered temples page", averagerating: 3.9 },
+    { id: "pg-005", name: "Holy grail layout (practice)", averagerating: 5.0 },
+    { id: "pg-006", name: "Whitewater rafting site (WDD130)", averagerating: 4.2 },
+    { id: "pg-007", name: "Course Home Page (WDD231)", averagerating: 4.8 },
+    { id: "pg-008", name: "Chamber Home Page (WDD231)", averagerating: 4.3 },
+    { id: "pg-009", name: "Quote Vitamins", averagerating: 4.6 },
+    { id: "pg-010", name: "SleepOutside (WDD330-Team Project)", averagerating: 4.9 },
+    { id: "pg-011", name: "Foodexer (WDD330)", averagerating: 4.7 }
   ];
 
   const dynamicProduct = document.querySelector('#dynamic-product');

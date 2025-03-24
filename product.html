@@ -17,9 +17,10 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="styles/base.css">
+
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/form.css">
+    <link rel="stylesheet" href="styles/base.css">
     <link rel="icon" href="images/project-images/favicon_io/favicon.ico" type="image/x-icon">
     <meta property="og:title" content="My Personal Website">
     <meta property="og:description"
@@ -47,14 +48,11 @@
                     <li><a href="about.html" id="about">About</a></li>
                     <li><a href="contact.html" id="contact">Contact</a></li>
                     <li><a href="portfolios.html" id="portfolio">Portfolios</a></li>
-                    <li><a href="product.html" id="product" class="active">Products</a></li>
+                    <li><a href="product.html" id="product" class="active">Review</a></li>
 
                 </ul>
                 <button id="menu" aria-label="menu"></button>
             </nav>
-            <button class="signup-btn">Join</button>
-
-
 
 
         </header>
@@ -65,7 +63,7 @@
 
             <div class="hero">
                 <!-- <div class="image-container"> -->
-                <h1 id="hero-text">besys.tech</h1>
+                <h1 id="hero-text">Review My Work</h1>
                 <!-- <img src="images/besys-tech-logo.svg" alt="besys tech company" width="200" height="100"> -->
                 <!-- </div> -->
 
@@ -73,16 +71,16 @@
 
 
             <div class="form-section">
-                <h3>Sample Product Review Form</h3>
+                <h3>Portfolio Review Form</h3>
 
                 <form action="review.html" method="get" id="review-form">
                     <fieldset class="form-group">
 
-                        <label for="dynamic-product">Product Name</label>
+                        <label for="dynamic-product">Portfolio Name</label>
 
                         <!-- Dynamic select dropdown list -->
                         <select id="dynamic-product" name="dynamic-product" required>
-                            <option value="" disabled>Select a product...</option>
+                            <option value="" disabled>Select a portfolio...</option>
                         </select>
                         <div id="select-error-message"></div>
 
@@ -106,7 +104,7 @@
 
                         <!-- Date Input -->
                         <div class="install-date">
-                            <label for="date-installed">Date of Installation</label>
+                            <label for="date-installed">Date</label>
                             <input type="date" id="date-installed" name="date-installed" required>
 
                         </div>
@@ -115,20 +113,27 @@
 
                         <!-- Checkboxes -->
                         <div class="features">
-
-                            <p>Which features did you find useful in the product?</p>
+                            <p>Which aspects of the page did you find most effective?</p>
                             <p id="italicize">(Check all that apply)</p>
                             <div class="wrap-checkbox">
-                                <label for="durability"><input type="checkbox" class="large-checkbox" id="durability"
-                                        name="features" value="durability">Durability</label>
-                                <label for="ease"><input type="checkbox" class="large-checkbox" id="ease"
-                                        name="features" value="ease">Ease of Use</label>
+                                <label for="usability"><input type="checkbox" class="large-checkbox" id="usability"
+                                        name="features" value="usability">Usability</label>
+                                <label for="responsiveness"><input type="checkbox" class="large-checkbox"
+                                        id="responsiveness" name="features"
+                                        value="responsiveness">Responsiveness</label>
                                 <label for="performance"><input type="checkbox" class="large-checkbox" id="performance"
                                         name="features" value="performance">Performance</label>
-                                <label for="design"><input type="checkbox" class="large-checkbox" id="design"
-                                        name="features" value="design">Design</label>
+                                <label for="accessibility"><input type="checkbox" class="large-checkbox"
+                                        id="accessibility" name="features" value="accessibility">Accessibility</label>
+                                <label for="visual-design"><input type="checkbox" class="large-checkbox"
+                                        id="visual-design" name="features" value="visual-design">Visual Design</label>
+                                <label for="navigation"><input type="checkbox" class="large-checkbox" id="navigation"
+                                        name="features" value="navigation">Navigation</label>
+                                <label for="seo"><input type="checkbox" class="large-checkbox" id="seo" name="features"
+                                        value="seo">SEO Optimization</label>
                             </div>
                         </div>
+
 
                         <div class="review">
 

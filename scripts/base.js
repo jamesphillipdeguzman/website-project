@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Declare an array of portfolio objects
-    var portfolios = [
+    let portfolios = [
         {
             pTitle: 'Place page',
             fileName: 'place.html',
@@ -159,24 +159,26 @@ document.addEventListener('DOMContentLoaded', () => {
         var row = document.createElement('div');
         row.className = 'row';
         row.style.display = 'flex';
-        row.style.flex = '1 1 auto';
-        row.style.flexDirection = 'row';
-        row.style.maxWidth = '330px';
+        row.style.alignItems = 'center'; // Align label and data
+        row.style.marginBottom = '5px'; // Add space between rows
 
         var col1 = document.createElement('div');
         col1.className = 'col1';
         col1.textContent = col1Text;
+        col1.style.fontWeight = 'bold'; // Make labels bold
+        col1.style.marginRight = '8px'; // Add space between label and data
+        col1.style.minWidth = '100px'; // Ensure consistent label width
 
         var col2 = document.createElement('div');
         col2.className = 'col2';
         col2.textContent = col2Text;
 
         row.appendChild(col1);
-        row.appendChild(document.createTextNode(' '));
         row.appendChild(col2);
 
         return row;
     }
+
 
     function clearImages() {
         while (loadIt.firstChild) {
@@ -206,10 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
         dataBox.style.gap = '10px';
         // dataBox.appendChild(createRows('Image: ', portfolio.sourceImg));
         // dataBox.appendChild(createRows('URL: ', portfolio.imageURL));
-        dataBox.style.margin = '10px 10px';
-        dataBox.style.padding = '10px 10px';
+        dataBox.style.margin = '15px';
+        dataBox.style.padding = '15px';
         dataBox.style.maxWidth = '305px';
-        dataBox.style.textAlign = 'center';
+        dataBox.style.textAlign = 'left';
 
         const a = document.createElement('a');
         a.className = 'pImageUrl';
@@ -255,12 +257,15 @@ const lastName = document.querySelector('#lastname');
 const email = document.querySelector('#email');
 const submit = document.querySelector('#submit');
 
-submit.addEventListener('click', (event) => {
+if (submit) {
+
+    submit.addEventListener('click', (event) => {
 
 
-    event.preventDefault();
-    if (firstName.value && lastName.value && email.value) {
-        window.location.href = 'thanks.html';
-    }
+        event.preventDefault();
+        if (firstName.value && lastName.value && email.value) {
+            window.location.href = 'thanks.html';
+        }
 
-});
+    });
+}
