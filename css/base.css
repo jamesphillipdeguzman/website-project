@@ -56,6 +56,16 @@ body {
 /* Ensures overlay or wireframe is on top */
 /* z-index: 1000; */
 /* } */
+body.loading {
+    visibility: hidden;
+    
+}
+
+
+body.loaded {
+    visibility: visible;
+}
+
 
 .page-wrap {
     display: flex;
@@ -218,6 +228,8 @@ header {
 
 
 }
+
+
 
 .logo {
 

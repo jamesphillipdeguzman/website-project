@@ -1,32 +1,49 @@
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadHeaderAndFooter();
+    document.body.classList.remove("loading");
+    document.body.classList.add("loaded");
+});
+
 export async function loadHeaderAndFooter() {
-    async function loadTemplate(url, containerSelector, callback = null) {
-        try {
-            const container = document.querySelector(containerSelector);
-            if (!container || container.hasChildNodes()) return; // Prevent duplicates
-
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`Failed to fetch ${url}`);
-
-            container.innerHTML = await response.text();
-
-            if (callback) callback(); // Run callback after loading
-        } catch (error) {
-            console.error(`Error loading template: ${error.message}`);
-        }
-    }
-
     const basePath = window.location.pathname.includes("/pages/") ? "../partials/" : "partials/";
-    //alert(`Base path: ${basePath}`); // Debugging line
-    await loadTemplate(`${basePath}header.html`, "#header-container", () => {
-        
-        setupHamburgerMenu();
-        setActiveNavLink(); // Apply active class after header loads
-    });
 
-    await loadTemplate(`${basePath}footer.html`, "#footer-container", updateFooterInfo);
+    await loadTemplate(`${basePath}header.html`, "#header-container");
+    setupHamburgerMenu(); // moved here after content loads
+    setActiveNavLink();
+
+    await loadTemplate(`${basePath}footer.html`, "#footer-container");
+    updateFooterInfo();
 }
 
-// Function to set active link based on current page
+async function loadTemplate(url, containerSelector) {
+    try {
+        const container = document.querySelector(containerSelector);
+        if (!container || container.hasChildNodes()) return;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to fetch ${url}`);
+
+        container.innerHTML = await response.text();
+    } catch (error) {
+        console.error(`Error loading template: ${error.message}`);
+    }
+}
+
+export function setupHamburgerMenu() {
+    const hamburgerBtn = document.querySelector("#menu");
+    const navigationMenu = document.querySelector(".nav-links");
+
+    if (!hamburgerBtn || !navigationMenu) {
+        console.warn("Hamburger menu elements not found.");
+        return;
+    }
+
+    hamburgerBtn.addEventListener("click", () => {
+        hamburgerBtn.classList.toggle("open");
+        navigationMenu.classList.toggle("open");
+    });
+}
+
 export function setActiveNavLink() {
     const navLinks = document.querySelectorAll(".nav-links a");
     const currentPath = window.location.pathname;
@@ -42,22 +59,6 @@ export function setActiveNavLink() {
     });
 }
 
-// Function to format last modified date
-export function getFormattedLastModified() {
-    const lastModified = new Date(document.lastModified);
-    const dateFormat = { year: "numeric", month: "short", day: "numeric" };
-    const formattedDate = lastModified.toLocaleDateString("en-US", dateFormat);
-    const formattedTime = lastModified.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: true,
-    });
-
-    return `${formattedDate} ${formattedTime}`;
-}
-
-// Function to update footer info
 export function updateFooterInfo() {
     const yearElement = document.querySelector(".currentyear");
     const modifiedElement = document.querySelector("#lastModified");
@@ -71,23 +72,16 @@ export function updateFooterInfo() {
     }
 }
 
-// Function to enable the hamburger menu
-export function setupHamburgerMenu() {
-    
-    const checkHeader = setInterval(() => {
-        const hamburgerBtn = document.querySelector("#menu");
-        const navigationMenu = document.querySelector(".nav-links");
-        debugger;
-        if (hamburgerBtn && navigationMenu) {
-            clearInterval(checkHeader); // Stop checking once elements are found
+export function getFormattedLastModified() {
+    const lastModified = new Date(document.lastModified);
+    const dateFormat = { year: "numeric", month: "short", day: "numeric" };
+    const formattedDate = lastModified.toLocaleDateString("en-US", dateFormat);
+    const formattedTime = lastModified.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+    });
 
-            hamburgerBtn.addEventListener("click", () => {
-                hamburgerBtn.classList.toggle("open");
-                navigationMenu.classList.toggle("open");
-            });
-        }
-    }, 100);
+    return `${formattedDate} ${formattedTime}`;
 }
-
-// Ensure script runs on load
-document.addEventListener("DOMContentLoaded", loadHeaderAndFooter);
