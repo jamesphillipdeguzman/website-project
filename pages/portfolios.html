@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolios Page</title>
+    <meta name="description" content="Portfolios page: Website projects created by James De Guzman">
+    <meta name="author" content="James Phillip K. De Guzman">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon">
+    <meta property="og:title" content="My Personal Website">
+    <meta property="og:description"
+        content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!">
+    <meta property="og:image" content="/images/project-images/profile.png">
+    <meta property="og:url" content="https://jamesdeguzman.com/mobile-layout.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
+    <script src="/js/base.js" type="module"></script>
+</head>
+
+<body>
+
+    <div class="page-wrap">
+        <header id="header-container"></header>
+
+        <main>
+            <div class="hero">
+                <h1>My Latest Work</h1>
+            </div>
+
+            <section class="bottom-section">
+                <h2 id="choose">Choose a website portfolio</h2>
+                <div class="dropdown-container">
+                    <select id="my-portfolios">
+                        <option value="">Select a portfolio</option>
+                    </select>
+                </div>
+
+                <div id="results"></div>
+                <div class="image-loader"></div>
+
+                <div class="portfolio-container" id="portfolio-list">
+                    <!-- Portfolios will be populated dynamically here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer id="footer-container"></footer>
+
+</body>
+
+</html>

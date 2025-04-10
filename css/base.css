@@ -3,12 +3,14 @@
     --carmine: #931621ff;
     --dark-slate-gray: #28464bff;
     --faint-black: #464444;
+    --silver-color: #a4b8c4;
 
 
     /* FONTS */
 
     --primary-font: Roboto, Arial, sans-serif;
     --secondary-font: Poppins, sans-serif;
+    --font-headline: Haettenschweiler, "Arial Narrow Bold", sans-serif;
 
 
 }
@@ -67,6 +69,12 @@ body {
 }
 
 /* ================== NAVIGATION ====================== */
+
+.highlight2 {
+    color: var(--silver-color);
+    font-size: 3rem;
+    font-family: var(--font-headline);
+}
 
 #logolink {
 
@@ -737,6 +745,8 @@ input[type="email"] {
     margin: 0;
     padding: 0;
     margin-bottom: 10px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    background-color: #f4f4f4;
 }
 
 

@@ -15,9 +15,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/normalize.css">
-    <link rel="icon" href="images/project-images/favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon">
     <meta property="og:title" content="My Personal Website">
     <meta property="og:description"
         content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!">
@@ -25,7 +25,8 @@
     <meta property="og:url" content="https://jamesdeguzman.com/siteplan.html">
     <meta property="og:type" content="website">
     <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
-    <script src="scripts/base.js" defer></script>
+    <script src="/js/base.js" type="module"></script>
+
 </head>
 
 <body>
@@ -33,25 +34,7 @@
 
     <div class="page-wrap">
 
-        <header>
-
-            <nav class="navigation">
-
-                <a href="index.html" id="logolink"><img id="logo" src="images/besys-tech-logo3-nobg.png"
-                        alt="company logo" width="100" height="100"></a>
-                <ul>
-                    <li><a href="index.html" id="home">Home</a></li>
-                    <li><a href="about.html" id="about">About</a></li>
-                    <li><a href="contact.html" id="contact">Contact</a></li>
-                    <li><a href="portfolios.html" id="portfolio">Portfolios</a></li>
-                    <li><a href="product.html" id="product">Products</a></li>
-
-                </ul>
-                <button id="menu" aria-label="menu"></button>
-            </nav>
-
-        </header>
-
+        <header id="header-container"></header>
 
 
         <main>
@@ -59,7 +42,7 @@
             <div class="hero">
                 <div class="image-container">
                     <h1>My Site Plan</h1>
-                    <img src="images/site-planning.svg" alt="picture of a notebook with wireframe sketches" width="200"
+                    <img src="/images/site-planning.svg" alt="picture of a notebook with wireframe sketches" width="200"
                         height="100">
                 </div>
 
@@ -92,8 +75,8 @@
                 <p class="title">Wireframes:</p>
                 <div class="wireframe">
                     <ul>
-                        <li><a href="desktop-layout.html">Desktop Layout</a></li>
-                        <li><a href="mobile-layout.html">Mobile Layout</a></li>
+                        <li><a href="/pages/desktop.html">Desktop Layout</a></li>
+                        <li><a href="/pages/mobile.html">Mobile Layout</a></li>
                     </ul>
                 </div>
 
@@ -104,31 +87,7 @@
     <div class="wireframe-overlay"></div>
 
 
-    <footer>
-        <div class="footer-wrapper">
-            <div class="footer-links">
-                <a href="siteplan.html">
-                    <img src="images/svg/site-plan-logo.svg" alt="site plan logo" width="50" height="50">
-                </a>
-            </div>
-
-            <div class="footer-text">
-                &copy;<span id="currentyear"></span> James Phillip K. De Guzman <p class="lastmodified">Last Modified:
-                    <span id="lastModified"></span>
-                </p>
-            </div>
-
-            <div class="social-links">
-                <a href="https://www.facebook.com/diet.deguzman" target="_blank">
-                    <img src="images/svg/fb-logo.svg" alt="facebook logo" width="50" height="50">
-                </a>
-                <a href="https://www.linkedin.com/in/jamesphillipdeguzman/" target="_blank">
-                    <img src="images/svg/linkedin-logo.svg" alt="LinkedIn logo" width="50" height="50">
-                </a>
-            </div>
-
-        </div>
-    </footer>
+    <footer id="footer-container"></footer>
 
 </body>
 
