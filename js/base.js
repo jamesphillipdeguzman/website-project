@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadPortfolioList(); // Load portfolio list for dropdown
   setupPortfolio();
   //handleLocalStorage();
-  loadHeaderAndFooter(); // Load header and footer content
+  // loadHeaderAndFooter(); // Load header and footer content
 });
 
 function initDate() {
