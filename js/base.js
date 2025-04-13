@@ -4,7 +4,7 @@
 // - getFormattedLastModified()
 // - loadHeaderAndFooter()
 
-import { loadHeaderAndFooter, setupHamburgerMenu, getFormattedLastModified } from './utils.mjs';
+// import { loadHeaderAndFooter, setupHamburgerMenu, getFormattedLastModified } from './utils.mjs';
 
 // Portfolio data as an array literal
 const portfolios = [
@@ -104,7 +104,7 @@ const portfolios = [
 // DOMContentLoaded handler
 document.addEventListener('DOMContentLoaded', () => {
   initDate();
-  setupHamburgerMenu(); // replaces initMenuToggle
+  // setupHamburgerMenu(); // replaces initMenuToggle
   populateProductDropdown();
   setupButtons();
   setupFormSubmission();

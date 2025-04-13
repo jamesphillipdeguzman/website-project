@@ -1,35 +1,28 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadHeaderAndFooter();
+
+// async function loadHeaderAndFooter() {
+//     const basePath = window.location.pathname.includes("/pages/") ? "../partials/" : "partials/";
+
+//     await loadTemplate(`${basePath}header.html`, "#header-container");
+//     setupHamburgerMenu(); // moved here after content loads
+//     setActiveNavLink();
+
+//     await loadTemplate(`${basePath}footer.html`, "#footer-container");
+//     updateFooterInfo();
+// }
+
+document.addEventListener("DOMContentLoaded", () => {
+    
+    setupHamburgerMenu();
+    setActiveNavLink();
+    updateFooterInfo();
+
     document.body.classList.remove("loading");
     document.body.classList.add("loaded");
 });
 
-export async function loadHeaderAndFooter() {
-    const basePath = window.location.pathname.includes("/pages/") ? "../partials/" : "partials/";
-
-    await loadTemplate(`${basePath}header.html`, "#header-container");
-    setupHamburgerMenu(); // moved here after content loads
-    setActiveNavLink();
-
-    await loadTemplate(`${basePath}footer.html`, "#footer-container");
-    updateFooterInfo();
-}
-
-async function loadTemplate(url, containerSelector) {
-    try {
-        const container = document.querySelector(containerSelector);
-        if (!container || container.hasChildNodes()) return;
-
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Failed to fetch ${url}`);
-
-        container.innerHTML = await response.text();
-    } catch (error) {
-        console.error(`Error loading template: ${error.message}`);
-    }
-}
-
-export function setupHamburgerMenu() {
+// Setup hamburger toggle functionality
+function setupHamburgerMenu() {
+    
     const hamburgerBtn = document.querySelector("#menu");
     const navigationMenu = document.querySelector(".nav-links");
 
@@ -39,19 +32,26 @@ export function setupHamburgerMenu() {
     }
 
     hamburgerBtn.addEventListener("click", () => {
+        
         hamburgerBtn.classList.toggle("open");
         navigationMenu.classList.toggle("open");
+        
+        
     });
 }
 
-export function setActiveNavLink() {
+// Highlight the current nav link
+function setActiveNavLink() {
     const navLinks = document.querySelectorAll(".nav-links a");
     const currentPath = window.location.pathname;
 
     navLinks.forEach(link => {
         const linkPath = new URL(link.href, window.location.origin).pathname;
 
-        if (linkPath === currentPath || (linkPath.endsWith("index.html") && currentPath === "/")) {
+        if (
+            linkPath === currentPath ||
+            (linkPath.endsWith("index.html") && currentPath === "/")
+        ) {
             link.classList.add("active");
         } else {
             link.classList.remove("active");
@@ -59,7 +59,8 @@ export function setActiveNavLink() {
     });
 }
 
-export function updateFooterInfo() {
+// Update footer info like year and last modified
+function updateFooterInfo() {
     const yearElement = document.querySelector(".currentyear");
     const modifiedElement = document.querySelector("#lastModified");
 
@@ -72,7 +73,8 @@ export function updateFooterInfo() {
     }
 }
 
-export function getFormattedLastModified() {
+// Format "Last Modified" timestamp
+function getFormattedLastModified() {
     const lastModified = new Date(document.lastModified);
     const dateFormat = { year: "numeric", month: "short", day: "numeric" };
     const formattedDate = lastModified.toLocaleDateString("en-US", dateFormat);
@@ -80,7 +82,7 @@ export function getFormattedLastModified() {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
-        hour12: true,
+        hour12: true
     });
 
     return `${formattedDate} ${formattedTime}`;
