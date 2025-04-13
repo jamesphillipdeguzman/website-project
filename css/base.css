@@ -885,13 +885,13 @@ input[type="email"] {
 
 .dropdown-container {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-content: center;
-    margin: 0 10px;
-    width: 100%;
-    max-width: 80vw;
+    width: 50%;
+    max-width: 50vw;
+
 }
+
 
 .dropdown-container select {
     height: 44px;
@@ -1286,14 +1286,6 @@ footer {
 
     .brand {
         color: #931621ff;
-    }
-
-    .dropdown-container {
-        display: flex;
-        align-items: center;
-        justify-self: center;
-        width: 100%;
-        max-width: 80vw;
     }
 
 
