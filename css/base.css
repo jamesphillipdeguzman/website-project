@@ -447,8 +447,7 @@ span#color2 {
     height: auto;
     max-width: 20vw;
     width: 20%;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    
 }
 
 .profile2 {
@@ -490,10 +489,26 @@ span#color2 {
 
 .profile-wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
+    
+}
+
+.profile-wrapper p {
+    font-size: larger;
+    width: 50%;
+    max-width: 100vw;
+    margin-top: 1rem;
+    margin-bottom: 6rem;
+
+    
+}
+
+.profile-wrapper a:visited {
+    color: var(--dark-slate-gray);
 }
 
 .banner-text {
