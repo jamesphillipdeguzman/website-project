@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // setupHamburgerMenu(); // replaces initMenuToggle
   populateProductDropdown();
   setupButtons();
-  setupFormSubmission();
+  // setupFormSubmission();
   loadPortfolioList(); // Load portfolio list for dropdown
   setupPortfolio();
   setupPortfolioCarousel(); // Load portfolio carousel
