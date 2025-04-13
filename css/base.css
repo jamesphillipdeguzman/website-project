@@ -804,7 +804,7 @@ input[type="radio"] {
 .contact-section {
 
     align-content: baseline;    
-    background-color: dirtywhite;
+    background-color: white;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -878,10 +878,11 @@ input[type="email"] {
     display: flex;
     flex-direction: column;
     justify-content: left;
-    align-items: left;
+    align-items: center;
     margin: 0 auto;
     max-width: 100%;
     width: 100%;
+    gap: 10px;
 }
 
 .dropdown-container {
@@ -968,7 +969,7 @@ input[type="email"] {
 
 
 article {
-    background-color: #eee;
+    /* background-color: #eee; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
