@@ -146,31 +146,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function checkFormEntry(field, status) {
     const errorContainer = document.querySelector(`#${field}-error-message`);
-    errorContainer.innerHTML = '';
+    errorContainer.innerHTML = ''; // Clear previous error messages
 
     const errorMessage = document.createElement('p');
     errorMessage.className = 'errMsg';
 
     switch (`${field}_${status}`) {
-      case "select_present":
-        break;
-      case "select_missing":
-        errorMessage.textContent = 'Portfolio is missing.';
-        break;
-      case "radio_missing":
-        errorMessage.textContent = 'Star rating is missing.';
-        break;
-      case "date_missing":
-        errorMessage.textContent = 'Date is missing.';
-        break;
-      default:
-        errorMessage.textContent = 'Incomplete form.';
+        case "select_missing":
+            errorMessage.textContent = 'Please select a portfolio.';
+            break;
+        case "radio_missing":
+            errorMessage.textContent = 'Please select a star rating.';
+            break;
+        case "date_missing":
+            errorMessage.textContent = 'Please enter the installation date.';
+            break;
     }
 
     if (errorMessage.textContent) {
-      errorContainer.appendChild(errorMessage);
+        errorContainer.appendChild(errorMessage);
     }
-  }
+}
+
 
   dynamicPortfolio.addEventListener('change', checkFormValidity);
   document.querySelectorAll('input[name="stars"]').forEach(star => {
