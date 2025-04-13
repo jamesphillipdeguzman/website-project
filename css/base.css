@@ -81,7 +81,7 @@ body.loaded {
 /* ================== NAVIGATION ====================== */
 
 .highlight2 {
-    color: var(--silver-color);
+    color: navajowhite;
     font-size: 3rem;
     font-family: var(--font-headline);
 }
