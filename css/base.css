@@ -95,6 +95,12 @@ body.loaded {
 
 }
 
+#github-link {
+    text-decoration: none;
+    color: var(--dark-slate-gray);
+    font-weight: bold;
+}
+
 .navigation {
     display: flex;
     flex-direction: column;
@@ -174,8 +180,9 @@ body.loaded {
     border-radius: 5px;
     margin: 0 auto;
     height: auto;
-    max-width: 100vw;
-    margin-bottom: 5rem;
+    max-width: 50vw;
+    width: 50%;
+    margin: 5rem auto;
     /* flex: 1 0 10%; */
 
 
@@ -246,11 +253,16 @@ header {
 
 /* ================== MAIN ====================== */
 
+main {
+    width: 70%;
+    max-width: 70vw;
+}
+
 .card {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     margin: 0 auto;
     max-width: 100%;
     width: 100%;
@@ -292,11 +304,18 @@ h2 {
 }
 
 
+
+article.my-profile {
+    max-width: 70vw;
+    width: 70%;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 article.my-profile h2 {
     padding-top: 20px;
     text-align: center;
     /* background-color: #4cae4c; */
-    font-size: 1.3rem;
+    font-size: 2.2rem;
 }
 
 
@@ -309,12 +328,22 @@ article.my-profile p {
 }
 
 
+article.my-company h1 {
+    color: var(--dark-slate-gray);
+}
+
 article.my-company h3 {
+    display: flex;
+    flex-direction: column;
     font-size: 1.2rem;
     font-weight: 500;
     text-align: left;
     font-family: 'Courier New', Courier, monospace;
-    padding: 15px;
+    padding: 25px;
+    margin: 1rem auto;
+    max-width: 100vw;
+    width: 70%;
+
     /* background-color: #bed; */
 }
 
@@ -391,7 +420,14 @@ span#color2 {
 
 
 
-.hero,
+.signup-btn {
+    max-width: 30vw;
+    width: 30%;
+
+}
+
+
+
 .bottom-section {
     /* font-family: var(--secondary-font); */
     display: flex;
@@ -405,7 +441,60 @@ span#color2 {
 
 }
 
+.profile img {
+    height: auto;
+    max-width: 20vw;
+    width: 20%;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.profile2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.profile2 img { 
+    width: 200px;
+    height: 200px;
+    border-radius: 50%; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+}   
+
 .hero {
+    display: flex;  
+    text-align: center;
+    padding: 50px 0;
+    margin-bottom: 25px;
+    border-radius: 5px;
+}
+
+
+.hero h1 {
+    color: whitesmoke;
+    font-size: 2rem;
+    padding: 15px;
+}
+
+.hero-feature {
+    display: flex;
+    background-color: #28464bff;
+    border-radius: 5px;
+}
+
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.banner-text {
     position: relative;
     text-align: center;
     padding: 50px 0;
@@ -414,11 +503,6 @@ span#color2 {
     border-radius: 5px;
 }
 
-.hero h1 {
-    color: whitesmoke;
-    font-size: 2rem;
-    padding: 15px;
-}
 
 .image-container {
     position: relative;
@@ -428,6 +512,12 @@ span#color2 {
 
 .image-container img {
     display: block;
+    height: auto;
+    max-width: 20vw;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: transform 0.5s ease;
 
 
 }
@@ -505,7 +595,7 @@ span#color2 {
 }
 
 .bottom-section .my-company {
-    width: 100%;
+    width: 80%;
     max-width: 400px;
     padding: 10px 0;
     text-align: center;
@@ -555,6 +645,40 @@ span#color2 {
 #message {
     width: 250px;
 }
+/* ================= CAROUSEL ================== */
+
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+  
+  .carousel {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    width: 75%;
+    max-width: 75vw;
+  }
+  
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .carousel-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
 
 /* ================= JOIN FORM ================= */
 
@@ -566,8 +690,8 @@ form.join-form {
     justify-content: center;
     align-items: center;
     margin: 2.2rem auto;
-    max-width: 600px;
-    width: 100%;
+    max-width: 70vw;
+    width: 70%;
 
 }
 
@@ -674,17 +798,16 @@ input[type="radio"] {
 
 .contact-section {
 
-    align-items: center;
-    align-content: center;
-    background-color: #bed;
+    align-content: flex-start;    
+    background-color: dirtywhite;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     height: auto;
-    justify-content: center;
-    max-width: 100%;
-    padding: 2rem;
-    width: 100%;
+    justify-content: left;
+    max-width: 80%;
+    padding: 0;
+    width: 80%;
 
 }
 
@@ -692,11 +815,23 @@ input[type="radio"] {
 #telephone,
 #email {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 10px;
+    justify-content: flex-start; /* left-align content */
+    gap: 1rem;
     font-size: 1rem;
+}
 
+
+
+
+.contact-details {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    padding: 10px 0;
 }
 
 .contact-section label,
@@ -829,9 +964,6 @@ article {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-article:hover {
-    border-radius: 10px;
-}
 
 
 /* ================== FOOTER ====================== */
@@ -852,7 +984,7 @@ footer {
 
 .footer-wrapper {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-content: center;
 }
 
@@ -878,7 +1010,7 @@ footer {
 @media (max-width: 400px) {
 
     form.join-form {
-        width: 100%;
+        width: 80%;
     }
 
     button {
@@ -890,8 +1022,11 @@ footer {
 
     }
 
+    article.my-company h1 {
+        font-size: medium;
+    }
 
-
+   
     .contact-section {
         display: flex;
         padding: 0;
@@ -904,9 +1039,37 @@ footer {
     #email {
         font-size: 1rem;
     }
+
+  
 }
 
 @media (max-width: 639px) {
+
+    main {
+        width: 100%;
+        max-width: 100vw;
+    }
+
+    .profile-wrapper { 
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    article.my-profile {
+        max-width: 100vw;
+        width: 100%;
+        
+    }
+
+    .signup-btn {
+        max-width: 80vw;
+        width: 80%;
+
+    }
+
+
     .footer-wrapper {
         display: flex;
         flex-direction: column;
@@ -919,11 +1082,17 @@ footer {
         display: none;
     }
 
+    .carousel-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+
     #menu {
         font-size: 2rem;
         border: 0;
         position: absolute;
-        top: 10px;
+        top: 0;
         right: 10px;
         color: whitesmoke;
         background: none;
@@ -947,6 +1116,16 @@ footer {
 
 }
 
+@media (max-width: 800px) {
+
+    .contact-details {
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+}
+
 @media (max-width: 1100px) {
 
 
@@ -957,7 +1136,7 @@ footer {
     }
 
     form.join-form {
-        width: 90%;
+        width: 70%;
     }
 
     input,
@@ -970,10 +1149,6 @@ footer {
         width: 100%;
     }
 
-    .signup-btn {
-        max-width: 50vw;
-
-    }
 
     p.project-desc {
         font-size: 0.8rem;
@@ -1046,6 +1221,7 @@ footer {
         margin-top: 2rem;
         /* background-color: #4cae4c; */
         font-size: 1rem;
+        
     }
 
 
@@ -1086,7 +1262,7 @@ footer {
         align-items: center;
         justify-content: center;
         padding: 0;
-        background-color: #bed;
+        
         height: 300px;
         margin: 5px auto;
         border-radius: 5px;
@@ -1193,8 +1369,5 @@ footer {
         background-color: #f4f4f4;
     }
 
-    main {
-        width: 100%;
-        max-width: 100vw;
-    }
+    
 }

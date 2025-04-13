@@ -9,6 +9,7 @@
 // Portfolio data as an array literal
 const portfolios = [
   {
+    id: "P1",
     pTitle: "Place page",
     fileName: "place.html",
     sourceImg: "/images/project-images/portfolio-1.webp",
@@ -16,6 +17,7 @@ const portfolios = [
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/place.html"
   },
   {
+    id: "P2",
     pTitle: "WDD131 home page",
     fileName: "index.html",
     sourceImg: "/images/project-images/portfolio-2.webp",
@@ -23,6 +25,7 @@ const portfolios = [
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/index.html"
   },
   {
+    id: "P3",
     pTitle: "Filtered temples page",
     fileName: "filtered-temples.html",
     sourceImg: "/images/project-images/portfolio-3.webp",
@@ -30,6 +33,7 @@ const portfolios = [
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/filtered-temples.html"
   },
   {
+    id: "P4",
     pTitle: "Unfiltered temples page",
     fileName: "temples.html",
     sourceImg: "/images/project-images/portfolio-4.webp",
@@ -37,6 +41,7 @@ const portfolios = [
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/temples.html"
   },
   {
+    id: "P5",
     pTitle: "Holy grail layout (practice)",
     fileName: "holy-grail-layout-flex.html",
     sourceImg: "/images/project-images/portfolio-5.webp",
@@ -44,6 +49,7 @@ const portfolios = [
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/csspractice/holy-grail-layout-flex.html"
   },
   {
+    id: "P6",
     pTitle: "Whitewater rafting site (WDD130)",
     fileName: "index.html",
     sourceImg: "/images/project-images/portfolio-6.webp",
@@ -51,6 +57,7 @@ const portfolios = [
     imageURL: "https://jamesphillipdeguzman.github.io/wdd130/wwr/index.html"
   },
   {
+    id: "P7",
     pTitle: "Course Home Page (WDD231)",
     fileName: "index.html",
     sourceImg: "/images/project-images/portfolio-7.webp",
@@ -58,6 +65,7 @@ const portfolios = [
     imageURL: "https://jamesphillipdeguzman.github.io/wdd231/index.html"
   },
   {
+    id: "P8",
     pTitle: "Chamber Home Page (WDD231)",
     fileName: "index.html",
     sourceImg: "/images/project-images/portfolio-8.webp",
@@ -65,6 +73,7 @@ const portfolios = [
     imageURL: "https://jamesphillipdeguzman.github.io/wdd231/chamber/index.html"
   },
   {
+    id: "P9",
     pTitle: "Quote Vitamins",
     fileName: "index.html",
     sourceImg: "/images/project-images/portfolio-9.webp",
@@ -72,6 +81,7 @@ const portfolios = [
     imageURL: "https://jamesphillipdeguzman.github.io/wdd231/web-project/index.html"
   },
   {
+    id: "P10",
     pTitle: "SleepOutside (WDD330-Team Project)",
     fileName: "index.html",
     sourceImg: "/images/project-images/portfolio-10.webp",
@@ -79,6 +89,7 @@ const portfolios = [
     imageURL: "https://sleepoutside2.netlify.app/"
   },
   {
+    id: "P11",
     pTitle: "Foodexer (WDD330)",
     fileName: "index.html",
     sourceImg: "/images/project-images/portfolio-11.webp",
@@ -86,6 +97,7 @@ const portfolios = [
     imageURL: "https://foodexer.netlify.app/"
   },
   {
+    id: "P12",
     pTitle: "Ralteen Fiel",
     fileName: "index.html",
     sourceImg: "/images/project-images/portfolio-12.webp",
@@ -93,6 +105,7 @@ const portfolios = [
     imageURL: "https://ralteenfiel.netlify.app/"
   },
   {
+    id: "P13",
     pTitle: "Deeday",
     fileName: "index.html",
     sourceImg: "/images/project-images/portfolio-13.webp",
@@ -100,6 +113,7 @@ const portfolios = [
     imageURL: "https://deeday.netlify.app/"
   }
 ];
+
 
 // DOMContentLoaded handler
 document.addEventListener('DOMContentLoaded', () => {
@@ -110,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupFormSubmission();
   loadPortfolioList(); // Load portfolio list for dropdown
   setupPortfolio();
+  setupPortfolioCarousel(); // Load portfolio carousel
   //handleLocalStorage();
   // loadHeaderAndFooter(); // Load header and footer content
 });
@@ -217,8 +232,8 @@ function loadPortfolioCard(portfolio, container) {
           <div>${portfolio.pTitle}</div>
         </div>
         <div class="row" style="display: flex; align-items: center; margin-bottom: 5px;">
-          <div style="font-weight: bold; margin-right: 8px; min-width: 100px;">File Name:</div>
-          <div>${portfolio.fileName}</div>
+          <div style="font-weight: bold; margin-right: 8px; min-width: 100px;">URL:</div>
+          <div><a href="${portfolio.imageURL}" alt="${portfolio.pTitle}">${portfolio.imageURL}</a></div>
         </div>
         <div class="row" style="display: flex; align-items: center; margin-bottom: 5px;">
           <div style="font-weight: bold; margin-right: 8px; min-width: 100px;">Description:</div>
@@ -229,4 +244,68 @@ function loadPortfolioCard(portfolio, container) {
   `;
 
   container.innerHTML = cardHTML; // Append the generated HTML to the container
+ 
+}
+
+function setupPortfolioCarousel() {
+  const container = document.getElementById("portfolio-carousel");
+  const dropdown = document.getElementById("my-portfolios");
+
+  if (!container || !dropdown) return;
+
+  // Populate the dropdown
+  dropdown.innerHTML = '<option value="">Select a portfolio</option>';
+  portfolios.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.pTitle;
+    opt.textContent = p.pTitle;
+    dropdown.appendChild(opt);
+  });
+
+  // Render the carousel cards
+  portfolios.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style = "min-width: 300px; max-width: 300px; flex-shrink: 0;";
+
+    card.setAttribute("data-title", p.pTitle);
+    card.innerHTML = `
+      <a href="${p.imageURL}" target="_blank">
+        <img src="${p.sourceImg}" alt="${p.pTitle}" style="width: 100%; border-radius: 5px;" loading="lazy">
+      </a>
+      <div class="databox" style="padding: 10px;">
+        <h3>${p.pTitle}</h3>
+        <p><strong>${p.id}</strong></p>
+        <p>${p.description}</p>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  // Scroll to selected card
+  dropdown.addEventListener("change", function () {
+    const selected = container.querySelector(`[data-title="${dropdown.value}"]`);
+    if (selected) {
+      selected.scrollIntoView({ behavior: "smooth", inline: "center" });
+    }
+  });
+
+  setupCarouselButtons();
+}
+
+function setupCarouselButtons() {
+  const container = document.getElementById("portfolio-carousel");
+  const btnPrev = document.querySelector(".carousel-btn.prev");
+  const btnNext = document.querySelector(".carousel-btn.next");
+
+  if (!container || !btnPrev || !btnNext) return;
+
+  btnPrev.addEventListener("click", () => {
+    container.scrollBy({ left: -300, behavior: "smooth" });
+  });
+
+  btnNext.addEventListener("click", () => {
+    container.scrollBy({ left: 300, behavior: "smooth" });
+  });
 }

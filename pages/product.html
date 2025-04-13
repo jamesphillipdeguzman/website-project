@@ -18,8 +18,9 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/base.css">
+
 
     <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon">
     <meta property="og:title" content="My Personal Website">
@@ -31,6 +32,7 @@
     <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
     <script src="/js/utils.js" defer></script>
     <script src="/js/base.js" defer></script>
+    <script src="/js/form.js" defer></script>
 
 </head>
 
@@ -41,10 +43,10 @@
 
         <header id="header-container">
             <nav class="navigation">
-                <div><a href="/index.html"><span class="highlight2">besys.tech</span></a></span></div>
+
                 <a href="/index.html" id="logolink"><img id="logo" src="/images/besys-tech-logo3-nobg.webp"
                         alt="company logo" width="100" height="100"></a>
-
+                <div><a href="/index.html"><span class="highlight2">besys.tech</span></a></span></div>
                 <ul class="nav-links">
                     <li><a href="/index.html" id="home" class="active">Home</a></li>
                     <li><a href="/pages/about.html" id="about">About</a></li>
@@ -61,7 +63,7 @@
 
         <main>
 
-            <div class="hero">
+            <div class="banner-text">
                 <!-- <div class="image-container"> -->
                 <h1 id="hero-text">Review My Work</h1>
                 <!-- <img src="images/besys-tech-logo.svg" alt="besys tech company" width="200" height="100"> -->
@@ -73,21 +75,23 @@
             <div class="form-section">
                 <h3>Portfolio Review Form</h3>
 
-                <form action="/pages/review.html" method="get" id="review-form">
+                <form name="review" method="POST" data-netlify="true" netlify-honeypot="bot-field"
+                    action="/pages/thanks.html" id="review-form">
+                    <!-- Netlify required hidden fields -->
+                    <input type="hidden" name="form-name" value="review">
+                    <p hidden>
+                        <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                    </p>
+
                     <fieldset class="form-group">
 
                         <label for="dynamic-product">Portfolio Name</label>
-
-                        <!-- Dynamic select dropdown list -->
                         <select id="dynamic-product" name="dynamic-product" required>
                             <option value="" disabled>Select a portfolio...</option>
                         </select>
                         <div id="select-error-message"></div>
 
-
                         <label for="stars">Overall Rating</label>
-
-                        <!-- Radio star buttons -->
                         <div class="stars-rating" id="stars">
                             <input type="radio" id="fivestar" name="stars" value="5" required><label
                                 for="fivestar"></label>
@@ -102,16 +106,12 @@
                         </div>
                         <div id="radio-error-message"></div>
 
-                        <!-- Date Input -->
                         <div class="install-date">
                             <label for="date-installed">Date</label>
                             <input type="date" id="date-installed" name="date-installed" required>
-
                         </div>
-
                         <div id="date-error-message"></div>
 
-                        <!-- Checkboxes -->
                         <div class="features">
                             <p>Which aspects of the page did you find most effective?</p>
                             <p id="italicize">(Check all that apply)</p>
@@ -134,23 +134,20 @@
                             </div>
                         </div>
 
-
                         <div class="review">
-
                             <label for="written-review">Written Review <span class="optional">(Optional)</span>
-                                <!-- Text area for written review -->
-                                <textarea id="written-review" name="written-review"></textarea></label>
-
+                                <textarea id="written-review" name="written-review"></textarea>
+                            </label>
 
                             <label for="fname">Name <span class="optional">(Optional)</span>
-                                <!-- Textbox for name -->
-                                <input type="text" id="fname" name="fname"></label>
+                                <input type="text" id="fname" name="fname">
+                            </label>
                         </div>
 
                         <input type="submit" id="review-btn" value="Post a Review">
                     </fieldset>
-
                 </form>
+
 
 
 

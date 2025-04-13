@@ -27,7 +27,7 @@ function setupHamburgerMenu() {
     const navigationMenu = document.querySelector(".nav-links");
 
     if (!hamburgerBtn || !navigationMenu) {
-        console.warn("Hamburger menu elements not found.");
+        alert("Hamburger menu elements not found.");
         return;
     }
 
