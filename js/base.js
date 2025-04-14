@@ -125,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadPortfolioList(); // Load portfolio list for dropdown
   setupPortfolio();
   setupPortfolioCarousel(); // Load portfolio carousel
+  loadQuoteModal(); // Load quote modal)
   //handleLocalStorage();
   // loadHeaderAndFooter(); // Load header and footer content
 });
@@ -307,5 +308,30 @@ function setupCarouselButtons() {
 
   btnNext.addEventListener("click", () => {
     container.scrollBy({ left: 300, behavior: "smooth" });
+  });
+}
+
+
+function loadQuoteModal() {
+  
+  const quoteModal = document.querySelector("#quote-modal");
+  const closeBtn = document.querySelector("#close-btn");
+  const qetQuoteBtn = document.querySelector("#get-quote-btn");
+  const quoteBackdrop = document.querySelector("#quote-backdrop");
+
+  if(!quoteModal || !closeBtn || !qetQuoteBtn || !quoteBackdrop) return;
+  
+
+  qetQuoteBtn.addEventListener("click", () => {
+    quoteModal.style.display = "block";
+    qetQuoteBtn.style.display = "none";
+    quoteBackdrop.style.display = "block";
+  });
+
+  
+  closeBtn.addEventListener("click", () => {
+    quoteModal.style.display = "none";
+    qetQuoteBtn.style.display = "block";
+    quoteBackdrop.style.display = "none";
   });
 }

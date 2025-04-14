@@ -1027,8 +1027,102 @@ footer {
 .social-links a {
     text-decoration: none;
 }
+/* ================== MODAL ====================== */
+.modal {
+    display: none;
+    
+}
+
+.backdrop  {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100vw;
+    z-index: 999;
+    height: 100%;
+    transition: background-color 1.2s ease-in-out;
+}
+
+.close {
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #464444;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    max-width: 50vw;
+    width: 50%;
+    margin: 0 auto;
+    text-align: left;
+    font-family: var(--primary-font);
+    font-size: 1rem;
+    color: #464444;
+    position: relative;
+    z-index: 1000;
+
+}
 
 
+
+#message {
+    width: 100%;
+    resize: none;
+}
+
+#get-quote-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(231, 88, 44);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-family: Roboto, Arial, sans-serif;
+    cursor: pointer;
+    width: 30%;
+    max-width: 100vw;
+    margin: 0 auto;
+    
+}
+
+#get-quote-btn:hover {
+    background-color: #4cae4c;
+    transition: background-color 0.3s ease;
+}
+
+
+#submit-enquiry {
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: rebeccapurple;
+    color: whitesmoke;
+    border-radius: 5px;
+    margin: 30px auto;
+    cursor: pointer;
+    width: 50%;
+    max-width: 100vw;
+    
+}
+
+#submit-enquiry:hover {
+    background-color: #4cae4c;
+    transition: background-color 0.3s ease;
+}
 
 /* ================== MOBILE VIEW ====================== */
 @media (max-width: 360px) {

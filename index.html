@@ -47,6 +47,40 @@
 
         <main>
 
+            <button id="get-quote-btn">Get a quote</button>
+            <div class="backdrop" id="quote-backdrop"></div>
+            <div id="quote-modal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close" id="close-btn">&times;</span>
+                    <h2>Get Quote</h2>
+                    <form name="quoteForm" id="quoteForm" method="POST" data-netlify="true"
+                        netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="quoteForm" />
+                        <p hidden><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+                        <fieldset>
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required />
+
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required />
+
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" required />
+                            <label for="message">Your Question</label>
+
+                            <textarea name="message" id="message" required></textarea>
+
+                        </fieldset>
+
+
+                        <button id="submit-enquiry">Submit Enquiry</button>
+
+
+                    </form>
+                </div>
+            </div>
+
             <div class="hero">
 
                 <article class="my-company">
