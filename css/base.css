@@ -212,7 +212,7 @@ body.loaded {
 
 h1 {
     font-family: Roboto, Arial, sans-serif;
-    color: whitesmoke;
+    color: #333;
 }
 
 
@@ -515,7 +515,7 @@ span#color2 {
     position: relative;
     text-align: center;
     padding: 50px 0;
-    background-color: #28464bff;
+    background-color: whitesmoke;
     margin-bottom: 25px;
     border-radius: 5px;
 }
@@ -874,13 +874,31 @@ input[type="radio"] {
     padding: 5px;
 }
 
-.contact-section #submit {
+.contact-section #submit  {
     padding: 10px 20px;
     background-color: rebeccapurple;
     color: whitesmoke;
     border-radius: 5px;
     margin: 20px auto;
     max-width: 120px;
+}
+
+input#submit {
+    display: flex;
+    padding: 10px 20px;
+    background-color: rebeccapurple;
+    color: whitesmoke;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 200px;
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+}
+
+input#submit:hover {
+    background-color: #4cae4c;
+    transition: background-color 0.3s ease;
 }
 
 /* input[type="text"],
@@ -1095,7 +1113,7 @@ footer {
     cursor: pointer;
     width: 30%;
     max-width: 100vw;
-    margin: 0 auto;
+    margin: 3rem auto;
     
 }
 
