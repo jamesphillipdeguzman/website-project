@@ -50,15 +50,17 @@
             <!-- <p>Window width: <span id="windowWidth"></span></p>
             <p>Window height: <span id="windowHeight"></span></p> -->
 
-            <h1>Got a brilliant website idea but not sure where to start?</h1>
-            <h2>I've got you covered.</h2>
+            <h1 class="hook">Got a brilliant website idea but not sure where to start? <br><br>
+                I've got you covered...
+            </h1>
 
-            <button id="get-quote-btn">Get a quote</button>
+
+            <button class="mybutton" id="get-quote-btn">Request a Quote</button>
             <div class="backdrop" id="quote-backdrop"></div>
             <div id="quote-modal" class="modal hidden">
                 <div class="modal-content">
                     <span class="close" id="close-btn">&times;</span>
-                    <h2>Get Quote</h2>
+                    <h2>Request a Quote</h2>
                     <form name="quoteForm" id="quoteForm" method="POST" data-netlify="true"
                         netlify-honeypot="bot-field">
                         <input type="hidden" name="form-name" value="quoteForm" />
@@ -72,7 +74,7 @@
                             <input type="email" id="email" name="email" required />
 
                             <label for="phone">Phone</label>
-                            <input type="tel" id="phone" name="phone" required />
+                            <input type="tel" id="phone" name="phone" placeholder="e.g. (123) 456-7890" required />
                             <label for="message">Your Question</label>
 
                             <textarea name="message" id="message" required></textarea>
@@ -80,7 +82,7 @@
                         </fieldset>
 
 
-                        <button id="submit-enquiry">Submit Enquiry</button>
+                        <button id="submit-enquiry" class="mybutton">Submit Enquiry</button>
 
 
                     </form>
@@ -113,7 +115,7 @@
                         </div>
                     </div>
 
-                    <button class="signup-btn">Sign Up</button>
+                    <button class="mybutton" id="signup-btn">Sign Up</button>
                 </article>
 
             </div>

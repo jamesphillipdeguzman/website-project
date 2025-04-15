@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
             errorMessage.textContent = 'Please select a star rating.';
             break;
         case "date_missing":
-            errorMessage.textContent = 'Please enter the installation date.';
+            errorMessage.textContent = 'Please enter the date.';
             break;
     }
 

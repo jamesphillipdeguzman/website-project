@@ -166,7 +166,7 @@ function handleLocalStorage() {
 }
 
 function setupButtons() {
-  document.querySelector('.signup-btn')?.addEventListener('click', () => {
+  document.querySelector('#signup-btn')?.addEventListener('click', () => {
     window.location.href = '/pages/signup.html';
   });
 
@@ -321,17 +321,26 @@ function loadQuoteModal() {
 
   if(!quoteModal || !closeBtn || !qetQuoteBtn || !quoteBackdrop) return;
   
-
+  // Open modal
   qetQuoteBtn.addEventListener("click", () => {
     quoteModal.style.display = "block";
     qetQuoteBtn.style.display = "none";
     quoteBackdrop.style.display = "block";
   });
 
-  
+  // Close with close button
   closeBtn.addEventListener("click", () => {
     quoteModal.style.display = "none";
     qetQuoteBtn.style.display = "block";
     quoteBackdrop.style.display = "none";
   });
+
+
+  // Close with backdrop click
+  quoteBackdrop.addEventListener("click", () => {
+    quoteModal.style.display = "none";
+    qetQuoteBtn.style.display = "block";
+    quoteBackdrop.style.display = "none";
+  });
+
 }
