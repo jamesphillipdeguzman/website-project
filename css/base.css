@@ -1111,8 +1111,8 @@ fieldset {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(231, 88, 44);
-    color: white;
+    background-color: rgba(254, 94, 65, 1);
+    color: #0b0500;
     border: none;
     border-radius: 12px;
     padding: 12px 28px;
@@ -1129,7 +1129,7 @@ fieldset {
   
   .mybutton:hover {
     opacity: 0.90; /* same color, slightly transparent */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
   }
   
