@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupHamburgerMenu();
     setActiveNavLink();
     updateFooterInfo();
-    getWindowWidth();
+    // getWindowWidth();
 
     document.body.classList.remove("loading");
     document.body.classList.add("loaded");
@@ -96,7 +96,7 @@ function updateWindowWidthDisplay() {
     if (displayElement) {
         displayElement.textContent = `${width}px`;
     } else {
-        console.warn("Element with ID 'windowWidth' not found.");
+        // console.warn("Element with ID 'windowWidth' not found.");
     }
 }
 
@@ -107,7 +107,7 @@ function updateWindowHeightDisplay() {
     if (displayElement) {
         displayElement.textContent = `${height}px`;
     } else {
-        console.warn("Element with ID 'windowHeight' not found.");
+        // console.warn("Element with ID 'windowHeight' not found.");
     }
 }
 
