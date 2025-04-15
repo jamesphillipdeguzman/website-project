@@ -1,216 +1,192 @@
-/*================== FORMS ==================== */
+/* =============== BASE FORM STYLES =============== */
 
-main {
-    max-width: 100vw;
-    width: 100%;
-  }
-  
+form.join-form,
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 100vw;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+/* =============== FIELDSET =============== */
+
+fieldset {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+fieldset label {
+  display: block;
+  margin: 10px 0 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* =============== FORM INPUT ELEMENTS =============== */
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  font-family: 'Roboto', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #e7582c;
+  outline: none;
+}
+
+/* Input height adjustments */
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+  height: 44px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Radio/Checkbox tweaks */
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* =============== STAR RATING =============== */
+
+fieldset.stars-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.stars-rating input {
+  display: none; /* Hide radio buttons */
+}
+
+.stars-rating > label {
+  font-size: 2rem;
+  width: 30px;
+  color: brown;
+  cursor: pointer;
+}
+
+.stars-rating > label::before {
+  content: "\2606"; /* Empty star */
+}
+
+.stars-rating input:checked ~ label::before,
+.stars-rating input:checked + label::before {
+  content: "\2605"; /* Filled star */
+}
+
+/* =============== BUTTONS =============== */
+
+button,
+#review-btn {
+  max-width: 200px;
+  padding: 10px 20px;
+  margin-top: 15px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: whitesmoke;
+  background-color: rebeccapurple;
+  transition: background-color 0.3s ease;
+}
+
+button:hover,
+#review-btn:hover {
+  background-color: #4cae4c;
+}
+
+/* =============== CHECKBOX SECTION =============== */
+
+.wrap-checkbox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.wrap-checkbox label {
+  display: flex;
+  align-items: center;
+}
+
+.large-checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+/* =============== ERROR MESSAGES =============== */
+
+.errMsg {
+  color: red;
+  font-weight: bold;
+  font-size: 0.8rem;
+  margin: 5px 0 10px;
+}
+
+/* =============== RESPONSIVE DESIGN =============== */
+
+@media (max-width: 600px) {
+  form.join-form,
+  .form-group,
   fieldset {
-    margin: 0 auto;
-    padding: 10px 0;
-    max-width: 80vw;
-    width: 80%;
-    border: none;
+    width: 95%;
+    padding: 15px;
   }
-  
-  /* Optional styling if using fieldset for stars-rating */
-  fieldset.stars-rating {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: left;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  fieldset.stars-rating legend {
-    font-weight: bold;
-    font-size: 0.8rem;
-    color: #000;
-    padding-right: 10px;
-  }
-  
-  /* Form container */
-  .form-section {
-    font-family: Arial, sans-serif;
-    font-size: 1rem;
-  }
-  
-  .form-section h1 {
-    background-color: aquamarine;
-    margin: 0;
-    text-align: center;
-    font-size: 1.8rem;
-  }
-  
-  .form-section h3 {
-    text-align: center;
-  }
-  
-  /* Form layout */
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    background-color: #bed;
-    max-width: 70vw;
-    width: 70%;
-  }
-  
-  label {
-    display: block;
-    padding: 10px 0;
-    font-weight: bold;
-  }
-  
-  /* Dropdown */
-  select {
-    padding: 10px 0;
-    width: 100%;
-    max-width: 500px;
-    height: 44px;
+
+  .form-group p {
     font-size: 0.9rem;
   }
-  
-  /* stars-rating inputs */
-  input[type="radio"] {
-    display: none;
-  }
-  
-  /* Star labels */
-  .stars-rating > label {
-    color: brown;
-    width: 30px;
-    height: 30px;
-    font-size: 2rem;
-    margin-left: 5px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-  
-  .stars-rating > label:hover,
-  .stars-rating > label:hover ~ label {
-    color: #000;
-  }
-  
-  .stars-rating > label::before {
-    content: "\2606"; /* empty star */
-  }
-  
-  .stars-rating input:checked ~ label::before,
-  .stars-rating input:checked + label::before,
-  .stars-rating input:checked ~ label:hover::before {
-    content: "\2605"; /* filled star */
-  }
-  
-  /* Date input */
-  input[type="date"] {
-    padding: 20px 0;
-    width: 100%;
-    height: 44px;
-    font-size: 0.9rem;
-  }
-  
-  /* Checkbox section */
-  input[type="checkbox"].large-checkbox {
-    width: 20px;
-    height: 20px;
-    margin-right: 3px;
-  }
-  
-  .wrap-checkbox {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    margin: 0;
-  }
-  
-  .wrap-checkbox label {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
-  
-  #italicize {
-    font-style: italic;
-  }
-  
-  /* Written review & name */
-  .review label {
-    display: flex;
-    flex-direction: column;
-  }
-  
 
-  #dynamic-product {
-    max-width: 100vw;
-    width: 100%;
-  }
-
-
+  input,
   textarea {
-    height: 100px;
     font-size: 1rem;
   }
-  
-  .review input {
-    height: 30px;
+
+  .wrap-checkbox label {
+    padding: 8px 0;
   }
-  
-  .review .optional {
-    display: flex;
-    flex-direction: row;
-    font-size: 0.6rem;
+}
+
+@media (max-width: 330px) {
+  form.join-form,
+  fieldset {
+    padding: 10px;
   }
-  
-  /* Submit button */
+
+  button,
   #review-btn {
-    font-family: Roboto, Arial, sans-serif;
-    padding: 10px 20px;
-    background-color: rebeccapurple;
-    color: whitesmoke;
-    border-radius: 5px;
-    margin: 0 auto;
-    max-width: 200px;
-    cursor: pointer;
+    width: 100%;
   }
-  
-  #review-btn:hover {
-    background-color: #4cae4c;
-  }
-  
-  .bottom-section > h2 {
-    color: whitesmoke;
-  }
-  
-  /* Error styling */
-  .errMsg {
-    color: red;
-    font-weight: bold;
-    font-size: 0.7rem;
-    margin: 5px 0 10px 0;
-  }
-  
-  /* Mobile responsiveness */
-  @media (max-width: 600px) {
-    .form-group {
-      max-width: 100vw;
-      width: 100%;
-    }
-  
-    fieldset {
-      max-width: 80vw;
-      width: 80%;
-    }
-  
-    .wrap-checkbox {
-      margin-bottom: 5px;
-    }
-  
-    .wrap-checkbox label {
-      margin: 0;
-      padding: 10px 0 15px;
-    }
-  }
-  
+}

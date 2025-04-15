@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupHamburgerMenu();
     setActiveNavLink();
     updateFooterInfo();
+    getWindowWidth();
 
     document.body.classList.remove("loading");
     document.body.classList.add("loaded");
@@ -87,3 +88,40 @@ function getFormattedLastModified() {
 
     return `${formattedDate} ${formattedTime}`;
 }
+
+function updateWindowWidthDisplay() {
+    const width = getCurrentWindowWidth();
+    const displayElement = document.querySelector("#windowWidth");
+
+    if (displayElement) {
+        displayElement.textContent = `${width}px`;
+    } else {
+        console.warn("Element with ID 'windowWidth' not found.");
+    }
+}
+
+function updateWindowHeightDisplay() {
+    const height = getCurrentWindowHeight();
+    const displayElement = document.querySelector("#windowHeight");
+
+    if (displayElement) {
+        displayElement.textContent = `${height}px`;
+    } else {
+        console.warn("Element with ID 'windowHeight' not found.");
+    }
+}
+
+function getCurrentWindowWidth() {
+    return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+}
+
+function getCurrentWindowHeight() {
+    return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+}
+
+window.addEventListener("load", updateWindowWidthDisplay);
+window.addEventListener("resize", updateWindowWidthDisplay);
+
+window.addEventListener("load", updateWindowHeightDisplay);
+window.addEventListener("resize", updateWindowHeightDisplay);
