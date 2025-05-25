@@ -89,6 +89,13 @@
         "sourceImg": "/images/project-images/portfolio-13.webp",
         "description": "Family Birthday Tracker App",
         "imageURL": "https://deeday.netlify.app/"
+    },
+    {
+        "pTitle": "Simple POS API",
+        "fileName": "app.js",
+        "sourceImg": "/images/project-images/portfolio-14.webp",
+        "description": "My First API project",
+        "imageURL": "https://simple-pos-api.onrender.com/api-docs"
     }
     
 ]
