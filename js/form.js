@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fileName: "app.js",
       sourceImg: "/images/project-images/portfolio-14.webp",
       description: "My First API project",
-      imageURL: "https://simple-pos-api.onrender.com/api-docs",
+      imageURL: "https://simple-pos-api.netlify.app/",
     },
   ];
 
