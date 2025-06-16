@@ -117,11 +117,19 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       id: "P14",
-      pTitle: "Simple POS API",
+      pTitle: "Simple POS API (CSE341)",
       fileName: "app.js",
       sourceImg: "/images/project-images/portfolio-14.webp",
       description: "My First API project",
       imageURL: "https://simple-pos-api.netlify.app/",
+    },
+    {
+      id: "P15",
+      pTitle: "Store POS API (CSE341-Team Project)",
+      fileName: "app.js",
+      sourceImg: "/images/project-images/portfolio-15.webp",
+      description: "My Full Store API team project in CSE341",
+      imageURL: "https://store-pos-api.netlify.app/",
     },
   ];
 

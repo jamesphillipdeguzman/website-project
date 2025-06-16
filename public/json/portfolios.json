@@ -91,11 +91,18 @@
         "imageURL": "https://deeday.netlify.app/"
     },
     {
-        "pTitle": "Simple POS API",
+        "pTitle": "Simple POS API (CSE341)",
         "fileName": "app.js",
         "sourceImg": "/images/project-images/portfolio-14.webp",
         "description": "My First API project",
         "imageURL": "https://simple-pos-api.onrender.com/api-docs"
+    },
+    {
+        "pTitle": "Store POS API (CSE341-Team Project)",
+        "fileName": "app.js",
+        "sourceImg": "/images/project-images/portfolio-15.webp",
+        "description": "My Full Store API team project in CSE341",
+        "imageURL": "https://store-pos-api.onrender.com/api-docs"
     }
     
 ]
