@@ -770,13 +770,6 @@ select {
     height: 44px;
 }
 
-/* Textarea */
-textarea {
-    height: 120px;
-    resize: none;
-    /* Allow resizing vertically only */
-}
-
 
 fieldset {
     border-radius: 5px;
@@ -906,7 +899,7 @@ input[type="radio"] {
 
 input#submit {
     display: flex;
-    padding: 10px 20px;
+    padding: 10px;
     background-color: rebeccapurple;
     color: whitesmoke;
     border-radius: 5px;
@@ -1125,7 +1118,7 @@ footer {
 }
 
 fieldset {
-    max-height: 80vh;
+    max-height: 100vh;
 }
 
 
@@ -1652,5 +1645,9 @@ fieldset {
 #header-container,
 #footer-container {
     min-height: 50px;
-    background: #fff;
+    
+}
+
+#footer-container {
+    background: rgb(204, 204, 238, 0.9);
 }
