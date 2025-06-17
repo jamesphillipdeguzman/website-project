@@ -36,11 +36,13 @@ body {
     /* background: url('/wdd131/project/images/site-planning.webp') no-repeat center top; */
     /* background-color: var(--dark-slate-gray); */
     opacity: 1;
+    visibility: visible !important;
     transition: opacity 0.001s ease-in;
 }
 
 body.loading {
-    opacity: 0;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* Add my wireframe overlay here */
@@ -1650,7 +1652,5 @@ fieldset {
 #header-container,
 #footer-container {
     min-height: 50px;
-    /* Adjust based on your header/footer height */
     background: #fff;
-    /* Match your page background */
 }

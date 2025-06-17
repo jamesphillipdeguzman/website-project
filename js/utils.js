@@ -9,7 +9,15 @@ async function loadTemplate(url, targetId) {
     const html = await response.text();
     const targetElement = document.querySelector(targetId);
     if (targetElement) {
-      targetElement.innerHTML = html;
+      // Create a temporary container
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+
+      // Replace content only when new content is ready
+      requestAnimationFrame(() => {
+        targetElement.innerHTML = html;
+      });
+
       console.log(`Successfully loaded template into ${targetId}`);
     } else {
       console.error(`Target element ${targetId} not found`);
@@ -25,81 +33,69 @@ async function preloadTemplates() {
     ? "../public/partials/"
     : "/public/partials/";
 
-  const headerResponse = await fetch(`${basePath}header.html`);
-  const footerResponse = await fetch(`${basePath}footer.html`);
-
-  return {
-    header: await headerResponse.text(),
-    footer: await footerResponse.text()
-  };
-}
-
-async function loadHeaderAndFooter() {
   try {
-    // Preload templates
-    const templates = await preloadTemplates();
+    const [headerResponse, footerResponse] = await Promise.all([
+      fetch(`${basePath}header.html`),
+      fetch(`${basePath}footer.html`)
+    ]);
 
-    // Insert templates
-    const headerContainer = document.querySelector("#header-container");
-    const footerContainer = document.querySelector("#footer-container");
-
-    if (headerContainer) headerContainer.innerHTML = templates.header;
-    if (footerContainer) footerContainer.innerHTML = templates.footer;
-
-    // Setup functionality
-    setupHamburgerMenu();
-    setActiveNavLink();
-    updateFooterInfo();
-
-    // Remove loading state
-    document.body.classList.remove("loading");
-    document.body.classList.add("loaded");
+    return {
+      header: await headerResponse.text(),
+      footer: await footerResponse.text()
+    };
   } catch (error) {
-    console.error("Error loading templates:", error);
+    console.error("Error preloading templates:", error);
+    return null;
   }
 }
 
-// Start loading immediately
-loadHeaderAndFooter();
-
-// Setup hamburger toggle functionality
-function setupHamburgerMenu() {
-  const hamburgerBtn = document.querySelector("#menu");
-  const navigationMenu = document.querySelector(".nav-links");
-
-  if (!hamburgerBtn || !navigationMenu) {
-    alert("Hamburger menu elements not found.");
-    return;
-  }
-
-  hamburgerBtn.addEventListener("click", () => {
-    hamburgerBtn.classList.toggle("open");
-    navigationMenu.classList.toggle("open");
-  });
-}
-
-// Highlight the current nav link
-function setActiveNavLink() {
-  const navLinks = document.querySelectorAll(".nav-links a");
-  const currentPath = window.location.pathname;
-
-  navLinks.forEach((link) => {
-    const linkPath = new URL(link.href, window.location.origin).pathname;
-
-    if (
-      linkPath === currentPath ||
-      (linkPath.endsWith("index.html") && currentPath === "/")
-    ) {
-      link.classList.add("active");
-    } else {
-      link.classList.remove("active");
+// Function to update content
+async function updateContent(url, targetId) {
+  try {
+    console.log(`Attempting to update content from: ${url}`);
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  });
+    const html = await response.text();
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      // Only update if content is different
+      if (targetElement.innerHTML.trim() !== html.trim()) {
+        targetElement.innerHTML = html;
+        console.log(`Successfully updated content in ${targetId}`);
+      }
+    } else {
+      console.error(`Target element ${targetId} not found`);
+    }
+  } catch (error) {
+    console.error("Error updating content:", error);
+  }
 }
 
-// Update footer info like year and last modified
+async function updateHeaderAndFooter() {
+  const basePath = window.location.pathname.includes("/pages/")
+    ? "../public/partials/"
+    : "/public/partials/";
+
+  // Update header and footer in parallel
+  await Promise.all([
+    updateContent(`${basePath}header.html`, "#header-container"),
+    updateContent(`${basePath}footer.html`, "#footer-container")
+  ]);
+
+  // Setup functionality
+  setupHamburgerMenu();
+  setActiveNavLink();
+  updateFooterInfo();
+}
+
+// Start updating after page load
+window.addEventListener('load', updateHeaderAndFooter);
+
+// Function to update footer info
 function updateFooterInfo() {
-  const yearElement = document.querySelector(".currentyear");
+  const yearElement = document.querySelector("#currentyear");
   const modifiedElement = document.querySelector("#lastModified");
 
   if (yearElement) {
@@ -119,11 +115,46 @@ function getFormattedLastModified() {
   const formattedTime = lastModified.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
-    // second: "2-digit",
-    hour12: true,
+    second: "2-digit",
+    hour12: true
   });
 
   return `${formattedDate} ${formattedTime}`;
+}
+
+// Setup hamburger toggle functionality
+function setupHamburgerMenu() {
+  const hamburgerBtn = document.querySelector("#menu");
+  const navigationMenu = document.querySelector(".nav-links");
+
+  if (!hamburgerBtn || !navigationMenu) {
+    console.warn("Hamburger menu elements not found.");
+    return;
+  }
+
+  hamburgerBtn.addEventListener("click", () => {
+    hamburgerBtn.classList.toggle("open");
+    navigationMenu.classList.toggle("open");
+  });
+}
+
+// Highlight the current nav link
+function setActiveNavLink() {
+  const navLinks = document.querySelectorAll(".nav-links a");
+  const currentPath = window.location.pathname;
+
+  navLinks.forEach(link => {
+    const linkPath = new URL(link.href, window.location.origin).pathname;
+
+    if (
+      linkPath === currentPath ||
+      (linkPath.endsWith("index.html") && currentPath === "/")
+    ) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
 }
 
 function updateWindowWidthDisplay() {
