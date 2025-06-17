@@ -35,6 +35,12 @@ body {
     margin: 0 auto;
     /* background: url('/wdd131/project/images/site-planning.webp') no-repeat center top; */
     /* background-color: var(--dark-slate-gray); */
+    opacity: 1;
+    transition: opacity 0.001s ease-in;
+}
+
+body.loading {
+    opacity: 0;
 }
 
 /* Add my wireframe overlay here */
@@ -429,7 +435,7 @@ span#color2 {
     height: auto;
     max-width: 20vw;
     width: 20%;
-    
+
 }
 
 .profile2 {
@@ -440,17 +446,17 @@ span#color2 {
     margin-bottom: 20px;
 }
 
-.profile2 img { 
+.profile2 img {
     width: 200px;
     height: 200px;
-    border-radius: 50%; 
+    border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     margin: 0 auto;
-}   
+}
 
 
 .hero {
-    display: flex;  
+    display: flex;
     text-align: center;
     padding: 50px 0;
     margin-bottom: 25px;
@@ -477,7 +483,7 @@ span#color2 {
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
-    
+
 }
 
 .profile-wrapper p {
@@ -487,7 +493,7 @@ span#color2 {
     margin-top: 1rem;
     margin-bottom: 6rem;
 
-    
+
 }
 
 .profile-wrapper a:visited {
@@ -639,6 +645,7 @@ span#color2 {
 #message {
     width: 250px;
 }
+
 /* ================= CAROUSEL ================== */
 
 .carousel-wrapper {
@@ -650,22 +657,22 @@ span#color2 {
     margin-top: 2rem;
     max-width: 100vw;
     width: 100%;
-  }
-  
-  .carousel {
+}
+
+.carousel {
     display: flex;
     gap: 1rem;
     overflow-x: auto;
     scroll-behavior: smooth;
     width: 90%;
     max-width: 90vw;
-  }
-  
-  .carousel::-webkit-scrollbar {
+}
+
+.carousel::-webkit-scrollbar {
     display: none;
-  }
-  
-  .carousel-btn {
+}
+
+.carousel-btn {
     background-color: #333;
     color: white;
     border: none;
@@ -673,28 +680,48 @@ span#color2 {
     font-size: 1.5rem;
     cursor: pointer;
     border-radius: 5px;
-        
-  }
-  
- 
 
-  /* Add this animation */
+}
+
+
+
+/* Add this animation */
 @keyframes wiggle {
-    0% { transform: rotate(0deg); }
-    15% { transform: rotate(-5deg); }
-    30% { transform: rotate(5deg); }
-    45% { transform: rotate(-5deg); }
-    60% { transform: rotate(5deg); }
-    75% { transform: rotate(-3deg); }
-    100% { transform: rotate(0deg); }
-  }
-  
-  .carousel-btn:hover {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    15% {
+        transform: rotate(-5deg);
+    }
+
+    30% {
+        transform: rotate(5deg);
+    }
+
+    45% {
+        transform: rotate(-5deg);
+    }
+
+    60% {
+        transform: rotate(5deg);
+    }
+
+    75% {
+        transform: rotate(-3deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.carousel-btn:hover {
     background-color: #555;
     animation: wiggle 0.6s ease-in-out;
     transition: background-color 0.3s ease;
-  }
-  
+}
+
 
 /* ================= JOIN FORM ================= */
 
@@ -809,7 +836,7 @@ input[type="radio"] {
 
 .contact-section {
 
-    align-content: baseline;    
+    align-content: baseline;
     background-color: white;
     border-radius: 5px;
     display: flex;
@@ -826,8 +853,9 @@ input[type="radio"] {
 #telephone,
 #email {
     display: flex;
-    align-items:center;
-    justify-content: flex-start; /* left-align content */
+    align-items: center;
+    justify-content: flex-start;
+    /* left-align content */
     gap: 1rem;
     font-size: 1rem;
     /* background-color: #4cae4c; */
@@ -865,7 +893,7 @@ input[type="radio"] {
     padding: 5px;
 }
 
-.contact-section #submit  {
+.contact-section #submit {
     padding: 10px 20px;
     background-color: rebeccapurple;
     color: whitesmoke;
@@ -1030,11 +1058,12 @@ footer {
 .social-links a {
     text-decoration: none;
 }
+
 /* ================== MODAL ====================== */
 .modal,
 #quote-backdrop {
     display: none;
-    
+
 }
 
 .backdrop {
@@ -1049,11 +1078,13 @@ footer {
     z-index: 999;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Top-aligned */
-    padding-top: 5vh; /* Push it a bit from the top */
+    align-items: flex-start;
+    /* Top-aligned */
+    padding-top: 5vh;
+    /* Push it a bit from the top */
     transition: background-color 1.2s ease-in-out;
-  }
-  
+}
+
 
 .close {
     font-size: 2rem;
@@ -1067,6 +1098,7 @@ footer {
     margin-bottom: 20px;
     color: #464444;
 }
+
 .modal-content {
     position: fixed;
     top: 10%;
@@ -1086,7 +1118,7 @@ footer {
     font-size: 1rem;
     color: #464444;
     z-index: 1000;
-    
+
 
 }
 
@@ -1119,20 +1151,21 @@ fieldset {
     margin: 3rem auto;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease-in-out;
-  }
-  
-  .mybutton:hover {
-    opacity: 0.90; /* same color, slightly transparent */
+}
+
+.mybutton:hover {
+    opacity: 0.90;
+    /* same color, slightly transparent */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
-  }
-  
-  .mybutton:focus {
+}
+
+.mybutton:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(231, 88, 44, 0.4);
-  }
-  
-  /* Window */
+}
+
+/* Window */
 
 
 #getWindowWidth {
@@ -1142,9 +1175,10 @@ fieldset {
 /* ================== MOBILE VIEW ====================== */
 @media (max-width: 330px) {
 
-      .banner-text h1 {
+    .banner-text h1 {
         font-size: 1.5rem;
     }
+
     .contact-section {
         display: flex;
         padding: 0;
@@ -1153,7 +1187,7 @@ fieldset {
         align-items: center;
         justify-content: center;
         /* background-color: rebeccapurple;  */
-        
+
     }
 
     .contact-section #mobile,
@@ -1164,7 +1198,7 @@ fieldset {
         padding: 0 1rem;
     }
 
-    
+
 }
 
 @media (max-width: 400px) {
@@ -1185,19 +1219,19 @@ fieldset {
 
     }
 
-    
-    .social-links  {
-        
-        display: flex;       
+
+    .social-links {
+
+        display: flex;
         flex-direction: column;
 
     }
-       
+
 
     .image-container img {
         display: none;
     }
-    
+
 
     form.join-form {
         width: 100%;
@@ -1212,14 +1246,16 @@ fieldset {
         font-size: 1.2rem;
     }
 
-   
+
 
     .carousel {
-               
+
         width: 90%;
         max-width: 80vw;
     }
-    .carousel h3, p {
+
+    .carousel h3,
+    p {
         font-size: 0.5rem;
     }
 
@@ -1229,7 +1265,7 @@ fieldset {
         width: 100%;
         max-width: 100vw;
     }
-   
+
     .contact-section {
         display: flex;
         padding: 0;
@@ -1243,11 +1279,12 @@ fieldset {
         font-size: 1rem;
     }
 
-    article.my-company h2, article.my-company p {
+    article.my-company h2,
+    article.my-company p {
         font-size: 0.8rem;
     }
 
-  
+
 }
 
 @media (max-width: 639px) {
@@ -1257,7 +1294,7 @@ fieldset {
         max-width: 100vw;
     }
 
-    .profile-wrapper { 
+    .profile-wrapper {
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -1272,7 +1309,7 @@ fieldset {
         max-width: 100vw;
     }
 
-    
+
     #my-portfolios {
 
         font-size: 0.8rem;
@@ -1284,7 +1321,7 @@ fieldset {
     article.my-profile {
         max-width: 100vw;
         width: 100%;
-        
+
     }
 
     .signup-btn {
@@ -1297,6 +1334,7 @@ fieldset {
         max-width: 100vw;
         width: 100%;
     }
+
     .modal-content {
         max-width: 100vw;
         width: 100%;
@@ -1361,12 +1399,12 @@ fieldset {
     .contact-wrapper {
         display: flex;
         flex-direction: column;
-        align-content: center; 
+        align-content: center;
         justify-content: center;
         align-items: center;
         /* background-color: #4cae4c; */
-        
-    }   
+
+    }
 
 
     .contact-section #email {
@@ -1377,7 +1415,7 @@ fieldset {
 
 @media (max-width: 1100px) {
 
-    
+
     input,
     select,
     textarea {
@@ -1454,7 +1492,7 @@ fieldset {
         margin-top: 2rem;
         /* background-color: #4cae4c; */
         font-size: 1.2rem;
-        
+
     }
 
 
@@ -1496,7 +1534,7 @@ fieldset {
         align-items: center;
         justify-content: center;
         padding: 0;
-        
+
         height: 300px;
         margin: 5px auto;
         border-radius: 5px;
@@ -1507,7 +1545,7 @@ fieldset {
         display: block;
         margin-left: 0;
     }
-    
+
 
     .contact-section label,
     .contact-section div {
@@ -1587,14 +1625,14 @@ fieldset {
 
 
     .social-links img {
-        
+
         width: 30px;
         height: auto;
-        
+
 
     }
 
-   
+
     .footer-text {
         font-size: 0.7rem;
     }
@@ -1606,5 +1644,13 @@ fieldset {
         background-color: #f4f4f4;
     }
 
-    
+
+}
+
+#header-container,
+#footer-container {
+    min-height: 50px;
+    /* Adjust based on your header/footer height */
+    background: #fff;
+    /* Match your page background */
 }

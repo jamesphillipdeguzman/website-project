@@ -19,26 +19,48 @@ async function loadTemplate(url, targetId) {
   }
 }
 
-async function loadHeaderAndFooter() {
-  // Use relative path based on current page location
+// Preload templates
+async function preloadTemplates() {
   const basePath = window.location.pathname.includes("/pages/")
     ? "../public/partials/"
     : "/public/partials/";
-  console.log("Base path for templates:", basePath);
 
-  await loadTemplate(`${basePath}header.html`, "#header-container");
-  setupHamburgerMenu(); // moved here after content loads
-  setActiveNavLink();
+  const headerResponse = await fetch(`${basePath}header.html`);
+  const footerResponse = await fetch(`${basePath}footer.html`);
 
-  await loadTemplate(`${basePath}footer.html`, "#footer-container");
-  updateFooterInfo();
+  return {
+    header: await headerResponse.text(),
+    footer: await footerResponse.text()
+  };
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadHeaderAndFooter();
-  document.body.classList.remove("loading");
-  document.body.classList.add("loaded");
-});
+async function loadHeaderAndFooter() {
+  try {
+    // Preload templates
+    const templates = await preloadTemplates();
+
+    // Insert templates
+    const headerContainer = document.querySelector("#header-container");
+    const footerContainer = document.querySelector("#footer-container");
+
+    if (headerContainer) headerContainer.innerHTML = templates.header;
+    if (footerContainer) footerContainer.innerHTML = templates.footer;
+
+    // Setup functionality
+    setupHamburgerMenu();
+    setActiveNavLink();
+    updateFooterInfo();
+
+    // Remove loading state
+    document.body.classList.remove("loading");
+    document.body.classList.add("loaded");
+  } catch (error) {
+    console.error("Error loading templates:", error);
+  }
+}
+
+// Start loading immediately
+loadHeaderAndFooter();
 
 // Setup hamburger toggle functionality
 function setupHamburgerMenu() {
