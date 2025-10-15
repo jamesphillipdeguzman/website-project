@@ -10,7 +10,7 @@ async function loadTemplate(url, targetId) {
     const targetElement = document.querySelector(targetId);
     if (targetElement) {
       // Create a temporary container
-      const temp = document.createElement('div');
+      const temp = document.createElement("div");
       temp.innerHTML = html;
 
       // Replace content only when new content is ready
@@ -36,12 +36,12 @@ async function preloadTemplates() {
   try {
     const [headerResponse, footerResponse] = await Promise.all([
       fetch(`${basePath}header.html`),
-      fetch(`${basePath}footer.html`)
+      fetch(`${basePath}footer.html`),
     ]);
 
     return {
       header: await headerResponse.text(),
-      footer: await footerResponse.text()
+      footer: await footerResponse.text(),
     };
   } catch (error) {
     console.error("Error preloading templates:", error);
@@ -81,7 +81,7 @@ async function updateHeaderAndFooter() {
   // Update header and footer in parallel
   await Promise.all([
     updateContent(`${basePath}header.html`, "#header-container"),
-    updateContent(`${basePath}footer.html`, "#footer-container")
+    updateContent(`${basePath}footer.html`, "#footer-container"),
   ]);
 
   // Setup functionality
@@ -91,7 +91,7 @@ async function updateHeaderAndFooter() {
 }
 
 // Start updating after page load
-window.addEventListener('load', updateHeaderAndFooter);
+window.addEventListener("load", updateHeaderAndFooter);
 
 // Function to update footer info
 function updateFooterInfo() {
@@ -108,7 +108,7 @@ function updateFooterInfo() {
 }
 
 // Format "Last Modified" timestamp
-function getFormattedLastModified() {
+export function getFormattedLastModified() {
   const lastModified = new Date(document.lastModified);
   const dateFormat = { year: "numeric", month: "short", day: "numeric" };
   const formattedDate = lastModified.toLocaleDateString("en-US", dateFormat);
@@ -116,7 +116,7 @@ function getFormattedLastModified() {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: true
+    hour12: true,
   });
 
   return `${formattedDate} ${formattedTime}`;
@@ -143,7 +143,7 @@ function setActiveNavLink() {
   const navLinks = document.querySelectorAll(".nav-links a");
   const currentPath = window.location.pathname;
 
-  navLinks.forEach(link => {
+  navLinks.forEach((link) => {
     const linkPath = new URL(link.href, window.location.origin).pathname;
 
     if (

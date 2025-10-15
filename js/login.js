@@ -1,54 +1,27 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const loginLink = document.getElementById("login-link");
-  const loginModal = document.getElementById("login-modal");
-  const loginBackdrop = document.getElementById("login-backdrop");
-  const closeLogin = document.getElementById("close-login");
-  const loginForm = document.getElementById("loginForm");
-  const message = document.getElementById("login-message");
+// login.js
+function initLoginForm() {
+  const loginForm = document.querySelector("#loginForm");
+  if (!loginForm) {
+    console.warn("Login form not found yet.");
+    return;
+  }
 
-  // Open modal
-  loginLink.addEventListener("click", (e) => {
+  loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    loginModal.classList.remove("hidden");
-    loginBackdrop.classList.add("show");
+    // Your login logic here
+    console.log("Login submitted");
+  });
+}
+
+// Run after window load
+window.addEventListener("load", () => {
+  // Try immediately
+  initLoginForm();
+
+  // Also observe DOM in case form is loaded dynamically later
+  const observer = new MutationObserver(() => {
+    initLoginForm();
   });
 
-  // Close modal
-  const closeModal = () => {
-    loginModal.classList.add("hidden");
-    loginBackdrop.classList.remove("show");
-  };
-
-  closeLogin.addEventListener("click", closeModal);
-  loginBackdrop.addEventListener("click", closeModal);
-
-  // Handle login form submit
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-
-    message.textContent = "Logging in...";
-
-    try {
-      const response = await fetch("/.netlify/functions/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        message.textContent = `Welcome ${data.name}! (${data.user_type})`;
-        localStorage.setItem("user", JSON.stringify(data));
-        setTimeout(closeModal, 1500);
-      } else {
-        message.textContent = data.error || "Invalid login.";
-      }
-    } catch (err) {
-      message.textContent = "Server error. Please try again later.";
-    }
-  });
+  observer.observe(document.body, { childList: true, subtree: true });
 });

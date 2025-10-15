@@ -4,7 +4,7 @@
 // - getFormattedLastModified()
 // - loadHeaderAndFooter()
 
-// import { loadHeaderAndFooter, setupHamburgerMenu, getFormattedLastModified } from './utils.mjs';
+import { getFormattedLastModified } from "./utils.mjs";
 
 // Portfolio data as an array literal
 
@@ -144,26 +144,7 @@ const portfolios = [
 
 // DOMContentLoaded handler
 document.addEventListener("DOMContentLoaded", () => {
-  // --- TEST Neon database connection via Netlify Function ---
-  fetch("/.netlify/functions/query-db")
-    .then((response) => response.json())
-    .then((data) => {
-      // console.log("✅ Database connection successful:", data);
-      const testDiv = document.createElement("div");
-      testDiv.textContent = "✅ Neon database connected successfully!";
-      testDiv.style =
-        "padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 6px; margin: 10px;";
-      document.body.prepend(testDiv);
-    })
-    .catch((err) => {
-      // console.error("❌ Database connection failed:", err);
-      const errorDiv = document.createElement("div");
-      errorDiv.textContent =
-        "❌ Failed to connect to Neon database. Check console for details.";
-      errorDiv.style =
-        "padding: 10px; background: #ffebee; color: #c62828; border-radius: 6px; margin: 10px;";
-      document.body.prepend(errorDiv);
-    });
+  checkNeonDB();
 
   initDate();
   //setupHamburgerMenu(); // replaces initMenuToggle
@@ -177,6 +158,26 @@ document.addEventListener("DOMContentLoaded", () => {
   //handleLocalStorage();
   // loadHeaderAndFooter(); // Load header and footer content
 });
+
+function checkNeonDB() {
+  fetch("/.netlify/functions/query-db")
+    .then((res) => res.json())
+    .then((data) => {
+      const div = document.createElement("div");
+      div.textContent = "✅ Neon database connected successfully!";
+      div.style =
+        "padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 6px; margin: 10px;";
+      document.body.prepend(div);
+    })
+    .catch((err) => {
+      const div = document.createElement("div");
+      div.textContent =
+        "❌ Failed to connect to Neon database. Check console for details.";
+      div.style =
+        "padding: 10px; background: #ffebee; color: #c62828; border-radius: 6px; margin: 10px;";
+      document.body.prepend(div);
+    });
+}
 
 function initDate() {
   const modifiedElement = document.getElementById("lastModified");
@@ -363,29 +364,29 @@ function setupCarouselButtons() {
 function loadQuoteModal() {
   const quoteModal = document.querySelector("#quote-modal");
   const closeBtn = document.querySelector("#close-btn");
-  const qetQuoteBtn = document.querySelector("#get-quote-btn");
+  const getQuoteBtn = document.querySelector("#get-quote-btn");
   const quoteBackdrop = document.querySelector("#quote-backdrop");
 
-  if (!quoteModal || !closeBtn || !qetQuoteBtn || !quoteBackdrop) return;
+  if (!quoteModal || !closeBtn || !getQuoteBtn || !quoteBackdrop) return;
 
   // Open modal
-  qetQuoteBtn.addEventListener("click", () => {
+  getQuoteBtn.addEventListener("click", () => {
     quoteModal.style.display = "block";
-    qetQuoteBtn.style.display = "none";
+    getQuoteBtn.style.display = "none";
     quoteBackdrop.style.display = "block";
   });
 
   // Close with close button
   closeBtn.addEventListener("click", () => {
     quoteModal.style.display = "none";
-    qetQuoteBtn.style.display = "block";
+    getQuoteBtn.style.display = "block";
     quoteBackdrop.style.display = "none";
   });
 
   // Close with backdrop click
   quoteBackdrop.addEventListener("click", () => {
     quoteModal.style.display = "none";
-    qetQuoteBtn.style.display = "block";
+    getQuoteBtn.style.display = "block";
     quoteBackdrop.style.display = "none";
   });
 }
