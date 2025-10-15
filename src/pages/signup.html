@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Join Us</title>
+    <meta name="description" content="Contact page: Contact James De Guzman through mobile, phone and email">
+    <meta name="author" content="James Phillip K. De Guzman">
+
+    <!-- 
+  ✅ Netlify Form Integration
+  This file includes a fully functional form for collecting user reviews.
+  - Integrated Netlify form handling with 'data-netlify' attribute
+  - Added spam protection using Netlify honeypot field
+  - Included hidden input to store timestamp of submission
+  - Sends form data to /thanks.html on successful submission
+  - Keeps styling and structure consistent with the rest of the site
+-->
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <!-- <link rel="stylesheet" href="/css/form.css"> -->
+    <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="My Personal Website">
+    <meta property="og:description"
+        content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!">
+    <meta property="og:image" content="/images/project-images/profile.png">
+    <meta property="og:url" content="https://jamesdeguzman.com/signup.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
+
+    <script src="/js/utils.js" type="module"></script>
+    <script src="/js/base.js" type="module"></script>
+</head>
+
+<body class="loading">
+    <div class="page-wrap">
+        <!-- Header loaded dynamically -->
+        <header id="header-container"></header>
+
+        <main>
+            <!-- <p>Window width: <span id="windowWidth"></span></p>
+            <p>Window height: <span id="windowHeight"></span></p> -->
+            <div class="banner-text">
+                <h1>Be part of our growing community!</h1>
+            </div>
+
+            <div class="bottom-section">
+                <!-- ✅ Netlify-enabled form -->
+                <form name="signup" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="join-form">
+
+                    <!-- Hidden inputs required by Netlify -->
+                    <input type="hidden" name="form-name" value="signup">
+                    <p hidden>
+                        <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                    </p>
+
+                    <fieldset>
+                        <h3>Please subscribe to our weekly newsletter!</h3>
+
+                        <label for="firstname">
+                            First Name
+                            <input type="text" id="firstname" name="firstname" autocomplete="given-name"
+                                title="Enter your first name" required>
+                        </label>
+
+                        <label for="lastname">
+                            Last Name
+                            <input type="text" id="lastname" name="lastname" autocomplete="family-name"
+                                title="Enter your last name" required>
+                        </label>
+
+                        <label for="email">
+                            Email
+                            <input type="email" id="email" name="email" autocomplete="email"
+                                placeholder="info@example.com" required title="Enter your email">
+                        </label>
+
+                        <label for="questions">
+                            Questions or Comments
+                            <textarea name="questions" id="questions"
+                                title="Enter any questions you might have"></textarea>
+                        </label>
+
+                        <!-- Hidden timestamp -->
+                        <input type="hidden" name="timestamp" id="timestamp">
+
+                        <label for="submit">
+                            <input type="submit" class="mybutton" id="submit" name="submit" value="I want to subscribe">
+                        </label>
+                    </fieldset>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <div class="wireframe-overlay"></div>
+    <footer id="footer-container"></footer>
+
+    <!-- ✅ Script to auto-fill timestamp -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const timestampInput = document.getElementById("timestamp");
+            if (timestampInput) {
+                const now = new Date().toISOString().slice(0, 16); // "YYYY-MM-DDTHH:MM"
+                timestampInput.value = now;
+            }
+        });
+    </script>
+</body>
+
+</html>

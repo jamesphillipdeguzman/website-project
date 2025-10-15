@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Review Page</title>
+    <meta name="description" content="Home page: Landing page for my web portfolio site">
+    <meta name="author" content="James Phillip K. De Guzman">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="My Personal Website">
+    <meta property="og:description"
+        content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!">
+    <meta property="og:image" content="/images/project-images/profile.png">
+    <meta property="og:url" content="https://jamesdeguzman.com/review.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
+
+    <script src="/js/utils.js" type="module"></script>
+    <script src="/js/base.js" type="module"></script>
+</head>
+
+<body class="loading">
+    <div class="page-wrap">
+        <!-- Header loaded dynamically -->
+        <header id="header-container"></header>
+
+        <main>
+            <!-- <p>Window width: <span id="windowWidth"></span></p>
+            <p>Window height: <span id="windowHeight"></span></p> -->
+            <div class="banner-text">
+                <div class="image-container">
+                    <h1 id="hero-logo">besys.tech</h1>
+                    <img src="/images/besys-tech-logo.svg" alt="besys.tech logo" width="200" height="100">
+                </div>
+            </div>
+
+            <div class="bottom-section">
+                <article class="my-company">
+                    <h2>Thank you!</h2>
+                    <p> We will be contacting you very soon. </p>
+
+                    <!-- Show number of searches here and date-->
+                    <!-- <p>Submission Count: <span id="search"></span></p> -->
+                    <!-- <p> Date: <span id="today"></span></p> -->
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <div class="wireframe-overlay"></div>
+    <footer id="footer-container"></footer>
+
+    <!-- ✅ Timestamp script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const timestamp = document.getElementById("timestamp");
+            if (timestamp) {
+                timestamp.value = new Date().toISOString().slice(0, 16);
+            }
+        });
+    </script>
+</body>
+
+</html>

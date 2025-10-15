@@ -1,0 +1,3 @@
+// ... existing code ...
+// Remove dynamic footer loading code
+// Keep any other functionality that might be needed 
