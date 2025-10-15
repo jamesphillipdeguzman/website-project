@@ -142,46 +142,6 @@ const portfolios = [
   },
 ];
 
-// --- TEST Neon database connection via Netlify Function ---
-async function testDatabaseConnection() {
-  const statusDiv = document.createElement("div");
-  statusDiv.style =
-    "padding: 10px; border-radius: 6px; margin: 10px; font-weight: 500; text-align: center;";
-  document.body.prepend(statusDiv);
-
-  try {
-    const response = await fetch("/.netlify/functions/query-db", {
-      headers: { Accept: "application/json" },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Server responded with status ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    // ✅ Validation logic
-    if (
-      !data ||
-      typeof data !== "object" ||
-      (!data.success && !data.rows && !data.message)
-    ) {
-      throw new Error("Unexpected response structure from Neon DB function.");
-    }
-
-    // console.log("✅ Database connection successful:", data);
-
-    statusDiv.textContent = "✅ Neon database connected successfully!";
-    statusDiv.style.background = "#e8f5e9";
-    statusDiv.style.color = "#2e7d32";
-  } catch (err) {
-    // console.error("❌ Database connection failed:", err);
-    statusDiv.textContent = `❌ Database connection failed: ${err.message}`;
-    statusDiv.style.background = "#ffebee";
-    statusDiv.style.color = "#c62828";
-  }
-}
-
 // DOMContentLoaded handler
 document.addEventListener("DOMContentLoaded", () => {
   // --- TEST Neon database connection via Netlify Function ---
