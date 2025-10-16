@@ -1,154 +1,162 @@
-// Function to load HTML templates
+// ==============================
+//  utils.mjs (Refactored)
+// ==============================
+
+// ---------- Helper: Load a template into target ----------
 async function loadTemplate(url, targetId) {
   try {
-    console.log(`Attempting to load template from: ${url}`);
+    console.log(`🧩 Loading template from: ${url}`);
     const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
     const html = await response.text();
-    const targetElement = document.querySelector(targetId);
-    if (targetElement) {
-      // Create a temporary container
-      const temp = document.createElement("div");
-      temp.innerHTML = html;
+    const target = document.querySelector(targetId);
 
-      // Replace content only when new content is ready
-      requestAnimationFrame(() => {
-        targetElement.innerHTML = html;
-      });
+    if (!target) {
+      console.error(`❌ Target element ${targetId} not found.`);
+      return;
+    }
 
-      console.log(`Successfully loaded template into ${targetId}`);
+    // Only update if content is empty or different
+    if (target.innerHTML.trim() !== html.trim()) {
+      requestAnimationFrame(() => (target.innerHTML = html));
+      console.log(`✅ Template injected into ${targetId}`);
     } else {
-      console.error(`Target element ${targetId} not found`);
+      console.log(`⚠️ Template already loaded into ${targetId}, skipping.`);
     }
   } catch (error) {
-    console.error("Error loading template:", error);
+    console.error("⚠️ Error loading template:", error);
   }
 }
 
-// Preload templates
+// ---------- Helper: Preload both templates ----------
 async function preloadTemplates() {
   const basePath = window.location.pathname.includes("/pages/")
     ? "../public/partials/"
     : "/public/partials/";
 
-  try {
-    const [headerResponse, footerResponse] = await Promise.all([
-      fetch(`${basePath}header.html`),
-      fetch(`${basePath}footer.html`),
-    ]);
+  console.log(`📦 Preloading templates from: ${basePath}`);
 
-    return {
-      header: await headerResponse.text(),
-      footer: await footerResponse.text(),
-    };
-  } catch (error) {
-    console.error("Error preloading templates:", error);
+  try {
+    const [header, footer] = await Promise.all([
+      fetch(`${basePath}header.html`).then((r) => r.text()),
+      fetch(`${basePath}footer.html`).then((r) => r.text()),
+    ]);
+    return { header, footer };
+  } catch (err) {
+    console.error("⚠️ Error preloading templates:", err);
     return null;
   }
 }
 
-// Function to update content
+// ---------- Helper: Update a section (header/footer) ----------
 async function updateContent(url, targetId) {
   try {
-    console.log(`Attempting to update content from: ${url}`);
     const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const html = await response.text();
-    const targetElement = document.querySelector(targetId);
-    if (targetElement) {
-      // Only update if content is different
-      if (targetElement.innerHTML.trim() !== html.trim()) {
-        targetElement.innerHTML = html;
-        console.log(`Successfully updated content in ${targetId}`);
-      }
-    } else {
-      console.error(`Target element ${targetId} not found`);
+
+    const target = document.querySelector(targetId);
+    if (!target) {
+      console.error(`❌ Target element ${targetId} not found.`);
+      return;
     }
+
+    // Skip if already injected
+    if (target.innerHTML.trim().length > 0) {
+      console.log(
+        `⏩ ${targetId} already contains content. Skipping injection.`,
+      );
+      return;
+    }
+
+    target.innerHTML = html;
+    console.log(`✅ Updated ${targetId}`);
   } catch (error) {
-    console.error("Error updating content:", error);
+    console.error("⚠️ Error updating content:", error);
   }
 }
 
+// ---------- Main: Update Header and Footer ----------
 async function updateHeaderAndFooter() {
   const basePath = window.location.pathname.includes("/pages/")
     ? "../public/partials/"
     : "/public/partials/";
 
-  // Update header and footer in parallel
+  // Prevent double injection
+  const headerCont = document.getElementById("header-container");
+  const footerCont = document.getElementById("footer-container");
+
+  if (
+    (headerCont && headerCont.innerHTML.trim().length > 0) ||
+    (footerCont && footerCont.innerHTML.trim().length > 0)
+  ) {
+    console.log(
+      "🚫 Header/Footer already injected, skipping updateHeaderAndFooter()",
+    );
+    return;
+  }
+
+  console.log("🚀 Injecting header and footer from:", basePath);
+
   await Promise.all([
     updateContent(`${basePath}header.html`, "#header-container"),
     updateContent(`${basePath}footer.html`, "#footer-container"),
   ]);
 
-  // Setup functionality
+  // Once loaded, initialize
   setupHamburgerMenu();
   setActiveNavLink();
   updateFooterInfo();
 }
 
-// Start updating after page load
-// window.addEventListener("load", updateHeaderAndFooter);
-
-// Function to update footer info
+// ---------- Footer Info ----------
 function updateFooterInfo() {
-  const yearElement = document.querySelector("#currentyear");
-  const modifiedElement = document.querySelector("#lastModified");
+  const yearEl = document.querySelector("#currentyear");
+  const modEl = document.querySelector("#lastModified");
 
-  if (yearElement) {
-    yearElement.textContent = new Date().getFullYear();
-  }
-
-  if (modifiedElement) {
-    modifiedElement.textContent = getFormattedLastModified();
-  }
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  if (modEl) modEl.textContent = getFormattedLastModified();
 }
 
-// Format "Last Modified" timestamp
 export function getFormattedLastModified() {
-  const lastModified = new Date(document.lastModified);
-  const dateFormat = { year: "numeric", month: "short", day: "numeric" };
-  const formattedDate = lastModified.toLocaleDateString("en-US", dateFormat);
-  const formattedTime = lastModified.toLocaleTimeString("en-US", {
+  const lastMod = new Date(document.lastModified);
+  const dateFmt = { year: "numeric", month: "short", day: "numeric" };
+  const timeFmt = {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
     hour12: true,
-  });
-
-  return `${formattedDate} ${formattedTime}`;
+  };
+  return `${lastMod.toLocaleDateString("en-US", dateFmt)} ${lastMod.toLocaleTimeString("en-US", timeFmt)}`;
 }
 
-// Setup hamburger toggle functionality
+// ---------- Hamburger Menu ----------
 function setupHamburgerMenu() {
-  const hamburgerBtn = document.querySelector("#menu");
-  const navigationMenu = document.querySelector(".nav-links");
+  const menuBtn = document.querySelector("#menu");
+  const navMenu = document.querySelector(".nav-links");
 
-  if (!hamburgerBtn || !navigationMenu) {
-    console.warn("Hamburger menu elements not found.");
+  if (!menuBtn || !navMenu) {
+    console.warn("⚠️ Hamburger elements not found.");
     return;
   }
 
-  hamburgerBtn.addEventListener("click", () => {
-    hamburgerBtn.classList.toggle("open");
-    navigationMenu.classList.toggle("open");
+  menuBtn.addEventListener("click", () => {
+    menuBtn.classList.toggle("open");
+    navMenu.classList.toggle("open");
   });
 }
 
-// Highlight the current nav link
+// ---------- Highlight Active Nav ----------
 function setActiveNavLink() {
   const navLinks = document.querySelectorAll(".nav-links a");
-  const currentPath = window.location.pathname;
+  const current = window.location.pathname;
 
   navLinks.forEach((link) => {
     const linkPath = new URL(link.href, window.location.origin).pathname;
-
     if (
-      linkPath === currentPath ||
-      (linkPath.endsWith("index.html") && currentPath === "/")
+      linkPath === current ||
+      (linkPath.endsWith("index.html") && current === "/")
     ) {
       link.classList.add("active");
     } else {
@@ -157,28 +165,7 @@ function setActiveNavLink() {
   });
 }
 
-function updateWindowWidthDisplay() {
-  const width = getCurrentWindowWidth();
-  const displayElement = document.querySelector("#windowWidth");
-
-  if (displayElement) {
-    displayElement.textContent = `${width}px`;
-  } else {
-    // console.warn("Element with ID 'windowWidth' not found.");
-  }
-}
-
-function updateWindowHeightDisplay() {
-  const height = getCurrentWindowHeight();
-  const displayElement = document.querySelector("#windowHeight");
-
-  if (displayElement) {
-    displayElement.textContent = `${height}px`;
-  } else {
-    // console.warn("Element with ID 'windowHeight' not found.");
-  }
-}
-
+// ---------- Window Dimensions ----------
 function getCurrentWindowWidth() {
   return (
     window.innerWidth ||
@@ -195,11 +182,26 @@ function getCurrentWindowHeight() {
   );
 }
 
-window.addEventListener("load", updateWindowWidthDisplay);
-window.addEventListener("resize", updateWindowWidthDisplay);
+function updateWindowWidthDisplay() {
+  const el = document.querySelector("#windowWidth");
+  if (el) el.textContent = `${getCurrentWindowWidth()}px`;
+}
 
-window.addEventListener("load", updateWindowHeightDisplay);
-window.addEventListener("resize", updateWindowHeightDisplay);
+function updateWindowHeightDisplay() {
+  const el = document.querySelector("#windowHeight");
+  if (el) el.textContent = `${getCurrentWindowHeight()}px`;
+}
 
+window.addEventListener("load", () => {
+  updateHeaderAndFooter();
+  updateWindowWidthDisplay();
+  updateWindowHeightDisplay();
+});
+
+window.addEventListener("resize", () => {
+  updateWindowWidthDisplay();
+  updateWindowHeightDisplay();
+});
+
+// ---------- Export ----------
 export { updateHeaderAndFooter };
-
