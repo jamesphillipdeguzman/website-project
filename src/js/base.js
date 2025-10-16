@@ -4,7 +4,8 @@
 // - getFormattedLastModified()
 // - loadHeaderAndFooter()
 
-import { getFormattedLastModified } from "./utils.mjs";
+import { getFormattedLastModified, updateHeaderAndFooter } from "./utils.mjs";
+
 
 // Portfolio data as an array literal
 
@@ -144,6 +145,7 @@ const portfolios = [
 
 // DOMContentLoaded handler
 document.addEventListener("DOMContentLoaded", () => {
+  updateHeaderAndFooter();
   checkNeonDB();
 
   initDate();
@@ -157,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadQuoteModal(); // Load quote modal)
   //handleLocalStorage();
   // loadHeaderAndFooter(); // Load header and footer content
+
 });
 
 function checkNeonDB() {

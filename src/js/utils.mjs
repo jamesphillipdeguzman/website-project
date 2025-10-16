@@ -91,7 +91,7 @@ async function updateHeaderAndFooter() {
 }
 
 // Start updating after page load
-window.addEventListener("load", updateHeaderAndFooter);
+// window.addEventListener("load", updateHeaderAndFooter);
 
 // Function to update footer info
 function updateFooterInfo() {
@@ -200,3 +200,6 @@ window.addEventListener("resize", updateWindowWidthDisplay);
 
 window.addEventListener("load", updateWindowHeightDisplay);
 window.addEventListener("resize", updateWindowHeightDisplay);
+
+export { updateHeaderAndFooter };
+
