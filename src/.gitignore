@@ -1,0 +1,20 @@
+# Ignore node_modules
+node_modules/
+
+# Ignore build output folder
+dist/
+
+# Ignore system files that might be created by editors or OS.
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.github/workflows
+
+
+# Local Netlify folder
+.netlify
+
+
+# Ignore environment secrets
+.env
