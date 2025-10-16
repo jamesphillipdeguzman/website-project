@@ -19,6 +19,7 @@ export default defineConfig({
         signup: resolve(__dirname, "src/pages/signup.html"),
         siteplan: resolve(__dirname, "src/pages/siteplan.html"),
         thanks: resolve(__dirname, "src/pages/thanks.html"),
+        login: resolve(__dirname, "src/pages/login.html"),
       },
     },
   },
