@@ -164,10 +164,10 @@ function checkNeonDB() {
     .then((res) => res.json())
     .then((data) => {
       const div = document.createElement("div");
-      div.textContent = "✅ Neon database connected successfully!";
-      div.style =
-        "padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 6px; margin: 10px;";
-      document.body.prepend(div);
+      // div.textContent = "✅ Connected!";
+      // div.style =
+      //   "padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 6px; margin: 10px;";
+      // document.body.prepend(div);
     })
     .catch((err) => {
       const div = document.createElement("div");

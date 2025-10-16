@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Dashboard | BESYSTECH</title>
+    <meta name="description" content="Dashboard: Overview page for BESYSTECH projects and analytics.">
+    <meta name="author" content="James Phillip K. De Guzman">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/base.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon">
+
+    <!-- Meta Tags -->
+    <meta property="og:title" content="BESYSTECH Dashboard">
+    <meta property="og:description" content="Access analytics, manage clients, and monitor project progress.">
+    <meta property="og:image" content="/images/project-images/profile.png">
+    <meta property="og:url" content="https://jamesdeguzman.com/dashboard.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site-name" content="BESYSTECH">
+
+    <!-- JS -->
+    <script src="/js/base.js" type="module"></script>
+</head>
+
+<body class="loading">
+
+    <div class="page-wrap">
+
+        <!-- Header loaded dynamically -->
+        <header id="header-container"></header>
+
+        <main>
+            <section class="banner-text">
+
+                <article class="my-company">
+                    <h2>Welcome back, <span id="user-name">Loading...</span>!</h2>
+                    <p>Here’s your personalized dashboard.</p>
+                </article>
+
+            </section>
+
+            <section class="dashboard-content">
+                <div class="card">
+                    <h3>Active Projects</h3>
+                    <p>3 ongoing, 2 pending review</p>
+                </div>
+
+                <div class="card">
+                    <h3>New Leads</h3>
+                    <p>5 new potential clients this week</p>
+                </div>
+
+                <div class="card">
+                    <h3>System Status</h3>
+                    <p class="status ok">All systems operational ✅</p>
+                </div>
+            </section>
+
+            <section class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="actions-grid">
+                    <button class="btn-primary">Add New Project</button>
+                    <button class="btn-secondary">View Analytics</button>
+                    <button class="btn-secondary">Manage Clients</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="wireframe-overlay"></div>
+
+    <footer id="footer-container"></footer>
+
+    <script>
+        function loadUserName() {
+            const nameEl = document.getElementById("user-name");
+            const storedName = localStorage.getItem("userName");
+
+            if (storedName) {
+                nameEl.textContent = storedName;
+            } else {
+                nameEl.textContent = "Guest";
+            }
+        }
+
+        loadUserName();
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1165,6 +1165,127 @@ fieldset {
     color: #464444;
 }
 
+* ---------- DASHBOARD CONTENT ---------- */
+.dashboard-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 3rem;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark-slate-gray, #2f4f4f);
+}
+
+.card p {
+  font-size: 1rem;
+  color: var(--faint-black, #444);
+}
+
+.status.ok {
+  color: var(--carmine, #c0392b);
+  font-weight: 600;
+}
+
+/* ---------- QUICK ACTIONS SECTION ---------- */
+.quick-actions {
+  padding: 2rem 3rem 3rem;
+}
+
+.quick-actions h2 {
+  font-family: var(--font-headline, 'Roboto', sans-serif);
+  font-size: 1.6rem;
+  color: var(--dark-slate-gray, #2f4f4f);
+  margin-bottom: 1rem;
+}
+
+.actions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+/* ---------- BUTTONS ---------- */
+.btn-primary,
+.btn-secondary {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.9rem 1.8rem; /* increased horizontal padding */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* prevents text from wrapping */
+  min-width: 180px; /* ensures uniform width for long text */
+  text-align: center;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: var(--carmine, #c0392b);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #a83228;
+}
+
+.btn-secondary {
+  background-color: var(--dark-slate-gray, #2f4f4f);
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #3e5c5c;
+}
+
+/* Optional: make buttons full width on small screens */
+@media (max-width: 600px) {
+  .actions-grid  {
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+}
+
+
+/* ---------- RESPONSIVE DESIGN ---------- */
+@media (max-width: 768px) {
+  .banner-text {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .dashboard-content {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .quick-actions {
+    padding: 1.5rem;
+  }
+
+  .actions-grid {
+    justify-content: center;
+  }
+}
+
+
 /* ================== MOBILE VIEW ====================== */
 @media (max-width: 330px) {
 

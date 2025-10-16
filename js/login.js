@@ -1,20 +1,21 @@
 // public/js/login.js
-function initLoginForm() {
+document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.querySelector("#loginForm");
   if (!loginForm) {
-    console.warn("Login form not found yet.");
+    console.error("❌ Login form not found!");
     return;
   }
-
-  // Prevent duplicate listeners if the observer re-triggers
-  if (loginForm.dataset.bound === "true") return;
-  loginForm.dataset.bound = "true";
 
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.querySelector("#email").value;
-    const password = document.querySelector("#password").value;
+    const email = document.querySelector("#email").value.trim();
+    const password = document.querySelector("#password").value.trim();
+
+    if (!email || !password) {
+      alert("⚠️ Please enter both email and password.");
+      return;
+    }
 
     try {
       const response = await fetch("/.netlify/functions/login", {
@@ -24,30 +25,30 @@ function initLoginForm() {
       });
 
       const data = await response.json();
-      console.log(data);
+      console.log("🔍 Login response:", data);
 
       if (response.ok) {
         alert("✅ " + data.message);
-        // Optional redirect:
-        // window.location.href = "/dashboard.html";
+
+        // Store minimal safe info
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("userEmail", data.email);
+        localStorage.setItem("userName", data.name || "");
+
+        // ✅ Ensure correct relative path
+        const redirectUrl = "/pages/dashboard.html"; // adjust if needed
+        console.log("➡️ Redirecting to:", redirectUrl);
+
+        // Use a short delay to ensure alert closes first
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 500);
       } else {
         alert("❌ " + (data.error || "Login failed"));
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("🚨 Login error:", error);
       alert("Something went wrong. Please try again later.");
     }
   });
-}
-
-// Run after window load
-window.addEventListener("load", () => {
-  initLoginForm();
-
-  // Watch for dynamic content (like your header/footer loading)
-  const observer = new MutationObserver(() => {
-    initLoginForm();
-  });
-
-  observer.observe(document.body, { childList: true, subtree: true });
 });
