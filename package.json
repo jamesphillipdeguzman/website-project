@@ -2,14 +2,15 @@
   "name": "jamesdeguzman",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "start": "vite",
-    "build": "vite build --emptyOutDir",
-    "preview": "vite preview",
-    "lint": "eslint \"src/js/**/*.{js,mjs}\"",
-    "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
-    "watch": "nodemon --watch src/public/partials --watch src --ext html,js,css build.js"
-  },
+ "scripts": {
+  "start": "vite",
+  "build": "vite build --emptyOutDir",
+  "preview": "vite preview",
+  "lint": "eslint \"src/js/**/*.{js,mjs}\"",
+  "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
+  "watch": "nodemon --watch src/public/partials --watch src --ext html,js,css build.js"
+ },
+
   "keywords": [
     "MPA",
     "personal",
