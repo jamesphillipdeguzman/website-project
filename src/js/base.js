@@ -218,7 +218,6 @@ function setupCarouselButtons() {
     container.scrollBy({ left: 300, behavior: "smooth" });
   });
 }
-
 function loadQuoteModal() {
   const quoteModal = document.querySelector("#quote-modal");
   const closeBtn = document.querySelector("#close-btn");
