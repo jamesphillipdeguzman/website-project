@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="James Phillip De Guzman" />
+    <meta name="description" content="Product Review: A product review form using HTML forms" />
+    <title>Product Review</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&family=Poppins:wght@100..900&display=swap"
+        rel="stylesheet" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/normalize.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/form.css" />
+
+
+
+    <!-- Favicon -->
+    <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon" />
+
+    <!-- Open Graph Meta -->
+    <meta property="og:title" content="My Personal Website" />
+    <meta property="og:description"
+        content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!" />
+    <meta property="og:image" content="/images/project-images/profile.png" />
+    <meta property="og:url" content="https://jamesdeguzman.com/product.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site-name" content="https://jamesdeguzman.com/index.html" />
+
+    <!-- Scripts -->
+
+    <script src="/js/base.js" type="module"></script>
+    <script src="/js/form.js" type="module"></script>
+</head>
+
+
+<body class="loading">
+    <div class="page-wrap">
+        <header id="header-container">
+            <nav class="navigation">
+                <div><a href="/index.html"><span class="highlight2">besys.tech</span></a></div>
+                <a href="/index.html" id="logolink"><img id="logo" src="/images/besys-tech-logo3-nobg.webp"
+                        alt="company logo" width="100" height="100"></a>
+
+                <ul class="nav-links">
+                    <li><a href="/index.html" id="home">Home</a></li>
+                    <li><a href="/pages/about.html" id="about">About</a></li>
+                    <li><a href="/pages/contact.html" id="contact">Contact</a></li>
+                    <li><a href="/pages/portfolios.html" id="portfolio">Portfolio</a></li>
+                    <li><a href="/pages/product.html" id="product" class="active">Review</a></li>
+                    <li><a href="/pages/login.html" id="login-link">Login</a></li>
+
+                </ul>
+                <button id="menu" aria-label="menu"></button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- <p>Window width: <span id="windowWidth"></span></p>
+            <p>Window height: <span id="windowHeight"></span></p> -->
+            <div class="banner-text">
+                <h1 id="hero-text">Review My Work</h1>
+            </div>
+
+            <div class="form-section">
+                <h3>Portfolio Review Form</h3>
+
+                <form name="review" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="review-form">
+
+                    <!-- Netlify hidden field -->
+                    <input type="hidden" name="form-name" value="review" />
+                    <p hidden>
+                        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                    </p>
+
+                    <fieldset class="form-group">
+                        <label for="dynamic-product">Portfolio Name</label>
+                        <select id="dynamic-product" name="dynamic-product" required>
+                            <option value="" disabled>Select a portfolio...</option>
+                        </select>
+                        <div id="select-error-message"></div>
+
+                        <fieldset class="stars-rating">
+                            <legend>Overall Rating</legend>
+                            <input type="radio" id="fivestar" name="stars" value="5" required><label
+                                for="fivestar"></label>
+                            <input type="radio" id="fourstar" name="stars" value="4" /><label for="fourstar"></label>
+                            <input type="radio" id="threestar" name="stars" value="3" /><label for="threestar"></label>
+                            <input type="radio" id="twostar" name="stars" value="2" /><label for="twostar"></label>
+                            <input type="radio" id="onestar" name="stars" value="1" /><label for="onestar"></label>
+                        </fieldset>
+                        <div id="radio-error-message"></div>
+
+                        <div class="install-date">
+                            <label for="date-installed">Date</label>
+                            <input type="date" id="date-installed" name="date-installed" required />
+                        </div>
+                        <div id="date-error-message"></div>
+
+                        <div class="features">
+                            <p>Which aspects of the page did you find most effective?</p>
+                            <p id="italicize">(Check all that apply)</p>
+                            <div class="wrap-checkbox">
+                                <label><input type="checkbox" class="large-checkbox" id="usability" name="features"
+                                        value="usability" /> Usability</label>
+                                <label><input type="checkbox" class="large-checkbox" id="responsiveness" name="features"
+                                        value="responsiveness" /> Responsiveness</label>
+                                <label><input type="checkbox" class="large-checkbox" id="performance" name="features"
+                                        value="performance" /> Performance</label>
+                                <label><input type="checkbox" class="large-checkbox" id="accessibility" name="features"
+                                        value="accessibility" /> Accessibility</label>
+                                <label><input type="checkbox" class="large-checkbox" id="visual-design" name="features"
+                                        value="visual-design" /> Visual Design</label>
+                                <label><input type="checkbox" class="large-checkbox" id="navigation" name="features"
+                                        value="navigation" /> Navigation</label>
+                                <label><input type="checkbox" class="large-checkbox" id="seo" name="features"
+                                        value="seo" /> SEO Optimization</label>
+                            </div>
+                        </div>
+
+                        <div class="review">
+                            <label for="written-review">Written Review <span class="optional">(Optional)</span></label>
+                            <textarea id="written-review" name="written-review"></textarea>
+
+                            <label for="fname">Name <span class="optional">(Optional)</span></label>
+                            <input type="text" id="fname" name="fname">
+                        </div>
+
+                        <input type="submit" id="review-btn" class="mybutton" value="Post a Review">
+                    </fieldset>
+                </form>
+            </div>
+        </main>
+
+        <footer id="footer-container">
+            <div class="footer-wrapper">
+                <div class="social-links">
+                    <a href="/pages/siteplan.html">
+                        <img src="/images/svg/site-plan-logo.svg" alt="site plan logo" width="50" height="50">
+                    </a>
+                    <div class="footer-text">
+                        &copy;<span id="currentyear"></span> James Phillip K. De Guzman <p class="lastmodified">Last
+                            Modified:
+                            <span id="lastModified"></span>
+                        </p>
+                        <div class="local-storage-info">
+                            <p id="today"></p>
+                            <p id="search"></p>
+                        </div>
+                    </div>
+                    <a href="https://www.facebook.com/diet.deguzman" target="_blank">
+                        <img src="/images/svg/fb-logo.svg" alt="facebook logo" width="50" height="50">
+                    </a>
+                    <a href="https://www.linkedin.com/in/jamesphillipdeguzman/" target="_blank">
+                        <img src="/images/svg/linkedin-logo.svg" alt="LinkedIn logo" width="50" height="50">
+                    </a>
+                    <a href="https://www.youtube.com/@JamesPhillipDeGuzman" target="_blank">
+                        <img src="/images/svg/youtube-logo.svg" alt="YouTube logo" width="50" height="50">
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="wireframe-overlay"></div>
+</body>
+
+</html>
