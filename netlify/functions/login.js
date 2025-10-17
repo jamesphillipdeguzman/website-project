@@ -1,6 +1,6 @@
 import { Client } from "@neondatabase/serverless";
-import dotenv from "dotenv";
-dotenv.config();
+// import dotenv from "dotenv";
+// dotenv.config();
 
 export async function handler(event) {
   if (event.httpMethod !== "POST") {
