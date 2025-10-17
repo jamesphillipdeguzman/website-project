@@ -916,6 +916,15 @@ input[type="email"] {
     gap: 10px;
 }
 
+.card .databox p {     /* putting .card in front of .databox p increases its specificity, therefore this works */
+    font-size: 0.8rem;
+}
+
+
+.card .databox h3 {
+    font-size: 0.9rem;
+}
+
 .dropdown-container {
     display: flex;
     justify-content: center;
