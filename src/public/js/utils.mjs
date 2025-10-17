@@ -138,7 +138,7 @@ function updateWindowHeightDisplay() {
 
 // ---------- Initialize on Load ----------
 window.addEventListener("load", () => {
-  updateHeaderAndFooter();
+  // updateHeaderAndFooter();
   updateWindowWidthDisplay();
   updateWindowHeightDisplay();
 });
