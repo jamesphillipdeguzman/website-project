@@ -244,13 +244,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = form.password.value.trim();
 
       try {
-        const res = await fetch("/.netlify/functions/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
+        const response = await fetch(
+          `${window.location.origin}/.netlify/functions/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          },
+        );
 
-        const data = await res.json();
+        const data = await response.json();
 
         if (!res.ok) {
           alert(`❌ ${data.error || "Login failed"}`);
