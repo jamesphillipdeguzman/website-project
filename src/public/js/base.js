@@ -3,20 +3,6 @@
 import { getFormattedLastModified } from "./utils.mjs";
 import portfolios from "./portfolios-data.mjs"; // added
 
-// DOMContentLoaded handler
-document.addEventListener("DOMContentLoaded", () => {
-  setupHamburgerMenu(); // hamburger toggle
-  setActiveNavLink(); // highlight active page
-  initDate(); // update footer date/last modified
-  checkNeonDB();
-  populateProductDropdown();
-  setupButtons();
-  loadPortfolioList();
-  setupPortfolio();
-  setupPortfolioCarousel();
-  loadQuoteModal();
-});
-
 function checkNeonDB() {
   fetch("/.netlify/functions/query-db")
     .then((res) => res.json())
@@ -247,3 +233,17 @@ function loadQuoteModal() {
     quoteBackdrop.style.display = "none";
   });
 }
+
+// DOMContentLoaded handler
+document.addEventListener("DOMContentLoaded", () => {
+  setupHamburgerMenu(); // hamburger toggle
+  setActiveNavLink(); // highlight active page
+  initDate(); // update footer date/last modified
+  checkNeonDB();
+  populateProductDropdown();
+  setupButtons();
+  loadPortfolioList();
+  setupPortfolio();
+  setupPortfolioCarousel();
+  loadQuoteModal();
+});
