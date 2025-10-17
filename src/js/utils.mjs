@@ -139,6 +139,7 @@ function updateWindowHeightDisplay() {
 // ---------- Initialize on Load ----------
 window.addEventListener("load", () => {
   // updateHeaderAndFooter();
+  setupHamburgerMenu();
   updateWindowWidthDisplay();
   updateWindowHeightDisplay();
 });
