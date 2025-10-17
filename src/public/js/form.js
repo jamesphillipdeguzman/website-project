@@ -131,6 +131,14 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "My Full Store API team project in CSE341",
       imageURL: "https://store-pos-api.netlify.app/",
     },
+    {
+      id: "P16",
+      pTitle: "CSE Motors (CSE340-Web Backend Dev)",
+      fileName: "app.js",
+      sourceImg: "/images/project-images/portfolio-16.webp",
+      description: "Backend web project in CSE340",
+      imageURL: "https://cse340-backend-ogrs.onrender.com/",
+    },
   ];
 
   const dynamicPortfolio = document.querySelector("#dynamic-product"); // maybe rename this ID in HTML too
