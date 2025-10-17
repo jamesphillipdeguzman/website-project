@@ -247,3 +247,40 @@ document.addEventListener("DOMContentLoaded", () => {
   setupPortfolioCarousel();
   loadQuoteModal();
 });
+
+// ============================
+// Robust Quote & Signup Handling
+// ============================
+
+// Delegated click listener for dynamically added buttons
+document.addEventListener("click", (e) => {
+  const quoteBtn = e.target.closest("#get-quote-btn");
+  const signupBtn = e.target.closest("#signup-btn");
+  const quoteModal = document.querySelector("#quote-modal");
+  const quoteBackdrop = document.querySelector("#quote-backdrop");
+
+  // --- Quote Button ---
+  if (quoteBtn && quoteModal && quoteBackdrop) {
+    quoteModal.style.display = "block";
+    quoteBtn.style.display = "none";
+    quoteBackdrop.style.display = "block";
+  }
+
+  // --- Signup Button ---
+  if (signupBtn) {
+    window.location.href = "/pages/signup.html";
+  }
+
+  // --- Close Quote Modal ---
+  if (e.target.closest("#close-btn") || e.target.closest("#quote-backdrop")) {
+    if (
+      quoteModal &&
+      quoteBackdrop &&
+      document.querySelector("#get-quote-btn")
+    ) {
+      quoteModal.style.display = "none";
+      document.querySelector("#get-quote-btn").style.display = "inline-block";
+      quoteBackdrop.style.display = "none";
+    }
+  }
+});
