@@ -8,6 +8,7 @@ export async function handler(event) {
   }
 
   const { email, password } = JSON.parse(event.body);
+  debugger; // 🛑 VS Code will pause here when you call this function
   const client = new Client({ connectionString: process.env.NEON_DB_URL });
 
   try {
@@ -33,14 +34,24 @@ export async function handler(event) {
       };
     }
 
+    // include the message in the response instead
+    let message;
+    if (user.user_type === "Admin") {
+      message = "Hello there. You are an " + user.user_type;
+    } else if (user.user_type === "Client") {
+      message = "Welcome! You are logged in as a Client";
+    } else {
+      message = "Login successful";
+    }
     // ✅ Success — send safe data only
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: "Login successful",
+        message,
         userId: user.id,
         name: user.name,
         email: user.email,
+        userType: user.user_type,
       }),
     };
   } catch (error) {

@@ -37,9 +37,17 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("userEmail", data.email);
         localStorage.setItem("userName", data.name || "");
+        localStorage.setItem("userType", data.userType);
 
         // ✅ Ensure correct relative path
-        const redirectUrl = "/pages/dashboard.html"; // adjust if needed
+        let redirectUrl; // declare once
+
+        if (data.userType === "Admin") {
+          redirectUrl = "/pages/dashboard.html"; // adjust if needed
+        } else {
+          redirectUrl = "/index.html"; // adjust if needed
+        }
+
         console.log("➡️ Redirecting to:", redirectUrl);
 
         // Use a short delay to ensure alert closes first
