@@ -1,6 +1,14 @@
 // utils.mjs
+import {
+  setupHamburgerMenu,
+  setActiveNavLink,
+  getFormattedLastModified,
+  updateHeaderAndFooter,
+  updateFooterInfo,
+  updateWindowWidthDisplay,
+  updateWindowHeightDisplay,
+} from "./utils.mjs";
 
-import { getFormattedLastModified } from "./utils.mjs";
 import portfolios from "./portfolios-data.mjs"; // added
 
 function checkNeonDB() {
@@ -8,10 +16,10 @@ function checkNeonDB() {
     .then((res) => res.json())
     .then((data) => {
       const div = document.createElement("div");
-      div.textContent = "✅ Connected to DB!";
-      div.style =
-        "padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 6px; margin: 10px;";
-      document.body.prepend(div);
+      // div.textContent = "✅ Connected to DB!";
+      // div.style =
+      //   "padding: 10px; background: #e8f5e9; color: #2e7d32; border-radius: 6px; margin: 10px;";
+      // document.body.prepend(div);
     })
     .catch((err) => {
       const div = document.createElement("div");

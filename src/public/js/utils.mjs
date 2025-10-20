@@ -1,5 +1,6 @@
+// utils.mjs
 // ==============================
-// utils.mjs (Refactored & Fixed)
+// utils.mjs (Exports fixed + safe loading order)
 // ==============================
 
 // ---------- Helper: Fetch HTML ----------
@@ -18,12 +19,14 @@ async function fetchHTML(url) {
 function injectHTML(targetSelector, html) {
   const target = document.querySelector(targetSelector);
   if (!target) {
-    console.error(`❌ Target ${targetSelector} not found`);
+    console.warn(`Target ${targetSelector} not found`);
     return false;
   }
 
-  if (target.innerHTML.trim() === html.trim()) {
-    console.log(`⚠️ ${targetSelector} already has the same content, skipping.`);
+  if (target.innerHTML.trim() === (html || "").trim()) {
+    console.log(
+      `${targetSelector} already has same content — skipping inject.`,
+    );
     return false;
   }
 
@@ -32,22 +35,29 @@ function injectHTML(targetSelector, html) {
 }
 
 // ---------- Hamburger Menu ----------
-function setupHamburgerMenu() {
+export function setupHamburgerMenu() {
   const menuBtn = document.querySelector("#menu");
   const navMenu = document.querySelector(".nav-links");
 
   if (!menuBtn || !navMenu) return;
 
-  menuBtn.addEventListener("click", () => {
-    menuBtn.classList.toggle("open");
-    navMenu.classList.toggle("open");
+  // remove previous listeners if any (safe re-init)
+  menuBtn.replaceWith(menuBtn.cloneNode(true));
+  const newMenuBtn = document.querySelector("#menu");
+  const newNavMenu = document.querySelector(".nav-links");
+
+  if (!newMenuBtn || !newNavMenu) return;
+
+  newMenuBtn.addEventListener("click", () => {
+    newMenuBtn.classList.toggle("open");
+    newNavMenu.classList.toggle("open");
   });
 
-  console.log("✅ Hamburger menu initialized");
+  console.log("✅ setupHamburgerMenu()");
 }
 
 // ---------- Active Nav Highlight ----------
-function setActiveNavLink() {
+export function setActiveNavLink() {
   const navLinks = document.querySelectorAll(".nav-links a");
   const currentPath = window.location.pathname;
 
@@ -62,19 +72,13 @@ function setActiveNavLink() {
       link.classList.remove("active");
     }
   });
+
+  console.log("✅ setActiveNavLink()");
 }
 
 // ---------- Footer Info ----------
-function updateFooterInfo() {
-  const yearEl = document.querySelector("#currentyear");
-  const modEl = document.querySelector("#lastModified");
-
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-  if (modEl) modEl.textContent = getFormattedLastModified();
-}
-
 export function getFormattedLastModified() {
-  const lastMod = new Date(document.lastModified);
+  const lastMod = new Date(document.lastModified || Date.now());
   const dateFmt = { year: "numeric", month: "short", day: "numeric" };
   const timeFmt = {
     hour: "2-digit",
@@ -85,66 +89,59 @@ export function getFormattedLastModified() {
   return `${lastMod.toLocaleDateString("en-US", dateFmt)} ${lastMod.toLocaleTimeString("en-US", timeFmt)}`;
 }
 
-// ---------- Main: Update Header & Footer ----------
-export async function updateHeaderAndFooter() {
-  const basePath = window.location.pathname.includes("/pages/")
-    ? "../public/partials/"
-    : "/public/partials/";
+export function updateFooterInfo() {
+  const yearEl = document.querySelector("#currentyear");
+  const modEl = document.querySelector("#lastModified");
 
-  // Fetch templates
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  if (modEl) modEl.textContent = getFormattedLastModified();
+
+  console.log("✅ updateFooterInfo()");
+}
+
+// ---------- Header & Footer Loader ----------
+export async function updateHeaderAndFooter() {
+  const isInPagesDir = window.location.pathname.includes("/pages/");
+  const basePath = isInPagesDir ? "../public/partials/" : "/public/partials/";
+
   const [headerHTML, footerHTML] = await Promise.all([
     fetchHTML(`${basePath}header.html`),
     fetchHTML(`${basePath}footer.html`),
   ]);
 
-  // Inject header
+  // Inject header then init header-related UI
   if (headerHTML && injectHTML("#header-container", headerHTML)) {
-    setupHamburgerMenu();
-    setActiveNavLink();
+    // call exported helpers (they exist because we're in this module)
+    try {
+      setupHamburgerMenu();
+      setActiveNavLink();
+    } catch (err) {
+      console.warn("Header init helpers error:", err);
+    }
+  } else {
+    console.log("Header not injected or already present.");
   }
 
-  // Inject footer
+  // Inject footer then update footer info
   if (footerHTML && injectHTML("#footer-container", footerHTML)) {
     updateFooterInfo();
+  } else {
+    console.log("Footer not injected or already present.");
   }
+
+  return {
+    headerInjected: Boolean(headerHTML),
+    footerInjected: Boolean(footerHTML),
+  };
 }
 
 // ---------- Window Dimensions ----------
-function getCurrentWindowWidth() {
-  return (
-    window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth
-  );
-}
-
-function getCurrentWindowHeight() {
-  return (
-    window.innerHeight ||
-    document.documentElement.clientHeight ||
-    document.body.clientHeight
-  );
-}
-
-function updateWindowWidthDisplay() {
+export function updateWindowWidthDisplay() {
   const el = document.querySelector("#windowWidth");
-  if (el) el.textContent = `${getCurrentWindowWidth()}px`;
+  if (el) el.textContent = `${window.innerWidth}px`;
 }
 
-function updateWindowHeightDisplay() {
+export function updateWindowHeightDisplay() {
   const el = document.querySelector("#windowHeight");
-  if (el) el.textContent = `${getCurrentWindowHeight()}px`;
+  if (el) el.textContent = `${window.innerHeight}px`;
 }
-
-// ---------- Initialize on Load ----------
-window.addEventListener("load", () => {
-  // updateHeaderAndFooter();
-  setupHamburgerMenu();
-  updateWindowWidthDisplay();
-  updateWindowHeightDisplay();
-});
-
-window.addEventListener("resize", () => {
-  updateWindowWidthDisplay();
-  updateWindowHeightDisplay();
-});
