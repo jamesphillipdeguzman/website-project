@@ -198,6 +198,28 @@ body.register-page {
   }
 }
 
+/* =============== PORTFOLIO FORM STYLES =============== */
+.form-page h1 {
+  text-align: center;
+}
+
+#portfolio-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* centers children horizontally */
+}
+
+#portfolio-form button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  /* spacing above button */
+  width: auto;
+  /* keeps it from stretching full width */
+}
+
+
+
 /* =============== BASE FORM STYLES =============== */
 
 form.join-form,

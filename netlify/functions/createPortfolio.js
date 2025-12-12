@@ -1,3 +1,4 @@
+import { v2 as cloudinary } from "cloudinary";
 import { sql } from "../../src/lib/db.js"; // your Neon helper
 import dotenv from "dotenv";
 

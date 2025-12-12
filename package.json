@@ -44,9 +44,11 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
     "bcrypt": "^6.0.0",
+    "cloudinary": "^2.8.0",
     "dotenv": "^17.2.3",
     "pg": "^8.16.3",
-    "postcss": "^8.5.1"
+    "postcss": "^8.5.1",
+    "postgres": "^3.4.7"
   },
   "type": "module"
 }

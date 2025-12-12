@@ -1,4 +1,3 @@
-// portfolios.js
 document.addEventListener("DOMContentLoaded", () => {
   fetchPortfolios();
 });
@@ -25,13 +24,11 @@ function setupPortfolioCarousel(portfolios) {
   dropdown.innerHTML = '<option value="">Select a portfolio</option>';
 
   portfolios.forEach((p) => {
-    // Dropdown option
     const opt = document.createElement("option");
     opt.value = p.title;
     opt.textContent = p.title;
     dropdown.appendChild(opt);
 
-    // Carousel card
     const card = document.createElement("div");
     card.className = "card";
     card.style = "min-width: 300px; max-width: 300px; flex-shrink: 0;";
@@ -48,13 +45,9 @@ function setupPortfolioCarousel(portfolios) {
     container.appendChild(card);
   });
 
-  // Scroll to selected card
   dropdown.addEventListener("change", () => {
-    const selected = container.querySelector(
-      `[data-title="${dropdown.value}"]`
-    );
-    if (selected)
-      selected.scrollIntoView({ behavior: "smooth", inline: "center" });
+    const selected = container.querySelector(`[data-title="${dropdown.value}"]`);
+    if (selected) selected.scrollIntoView({ behavior: "smooth", inline: "center" });
   });
 
   setupCarouselButtons();
