@@ -1,6 +1,8 @@
+// netlify/functions/login.js
 import { Client } from "@neondatabase/serverless";
-// import dotenv from "dotenv";
-// dotenv.config();
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+dotenv.config();
 
 export async function handler(event) {
   if (event.httpMethod !== "POST") {
@@ -8,54 +10,39 @@ export async function handler(event) {
   }
 
   const { email, password } = JSON.parse(event.body);
-  debugger; // 🛑 VS Code will pause here when you call this function
-  const client = new Client({ connectionString: process.env.NEON_DB_URL });
+  const client = new Client({ connectionString: process.env.DATABASE_URL });
 
   try {
     await client.connect();
-    const result = await client.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
+
+    // Fetch user by email
+    const result = await client.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email.toLowerCase()] // force lowercase for consistency
+    );
 
     if (result.rows.length === 0) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "User not found" }),
-      };
+      return { statusCode: 401, body: JSON.stringify({ error: "Invalid email or password" }) };
     }
 
     const user = result.rows[0];
 
-    // 🔑 Compare plain text password for now
-    if (user.password !== password) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ error: "Invalid password" }),
-      };
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return { statusCode: 401, body: JSON.stringify({ error: "Invalid email or password" }) };
     }
 
-    // include the message in the response instead
-    let message;
-    if (user.user_type === "Admin") {
-      message = "Hello there. You are an " + user.user_type;
-    } else if (user.user_type === "Client") {
-      message = "Welcome! You are logged in as a Client";
-    } else {
-      message = "Login successful";
-    }
-    // ✅ Success — send safe data only
+    // Successful login
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message,
-        userId: user.id,
-        name: user.name,
-        email: user.email,
-        userType: user.user_type,
+        message: "Login successful",
+        user: { id: user.id, name: user.name, email: user.email, user_type: user.user_type },
       }),
     };
   } catch (error) {
-    console.error("❌ Login error:", error);
+    console.error("Login error:", error);
     return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   } finally {
     await client.end();

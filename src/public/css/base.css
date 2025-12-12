@@ -1,11 +1,11 @@
 :root {
     /* CSS HEX COLORS */
-    --carmine: #931621ff;
+    --carmine: #af3e4d;
     --dark-slate-gray: #28464bff;
     --faint-black: #464444;
     --silver-color: #a4b8c4;
 
-
+    /* https://coolors.co/9cfffa-acf39d-b0c592-a97c73-af3e4d */
     /* FONTS */
 
     --primary-font: Roboto, Arial, sans-serif;
@@ -34,7 +34,7 @@ body {
     max-width: 100vw;
     margin: 0 auto;
     /* background: url('/wdd131/project/images/site-planning.webp') no-repeat center top; */
-    /* background-color: var(--dark-slate-gray); */
+    background-color: var(--dark-slate-gray);
     opacity: 1;
     visibility: visible !important;
     transition: opacity 0.001s ease-in;
@@ -73,13 +73,25 @@ body.loading {
 body.loaded {
     visibility: visible;
 } */
+p,
+a,
+h3,
+button {
+    font-family: var(--primary-font);
+    font-size: 0.9rem;
+}
 
+h2 {
+    font-family: var(--secondary-font);
+    font-size: 1.2rem;
+    color: var(--faint-black);
+}
 
 .page-wrap {
     display: flex;
     flex-direction: column;
     width: 100vw;
-    /* background-color: var(--dark-slate-gray); */
+    background-color: var(--dark-slate-gray);
     background-color: #28464bff;
     align-content: center;
     justify-content: center;
@@ -114,8 +126,8 @@ body.loaded {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    /* background-color: var(--carmine); */
-    background-color: #931621ff;
+    background-color: var(--carmine);
+    /* background-color: #931621ff; */
 
     flex: 1 1 35%;
 
@@ -206,10 +218,10 @@ h3 {
 }
 
 header {
-    /* background-color: var(--carmine); */
+    background-color: var(--carmine);
     display: flex;
     justify-content: space-between;
-    background-color: #931621ff;
+    /* background-color: #931621ff; */
 
     text-align: center;
     color: whitesmoke;
@@ -650,12 +662,16 @@ span#color2 {
 
 
 #quote-btn-container {
-  display: flex;
-  justify-content: center; /* horizontal center */
-  align-items: center;     /* vertical center if needed */
+    display: flex;
+    justify-content: center;
+    /* horizontal center */
+    align-items: center;
+    /* vertical center if needed */
 }
+
 #get-quote-btn {
-  display: block; /* block is fine inside flex container */
+    display: block;
+    /* block is fine inside flex container */
 }
 
 
@@ -928,7 +944,8 @@ input[type="email"] {
     gap: 10px;
 }
 
-.card .databox p {     /* putting .card in front of .databox p increases its specificity, therefore this works */
+.card .databox p {
+    /* putting .card in front of .databox p increases its specificity, therefore this works */
     font-size: 0.8rem;
 }
 
@@ -1062,18 +1079,19 @@ footer {
 /* ================== MODAL ====================== */
 
 .backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: none; /* 👈 start hidden */
-  z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    /* 👈 start hidden */
+    z-index: 100;
 }
 
 .modal.hidden {
-  display: none;
+    display: none;
 }
 
 
@@ -1082,20 +1100,22 @@ footer {
     display: none;
 
 }
+
 .backdrop {
-  display: none; /* make sure it starts hidden */
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  max-width: 100vw;
-  height: 100%;
-  z-index: 999;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 5vh;
-  transition: background-color 1.2s ease-in-out;
+    display: none;
+    /* make sure it starts hidden */
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100vw;
+    height: 100%;
+    z-index: 999;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 5vh;
+    transition: background-color 1.2s ease-in-out;
 }
 
 
@@ -1188,122 +1208,141 @@ fieldset {
 
 /* ---------- DASHBOARD CONTENT ---------- */
 .dashboard-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 3rem;
 }
 
 .card {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: var(--dark-slate-gray, #2f4f4f);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark-slate-gray, #2f4f4f);
 }
 
 .card p {
-  font-size: 1rem;
-  color: var(--faint-black, #444);
+    font-size: 1rem;
+    color: var(--faint-black, #444);
 }
 
 .status.ok {
-  color: var(--carmine, #c0392b);
-  font-weight: 600;
+    color: var(--carmine, #c0392b);
+    font-weight: 600;
 }
 
 /* ---------- QUICK ACTIONS SECTION ---------- */
 .quick-actions {
-  padding: 2rem 3rem 3rem;
+    padding: 2rem 3rem 3rem;
 }
 
 .quick-actions h2 {
-  font-family: var(--font-headline, 'Roboto', sans-serif);
-  font-size: 1.6rem;
-  color: var(--dark-slate-gray, #2f4f4f);
-  margin-bottom: 1rem;
+    font-family: var(--font-headline, 'Roboto', sans-serif);
+    font-size: 1.6rem;
+    color: var(--dark-slate-gray, #2f4f4f);
+    margin-bottom: 1rem;
 }
 
 .actions-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
+
 /* ---------- BUTTONS ---------- */
 .btn-primary,
-.btn-secondary {
-  font-family: inherit;
-  font-size: 1rem;
-  padding: 0.9rem 1.8rem; /* increased horizontal padding */
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap; /* prevents text from wrapping */
-  min-width: 180px; /* ensures uniform width for long text */
-  text-align: center;
-  font-weight: 500;
+.btn-secondary,
+.btn-logout {
+    font-family: var(--primary-font);
+    font-size: 1rem;
+    padding: 0.9rem 1.8rem;
+    /* increased horizontal padding */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    /* prevents text from wrapping */
+    min-width: 180px;
+    /* ensures uniform width for long text */
+    text-align: center;
+    font-weight: 500;
 }
 
 .btn-primary {
-  background-color: var(--carmine, #c0392b);
-  color: #fff;
+    background-color: rebeccapurple;
+    color: #fff;
+}
+
+.btn-primary a {
+    color: white;
+    text-decoration: none;
 }
 
 .btn-primary:hover {
-  background-color: #a83228;
+    background-color: rgb(133, 101, 165);
 }
 
 .btn-secondary {
-  background-color: var(--dark-slate-gray, #2f4f4f);
-  color: #fff;
+    background-color: var(--dark-slate-gray, #2f4f4f);
+    color: #fff;
 }
 
 .btn-secondary:hover {
-  background-color: #3e5c5c;
+    background-color: #3e5c5c;
+}
+
+.btn-logout {
+    background-color: var(--carmine, #116586);
+    color: #fff;
+}
+
+.btn-logout:hover {
+    background-color: #af6d76;
 }
 
 /* Optional: make buttons full width on small screens */
 @media (max-width: 600px) {
-  .actions-grid  {
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-  }
+    .actions-grid {
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+    }
 }
 
 
 /* ---------- RESPONSIVE DESIGN ---------- */
 @media (max-width: 768px) {
-  .banner-text {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
+    .banner-text {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
 
-  .dashboard-content {
-    grid-template-columns: 1fr;
-    padding: 1.5rem;
-  }
+    .dashboard-content {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+    }
 
-  .quick-actions {
-    padding: 1.5rem;
-  }
+    .quick-actions {
+        padding: 1.5rem;
+    }
 
-  .actions-grid {
-    justify-content: center;
-  }
+    .actions-grid {
+        justify-content: center;
+    }
 }
 
 
@@ -1417,6 +1456,7 @@ fieldset {
     article.my-company h2,
     article.my-company p {
         font-size: 0.8rem;
+        margin: 1rem;
     }
 
 
@@ -1659,7 +1699,9 @@ fieldset {
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
-
+    .auth-message {
+        text-align: center;
+    }
 
     .contact-section {
         width: 300px;
@@ -1785,7 +1827,7 @@ fieldset {
 #header-container,
 #footer-container {
     min-height: 50px;
-    
+
 }
 
 #footer-container {

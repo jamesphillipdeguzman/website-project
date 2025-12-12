@@ -4,7 +4,7 @@ export default async (req, res) => {
   const userId = req.query?.id || 1;
 
   try {
-    const client = new Client({ connectionString: process.env.NEON_DB_URL });
+    const client = new Client({ connectionString: process.env.DATABASE_URL });
     await client.connect();
 
     const result = await client.query("SELECT name FROM users WHERE id = $1", [

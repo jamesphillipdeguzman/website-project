@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Site Plan: Mobile Layout</title>
-    <meta name="description" content="Sample wireframe: mobile layout of my website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | BESYSTECH</title>
+    <meta name="description" content="Regiger page: jamesdeguzman.com">
     <meta name="author" content="James Phillip K. De Guzman">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,24 +17,36 @@
         rel="stylesheet">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="icon" href="images/project-images/favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon">
     <meta property="og:title" content="My Personal Website">
     <meta property="og:description"
         content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!">
     <meta property="og:image" content="/images/project-images/profile.png">
-    <meta property="og:url" content="https://jamesdeguzman.com/mobile-layout.html">
+    <meta property="og:url" content="https://jamesdeguzman.com/index.html">
     <meta property="og:type" content="website">
     <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
 
-    <script src="/js/base.js" type="module"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/form.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <meta name="author" content="James Phillip K. De Guzman">
+    <meta name="description" content="Register a new account on BESYSTECH to access your dashboard.">
+
+    <script type="module" src="/js/base.js"></script>
     <script type="module" src="/js/header.js"></script>
 
 </head>
 
-<body class="loading">
+<body>
 
-
-    <div class="page-wrap">
+    <div class="page-wrap form-page">
 
         <header id="header-container">
             <nav class="navigation">
@@ -55,32 +67,35 @@
             </nav>
         </header>
 
+        <main class="auth-container">
+            <div class="auth-card">
+                <h2>Create an Account</h2>
 
-        <main>
+                <form class="register-form">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
 
-            <div class="banner-text">
-                <div class="image-container">
-                    <h1>My Site Plan</h1>
-                    <!-- <img src="/images/site-planning.svg" alt="picture of a notebook with wireframe sketches" width="200"
-                        height="100"> -->
-                </div>
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="john@example.com">
 
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+
+                    <button type="submit" class="btn-register">Register</button>
+                </form>
+
+                <p id="register-message" class="auth-message"></p>
+
+                <p class="switch-auth">
+                    Already have an account?
+                    <a href="/pages/login.html">Login here</a>
+                </p>
             </div>
-
-            <div class="layout-section">
-                <h2>Mobile Layout</h2>
-
-                <img src="/images/svg/mobile-layout.svg" alt="picture of desktop layout for my website" width="400"
-                    height="400">
-                <div class="back">
-                    <a href="/pages/siteplan.html">Go back</a>
-                </div>
-
-            </div>
-
         </main>
+
+        <footer id="footer-container"></footer>
+
     </div>
-    <div class="wireframe-overlay"></div>
 
     <footer id="footer-container">
         <div class="footer-wrapper">
@@ -110,7 +125,11 @@
             </div>
         </div>
     </footer>
-    </footer>
+    </div>
+    <div class="wireframe-overlay"></div>
+
+    <script type="module" src="/js/register.js"></script>
+
 </body>
 
 </html>

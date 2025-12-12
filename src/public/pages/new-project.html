@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Site Plan: Mobile Layout</title>
-    <meta name="description" content="Sample wireframe: mobile layout of my website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Portfolio | BESYSTECH</title>
+    <meta name="description" content="Add new portfolio: jamesdeguzman.com">
     <meta name="author" content="James Phillip K. De Guzman">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,25 +17,24 @@
         rel="stylesheet">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="icon" href="images/project-images/favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon">
     <meta property="og:title" content="My Personal Website">
     <meta property="og:description"
         content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!">
     <meta property="og:image" content="/images/project-images/profile.png">
-    <meta property="og:url" content="https://jamesdeguzman.com/mobile-layout.html">
+    <meta property="og:url" content="https://jamesdeguzman.com/index.html">
     <meta property="og:type" content="website">
     <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
 
-    <script src="/js/base.js" type="module"></script>
+    <script type="module" src="/js/new-portfolio.js"></script>
     <script type="module" src="/js/header.js"></script>
 
 </head>
 
-<body class="loading">
-
+<body>
 
     <div class="page-wrap">
-
         <header id="header-container">
             <nav class="navigation">
                 <div><a href="/index.html"><span class="highlight2">besys.tech</span></a></div>
@@ -44,9 +43,9 @@
 
                 <ul class="nav-links">
                     <li><a href="/index.html" id="home">Home</a></li>
-                    <li><a href="/pages/about.html" id="about" class="active">About</a></li>
+                    <li><a href="/pages/about.html" id="about">About</a></li>
                     <li><a href="/pages/contact.html" id="contact">Contact</a></li>
-                    <li><a href="/pages/portfolios.html" id="portfolio">Portfolio</a></li>
+                    <li><a href="/pages/portfolios.html" id="portfolio" class="active">Portfolio</a></li>
                     <li><a href="/pages/product.html" id="product">Review</a></li>
                     <li><a href="/pages/login.html" id="login-link">Login</a></li>
 
@@ -55,32 +54,57 @@
             </nav>
         </header>
 
+        <main class="form-page">
+            <h1>Add New Portfolio</h1>
 
-        <main>
-
-            <div class="banner-text">
-                <div class="image-container">
-                    <h1>My Site Plan</h1>
-                    <!-- <img src="/images/site-planning.svg" alt="picture of a notebook with wireframe sketches" width="200"
-                        height="100"> -->
+            <form id="portfolio-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" name="name" placeholder="e.g., My Personal Portfolio Website" required>
                 </div>
 
-            </div>
-
-            <div class="layout-section">
-                <h2>Mobile Layout</h2>
-
-                <img src="/images/svg/mobile-layout.svg" alt="picture of desktop layout for my website" width="400"
-                    height="400">
-                <div class="back">
-                    <a href="/pages/siteplan.html">Go back</a>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description"
+                        placeholder="Brief description of the project, e.g., A responsive personal portfolio website built with HTML, CSS, and JS."
+                        required></textarea>
                 </div>
 
-            </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" required>
+                        <option value="">-- Select a category --</option>
+                        <option value="Website Portfolio">Website Portfolio</option>
+                        <option value="Web App">Web App</option>
+                        <option value="UI/UX">UI/UX</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
 
+                <div class="form-group">
+                    <label>Project URL</label>
+                    <input type="url" name="url" placeholder="https://example.com/project">
+                </div>
+
+                <div class="form-group">
+                    <label>GitHub URL</label>
+                    <input type="url" name="github" placeholder="https://github.com/username/project">
+                </div>
+
+                <div class="form-group">
+                    <label>Thumbnail Image</label>
+                    <input type="file" name="image" accept="image/*">
+                    <small>Upload a representative image of your project (e.g., 300x200px)</small>
+                </div>
+
+                <button class="btn-primary" id="save-portfolio-btn" type="submit">Save Portfolio</button>
+            </form>
+
+
+            <p id="status"></p>
         </main>
+
     </div>
-    <div class="wireframe-overlay"></div>
 
     <footer id="footer-container">
         <div class="footer-wrapper">
@@ -110,7 +134,11 @@
             </div>
         </div>
     </footer>
-    </footer>
+    </div>
+    <div class="wireframe-overlay"></div>
+
 </body>
+
+
 
 </html>

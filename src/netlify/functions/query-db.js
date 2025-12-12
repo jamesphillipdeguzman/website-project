@@ -23,7 +23,7 @@ export async function handler(event, context) {
     const query = body.query || "SELECT NOW()";
 
     const connectionString =
-      process.env.NEON_DB_URL || process.env.NETLIFY_DATABASE_URL;
+      process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
 
     if (!connectionString) {
       console.error(
@@ -74,7 +74,7 @@ if (path.basename(process.argv[1]).startsWith("query-db")) {
   const run = async () => {
     const query = process.argv[2];
     const connectionString =
-      process.env.NEON_DB_URL || process.env.NETLIFY_DATABASE_URL;
+      process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
 
     if (!query) {
       console.log("⚠️  Please provide an SQL query.");

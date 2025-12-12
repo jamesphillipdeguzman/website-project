@@ -32,6 +32,8 @@
 
     <!-- JS -->
     <script src="/js/base.js" type="module"></script>
+    <script type="module" src="/js/header.js"></script>
+
 </head>
 
 <body class="loading">
@@ -47,11 +49,13 @@
 
                 <ul class="nav-links">
                     <li><a href="/index.html" id="home">Home</a></li>
-                    <li><a href="/pages/about.html" id="about" class="active">About</a></li>
+                    <li><a href="/pages/about.html" id="about">About</a></li>
                     <li><a href="/pages/contact.html" id="contact">Contact</a></li>
                     <li><a href="/pages/portfolios.html" id="portfolio">Portfolio</a></li>
                     <li><a href="/pages/product.html" id="product">Review</a></li>
-                    <li><a href="/pages/login.html" id="login-link">Login</a></li>
+                    <li><a href="/pages/dashboard.html" id="login-link" class="active">Dashboard</a></li>
+
+
 
                 </ul>
                 <button id="menu" aria-label="menu"></button>
@@ -63,7 +67,6 @@
 
                 <article class="my-company">
                     <h2>Welcome back, <span id="user-name">Loading...</span>!</h2>
-                    <p>Here’s your personalized dashboard.</p>
                 </article>
 
             </section>
@@ -83,14 +86,16 @@
                     <h3>System Status</h3>
                     <p class="status ok">All systems operational ✅</p>
                 </div>
+
             </section>
 
             <section class="quick-actions">
                 <h2>Quick Actions</h2>
                 <div class="actions-grid">
-                    <button class="btn-primary">Add New Project</button>
+                    <button class="btn-primary"><a href="/pages/new-project.html">Add New Project</a></button>
                     <button class="btn-secondary">View Analytics</button>
                     <button class="btn-secondary">Manage Clients</button>
+                    <button id="logout-btn" class="btn-logout">Logout</button>
                 </div>
             </section>
         </main>
@@ -131,16 +136,33 @@
         function loadUserName() {
             const nameEl = document.getElementById("user-name");
             const storedName = localStorage.getItem("userName");
-
-            if (storedName) {
-                nameEl.textContent = storedName;
-            } else {
-                nameEl.textContent = "Guest";
-            }
+            nameEl.textContent = storedName || "Guest";
         }
 
         loadUserName();
+
+        // Logout button logic
+        const logoutBtn = document.getElementById("logout-btn");
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", () => {
+                localStorage.removeItem("userId");
+                localStorage.removeItem("userEmail");
+                localStorage.removeItem("userName");
+                localStorage.removeItem("userType");
+                window.location.href = "/pages/login.html";
+            });
+        }
+
+        // Add New Project button redirect
+        const addProjectBtn = document.getElementById("add-project-btn");
+        if (addProjectBtn) {
+            addProjectBtn.addEventListener("click", () => {
+                window.location.href = "/pages/new-project.html";
+            });
+        }
+
     </script>
+
 
 
 

@@ -1,6 +1,8 @@
 // public/js/login.js
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.querySelector("#loginForm");
+  const loginMessage = document.getElementById("login-message"); // optional <p> for messages
+
   if (!loginForm) {
     console.error("❌ Login form not found!");
     return;
@@ -18,47 +20,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch(
-        `${window.location.origin}/.netlify/functions/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        },
-      );
+      const response = await fetch(`${window.location.origin}/.netlify/functions/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await response.json();
       console.log("🔍 Login response:", data);
 
       if (response.ok) {
-        alert("✅ " + data.message);
+        const user = data.user; // Extract nested user object
 
         // Store minimal safe info
-        localStorage.setItem("userId", data.userId);
-        localStorage.setItem("userEmail", data.email);
-        localStorage.setItem("userName", data.name || "");
-        localStorage.setItem("userType", data.userType);
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("userEmail", user.email);
+        localStorage.setItem("userName", user.name || "");
+        localStorage.setItem("userType", user.user_type);
 
-        // ✅ Ensure correct relative path
-        let redirectUrl; // declare once
+        alert("✅ " + data.message);
 
-        if (data.userType === "Admin") {
-          redirectUrl = "/pages/dashboard.html"; // adjust if needed
-        } else {
-          redirectUrl = "/index.html"; // adjust if needed
-        }
-
+        // Redirect based on user type
+        const redirectUrl = user.user_type === "Admin" ? "/pages/dashboard.html" : "/index.html";
         console.log("➡️ Redirecting to:", redirectUrl);
 
-        // Use a short delay to ensure alert closes first
         setTimeout(() => {
           window.location.href = redirectUrl;
         }, 500);
+
       } else {
         alert("❌ " + (data.error || "Login failed"));
       }
-    } catch (error) {
-      console.error("🚨 Login error:", error);
+    } catch (err) {
+      console.error("🚨 Login error:", err);
       alert("Something went wrong. Please try again later.");
     }
   });

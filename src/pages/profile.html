@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Site Plan: Mobile Layout</title>
-    <meta name="description" content="Sample wireframe: mobile layout of my website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | BESYSTECH</title>
+    <meta name="description" content="Client Profile: jamesdeguzman.com">
     <meta name="author" content="James Phillip K. De Guzman">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,25 +17,33 @@
         rel="stylesheet">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="icon" href="images/project-images/favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/project-images/favicon_io/favicon.ico" type="image/x-icon">
     <meta property="og:title" content="My Personal Website">
     <meta property="og:description"
         content="James De Guzman: An aspiring web developer who loves to create innovative web apps and websites for your local businesses!">
     <meta property="og:image" content="/images/project-images/profile.png">
-    <meta property="og:url" content="https://jamesdeguzman.com/mobile-layout.html">
+    <meta property="og:url" content="https://jamesdeguzman.com/index.html">
     <meta property="og:type" content="website">
     <meta property="og:site-name" content="https://jamesdeguzman.com/index.html">
 
-    <script src="/js/base.js" type="module"></script>
-    <script type="module" src="/js/header.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/form.css">
+
+    <!-- JS -->
+    <script src="/js/base.js" type="module"></script>
 </head>
 
-<body class="loading">
-
-
+<body>
     <div class="page-wrap">
 
+        <!-- Header -->
         <header id="header-container">
             <nav class="navigation">
                 <div><a href="/index.html"><span class="highlight2">besys.tech</span></a></div>
@@ -56,31 +64,22 @@
         </header>
 
 
-        <main>
+        <!-- Main Content -->
+        <main class="auth-container">
+            <div class="auth-card">
+                <h2>Profile</h2>
+                <p>Welcome, <span id="user-name">Loading...</span>!</p>
 
-            <div class="banner-text">
-                <div class="image-container">
-                    <h1>My Site Plan</h1>
-                    <!-- <img src="/images/site-planning.svg" alt="picture of a notebook with wireframe sketches" width="200"
-                        height="100"> -->
+                <div class="profile-info">
+                    <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
+                    <p><strong>User Type:</strong> <span id="user-type">Loading...</span></p>
                 </div>
 
+                <button id="logout-btn-main" class="btn-primary">Logout</button>
             </div>
-
-            <div class="layout-section">
-                <h2>Mobile Layout</h2>
-
-                <img src="/images/svg/mobile-layout.svg" alt="picture of desktop layout for my website" width="400"
-                    height="400">
-                <div class="back">
-                    <a href="/pages/siteplan.html">Go back</a>
-                </div>
-
-            </div>
-
         </main>
+
     </div>
-    <div class="wireframe-overlay"></div>
 
     <footer id="footer-container">
         <div class="footer-wrapper">
@@ -110,7 +109,39 @@
             </div>
         </div>
     </footer>
-    </footer>
+    </div>
+    <div class="wireframe-overlay"></div>
+
+    <script>
+        // Load user info from localStorage
+        function loadUserProfile() {
+            const name = localStorage.getItem("userName") || "Guest";
+            const email = localStorage.getItem("userEmail") || "Not available";
+            const type = localStorage.getItem("userType") || "Client";
+
+            document.getElementById("user-name").textContent = name;
+            document.getElementById("user-email").textContent = email;
+            document.getElementById("user-type").textContent = type;
+        }
+
+        loadUserProfile();
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userEmail");
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userType");
+            window.location.href = "/pages/login.html";
+        }
+
+        // Attach logout button listeners
+        const logoutBtn = document.getElementById("logout-btn");
+        const logoutBtnMain = document.getElementById("logout-btn-main");
+
+        if (logoutBtn) logoutBtn.addEventListener("click", logout);
+        if (logoutBtnMain) logoutBtnMain.addEventListener("click", logout);
+    </script>
 </body>
 
 </html>
