@@ -2,7 +2,6 @@ import {
   setupHamburgerMenu,
   setActiveNavLink,
   getFormattedLastModified,
-  updateHeaderAndFooter,
 } from "./utils.mjs";
 // import { initPortfolio } from "./portfolio.js";
 
@@ -122,7 +121,7 @@ function initDate() {
 // Main Initialization
 // =========================
 async function initAfterPageLoad() {
-  await updateHeaderAndFooter();
+  // await updateHeaderAndFooter();
   setupHamburgerMenu();
   updateUserUI();
   setupLogout();
