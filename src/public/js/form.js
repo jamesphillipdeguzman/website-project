@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        alert("✅ Login successful!");
+        // alert("✅ Login successful!");
         localStorage.setItem("user", JSON.stringify(data.user));
         window.location.href = "/dashboard.html";
       } catch (err) {
