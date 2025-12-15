@@ -46,8 +46,11 @@ function setupPortfolioCarousel(portfolios) {
   });
 
   dropdown.addEventListener("change", () => {
-    const selected = container.querySelector(`[data-title="${dropdown.value}"]`);
-    if (selected) selected.scrollIntoView({ behavior: "smooth", inline: "center" });
+    const selected = container.querySelector(
+      `[data-title="${dropdown.value}"]`,
+    );
+    if (selected)
+      selected.scrollIntoView({ behavior: "smooth", inline: "center" });
   });
 
   setupCarouselButtons();

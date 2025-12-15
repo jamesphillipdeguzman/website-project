@@ -58,22 +58,35 @@ export function setupHamburgerMenu() {
 
 // ---------- Active Nav Highlight ----------
 export function setActiveNavLink() {
-  const navLinks = document.querySelectorAll(".nav-links a");
+  const navLinks = document.querySelectorAll(".nav-links li a");
   const currentPath = window.location.pathname;
+  const userType = localStorage.getItem("userType"); // Client or Admin
 
   navLinks.forEach((link) => {
-    const linkPath = new URL(link.href, window.location.origin).pathname;
-    if (
-      linkPath === currentPath ||
-      (linkPath.endsWith("index.html") && currentPath === "/")
-    ) {
+    link.classList.remove("active");
+
+    // For Admin, Dashboard logic
+    if (userType === "Admin" && link.id === "login-link") {
+      if (
+        currentPath.includes("dashboard.html") ||
+        currentPath.includes("new-project.html")
+      ) {
+        link.classList.add("active");
+      }
+    }
+
+    // For Client, Profile logic
+    if (userType === "Client" && link.id === "login-link") {
+      if (currentPath.includes("profile.html")) {
+        link.classList.add("active");
+      }
+    }
+
+    // Generic matching for other links
+    if (currentPath.includes(link.getAttribute("href"))) {
       link.classList.add("active");
-    } else {
-      link.classList.remove("active");
     }
   });
-
-  console.log("✅ setActiveNavLink()");
 }
 
 // ---------- Footer Info ----------
@@ -109,30 +122,22 @@ export async function updateHeaderAndFooter() {
     fetchHTML(`${basePath}footer.html`),
   ]);
 
-  // Inject header then init header-related UI
+  // Inject header
+  let headerInjected = false;
   if (headerHTML && injectHTML("#header-container", headerHTML)) {
-    // call exported helpers (they exist because we're in this module)
-    try {
-      setupHamburgerMenu();
-      setActiveNavLink();
-    } catch (err) {
-      console.warn("Header init helpers error:", err);
-    }
-  } else {
-    console.log("Header not injected or already present.");
+    setupHamburgerMenu();
+    setActiveNavLink();
+    headerInjected = true;
   }
 
-  // Inject footer then update footer info
+  // Inject footer
+  let footerInjected = false;
   if (footerHTML && injectHTML("#footer-container", footerHTML)) {
     updateFooterInfo();
-  } else {
-    console.log("Footer not injected or already present.");
+    footerInjected = true;
   }
 
-  return {
-    headerInjected: Boolean(headerHTML),
-    footerInjected: Boolean(footerHTML),
-  };
+  return { headerInjected, footerInjected };
 }
 
 // ---------- Window Dimensions ----------

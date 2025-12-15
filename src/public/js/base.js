@@ -1,243 +1,67 @@
-// utils.mjs
 import {
   setupHamburgerMenu,
   setActiveNavLink,
   getFormattedLastModified,
   updateHeaderAndFooter,
-  updateFooterInfo,
-  updateWindowWidthDisplay,
-  updateWindowHeightDisplay,
 } from "./utils.mjs";
-
-import portfolios from "./portfolios-data.mjs"; // portfolio data
-
-// =========================
-// Database Connectivity
-// =========================
-function checkNeonDB() {
-  fetch("/.netlify/functions/query-db")
-    .then((res) => res.json())
-    .catch((err) => {
-      const div = document.createElement("div");
-      div.textContent =
-        "❌ Failed to connect to Neon database. Check console for details.";
-      div.style =
-        "padding: 10px; background: #ffebee; color: #c62828; border-radius: 6px; margin: 10px;";
-      document.body.prepend(div);
-    });
-}
+// import { initPortfolio } from "./portfolio.js";
 
 // =========================
-// Footer / Date Initialization
+// User / Session Management
 // =========================
-function initDate() {
-  const modifiedElement = document.getElementById("lastModified");
-  const yearElement = document.querySelector("#currentyear");
+function updateUserUI() {
+  const userNameEl = document.getElementById("user-name");
+  const userEmailEl = document.getElementById("user-email");
+  const userTypeEl = document.getElementById("user-type");
+  const loginLink = document.getElementById("login-link");
 
-  if (modifiedElement) modifiedElement.innerHTML = getFormattedLastModified();
-  if (yearElement) {
-    const year = new Date().getFullYear();
-    yearElement.innerHTML = `<span class="highlight">${year}</span>`;
+  const userId = localStorage.getItem("userId");
+  const userName = localStorage.getItem("userName") || "Guest";
+  const userEmail = localStorage.getItem("userEmail") || "Not available";
+  const userType = localStorage.getItem("userType") || "Client";
+
+  if (userNameEl) userNameEl.textContent = userName;
+  if (userEmailEl) userEmailEl.textContent = userEmail;
+  if (userTypeEl) userTypeEl.textContent = userType;
+
+  if (loginLink) {
+    if (!userId) {
+      loginLink.textContent = "Login";
+      loginLink.href = "/pages/login.html";
+    } else if (userType === "Admin") {
+      loginLink.textContent = "Dashboard";
+      loginLink.href = "/pages/dashboard.html";
+    } else {
+      loginLink.textContent = "Profile";
+      loginLink.href = "/pages/profile.html";
+    }
   }
+
+  setActiveNavLink();
 }
 
 // =========================
-// Dropdown / Product Setup
+// Logout
 // =========================
-function populateProductDropdown() {
-  const products = ["Product 1", "Product 2", "Product 3"];
-  const selector = document.getElementById("dynamic-product");
-  if (!selector) return;
+function setupLogout() {
+  const logoutButtons = document.querySelectorAll(
+    "#logout-btn, #logout-btn-main",
+  );
+  if (!logoutButtons) return;
 
-  products.forEach((product) => {
-    const option = document.createElement("option");
-    option.value = product;
-    option.textContent = product;
-    selector.appendChild(option);
-  });
-}
-
-function loadPortfolioList() {
-  const dropdown2 = document.querySelector(".form-group select");
-  if (!dropdown2) return;
-
-  dropdown2.innerHTML = '<option value="">Select a portfolio</option>';
-  portfolios.forEach((p) => {
-    dropdown2.innerHTML += `<option value="${p.pTitle}">${p.pTitle}</option>`;
+  logoutButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      ["userId", "userName", "userEmail", "userType"].forEach((key) =>
+        localStorage.removeItem(key),
+      );
+      window.location.href = "/pages/login.html";
+    });
   });
 }
 
 // =========================
-// Portfolio Setup / Carousel
+// SPA Loader
 // =========================
-function setupPortfolio() {
-  const dropdown = document.querySelector(".dropdown-container select");
-  const container = document.querySelector(".image-loader");
-  if (!dropdown || !container) return;
-
-  dropdown.innerHTML = '<option value="">Select a portfolio</option>';
-  portfolios.forEach((p) => {
-    dropdown.innerHTML += `<option value="${p.pTitle}">${p.pTitle}</option>`;
-  });
-
-  dropdown.addEventListener("change", () => {
-    const selected = portfolios.find((p) => p.pTitle === dropdown.value);
-    if (selected) loadPortfolioCard(selected, container);
-  });
-}
-
-function loadPortfolioCard(portfolio, container) {
-  container.innerHTML = `
-    <div class="card" style="display:flex; flex-direction:column; margin:0 auto; line-height:25px; border-radius:5px;">
-      <a href="${portfolio.imageURL}">
-        <img src="${portfolio.sourceImg}" alt="${portfolio.pTitle}" loading="lazy" style="width:100%; border-radius:5px;">
-      </a>
-      <div class="databox" style="margin:15px; padding:15px; max-width:305px; text-align:left; gap:10px;">
-        <div class="row" style="display:flex; align-items:center; margin-bottom:5px;">
-          <div style="font-weight:bold; margin-right:8px; min-width:100px;">Title:</div>
-          <div>${portfolio.pTitle}</div>
-        </div>
-        <div class="row" style="display:flex; align-items:center; margin-bottom:5px;">
-          <div style="font-weight:bold; margin-right:8px; min-width:100px;">URL:</div>
-          <div><a href="${portfolio.imageURL}">${portfolio.imageURL}</a></div>
-        </div>
-        <div class="row" style="display:flex; align-items:center; margin-bottom:5px;">
-          <div style="font-weight:bold; margin-right:8px; min-width:100px;">Description:</div>
-          <div>${portfolio.description}</div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function setupPortfolioCarousel() {
-  const container = document.getElementById("portfolio-carousel");
-  const dropdown = document.getElementById("my-portfolios");
-  if (!container || !dropdown) return;
-
-  // Populate dropdown
-  dropdown.innerHTML = '<option value="">Select a portfolio</option>';
-  portfolios.forEach((p) => {
-    const opt = document.createElement("option");
-    opt.value = p.pTitle;
-    opt.textContent = p.pTitle;
-    dropdown.appendChild(opt);
-  });
-
-  // Render cards
-  portfolios.forEach((p) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.style = "min-width:300px; max-width:300px; flex-shrink:0;";
-    card.setAttribute("data-title", p.pTitle);
-    card.innerHTML = `
-      <a href="${p.imageURL}" target="_blank">
-        <img src="${p.sourceImg}" alt="${p.pTitle}" style="width:100%; border-radius:5px;" loading="lazy">
-      </a>
-      <div class="databox" style="padding:10px;">
-        <h3>${p.pTitle}</h3>
-        <p><strong>${p.id}</strong></p>
-        <p>${p.description}</p>
-      </div>
-    `;
-    container.appendChild(card);
-  });
-
-  // Scroll on dropdown selection
-  dropdown.addEventListener("change", () => {
-    const selected = container.querySelector(
-      `[data-title="${dropdown.value}"]`,
-    );
-    if (selected)
-      selected.scrollIntoView({ behavior: "smooth", inline: "center" });
-  });
-
-  setupCarouselButtons();
-}
-
-function setupCarouselButtons() {
-  const container = document.getElementById("portfolio-carousel");
-  const btnPrev = document.querySelector(".carousel-btn.prev");
-  const btnNext = document.querySelector(".carousel-btn.next");
-  if (!container || !btnPrev || !btnNext) return;
-
-  btnPrev.addEventListener("click", () => {
-    container.scrollBy({ left: -300, behavior: "smooth" });
-  });
-  btnNext.addEventListener("click", () => {
-    container.scrollBy({ left: 300, behavior: "smooth" });
-  });
-}
-
-// =========================
-// Quote Modal
-// =========================
-function loadQuoteModal() {
-  const quoteModal = document.querySelector("#quote-modal");
-  const closeBtn = document.querySelector("#close-btn");
-  const getQuoteBtn = document.querySelector("#get-quote-btn");
-  const quoteBackdrop = document.querySelector("#quote-backdrop");
-  if (!quoteModal || !closeBtn || !getQuoteBtn || !quoteBackdrop) return;
-
-  getQuoteBtn.addEventListener("click", () => {
-    quoteModal.style.display = "block";
-    getQuoteBtn.style.display = "none";
-    quoteBackdrop.style.display = "block";
-  });
-
-  const closeModal = () => {
-    quoteModal.style.display = "none";
-    getQuoteBtn.style.display = "inline-block";
-    quoteBackdrop.style.display = "none";
-  };
-
-  closeBtn.addEventListener("click", closeModal);
-  quoteBackdrop.addEventListener("click", closeModal);
-}
-
-// =========================
-// Buttons
-// =========================
-function setupButtons() {
-  document.querySelector("#signup-btn")?.addEventListener("click", () => {
-    window.location.href = "/pages/signup.html";
-  });
-
-  document.querySelector("#review-btn")?.addEventListener("click", () => {
-    window.location.href = "/pages/review.html";
-  });
-}
-
-// =========================
-// Local Storage / Tracking
-// =========================
-function handleLocalStorage() {
-  const todayDisplay = document.querySelector("#today");
-  const searchDisplay = document.querySelector("#search");
-  let numSearch = Number(localStorage.getItem("search-ls")) || 0;
-  if (searchDisplay)
-    searchDisplay.textContent = numSearch ? numSearch : "Welcome to our site!";
-  localStorage.setItem("search-ls", ++numSearch);
-  if (todayDisplay) todayDisplay.textContent = Date.now();
-}
-
-// =========================
-// SPA-style Internal Navigation
-// =========================
-document.addEventListener("click", (e) => {
-  const link = e.target.closest("a.internal-link");
-  if (!link) return;
-
-  e.preventDefault();
-  const url = link.href;
-  loadPage(url);
-  history.pushState(null, "", url);
-});
-
-window.addEventListener("popstate", () => {
-  loadPage(location.href);
-});
-
 async function loadPage(url) {
   const main = document.querySelector("main");
   if (!main) return;
@@ -251,39 +75,68 @@ async function loadPage(url) {
     const newContent = doc.querySelector("main").innerHTML;
     main.innerHTML = newContent;
 
-    // Re-initialize UI for newly loaded content
-    initAfterPageLoad();
+    await initAfterPageLoad(); // re-initialize dynamic UI
   } catch (err) {
     console.error(err);
   }
 }
 
-function initAfterPageLoad() {
-  setupHamburgerMenu();
-  setActiveNavLink();
-  initDate();
-  populateProductDropdown();
-  setupButtons();
-  loadPortfolioList();
-  setupPortfolio();
-  setupPortfolioCarousel();
-  loadQuoteModal();
-  handleLocalStorage();
+window.addEventListener("popstate", () => loadPage(location.href));
+
+// =========================
+// Visit Count (SPA-safe)
+// =========================
+function updateVisitCount() {
+  const visitEl = document.querySelector(
+    ".dashboard-content .card:first-child p",
+  );
+  if (!visitEl) {
+    setTimeout(updateVisitCount, 100); // retry for SPA-loaded content
+    return;
+  }
+
+  fetch("/.netlify/functions/visit-count")
+    .then((res) => res.json())
+    .then((data) => {
+      visitEl.textContent = data.count;
+      localStorage.setItem("visitCount", data.count);
+    })
+    .catch(() => {
+      visitEl.textContent = localStorage.getItem("visitCount") || "N/A";
+    });
 }
 
 // =========================
-// DOMContentLoaded Initialization
+// Footer / Date
 // =========================
-document.addEventListener("DOMContentLoaded", () => {
+function initDate() {
+  const modifiedElement = document.getElementById("lastModified");
+  const yearElement = document.querySelector("#currentyear");
+
+  if (modifiedElement) modifiedElement.textContent = getFormattedLastModified();
+  if (yearElement)
+    yearElement.innerHTML = `<span class="highlight">${new Date().getFullYear()}</span>`;
+}
+
+// =========================
+// Main Initialization
+// =========================
+async function initAfterPageLoad() {
+  await updateHeaderAndFooter();
   setupHamburgerMenu();
-  setActiveNavLink();
+  updateUserUI();
+  setupLogout();
   initDate();
-  checkNeonDB();
-  populateProductDropdown();
-  setupButtons();
-  loadPortfolioList();
-  setupPortfolio();
-  setupPortfolioCarousel();
-  loadQuoteModal();
-  handleLocalStorage();
-});
+  populateProductDropdown?.();
+  setupButtons?.();
+
+  // Initialize portfolios **after main content is in the DOM**
+  // if (document.querySelector("#portfolio-carousel")) {
+  //   await initPortfolio();
+  // }
+
+  updateVisitCount();
+}
+
+// DOMContentLoaded
+document.addEventListener("DOMContentLoaded", initAfterPageLoad);
