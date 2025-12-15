@@ -1666,6 +1666,32 @@ fieldset {
     max-width: 120px;
   }
 
+  /* Center the dropdown */
+  #dynamic-product {
+    display: block;
+    margin: 0 auto 20px auto; /* center and add bottom margin */
+    width: 100%; /* optional: adjust width */
+    text-align: center;
+  }
+
+  #portfolio-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+    max-width: 100%; /* ensure it doesn't exceed available space */
+  }
+
+  #portfolio-display img {
+    width: 100%;
+    max-width: 250px; /* limit the size */
+    height: 200px; /* fixed height */
+    object-fit: cover; /* crop the image to fit the box */
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
   .portfolio-items {
     display: flex;
     flex-direction: column;

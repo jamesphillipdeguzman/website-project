@@ -32,9 +32,7 @@
 
     <!-- JS -->
     <script src="/js/base.js" type="module"></script>
-    <!-- <script type="module" src="/scripts/header.js"></script> -->
-    <script type="module" src="/scripts/footer.js"></script>
-    <script type="module" src="/scripts/dashboard.js"></script>
+
 
 
 </head>
@@ -141,33 +139,7 @@
     </footer>
 
     <script>
-        function loadUserName() {
-            const nameEl = document.getElementById("user-name");
-            const storedName = localStorage.getItem("userName");
-            nameEl.textContent = storedName || "Guest";
-        }
 
-        loadUserName();
-
-        // Logout button logic
-        const logoutBtn = document.getElementById("logout-btn");
-        if (logoutBtn) {
-            logoutBtn.addEventListener("click", () => {
-                localStorage.removeItem("userId");
-                localStorage.removeItem("userEmail");
-                localStorage.removeItem("userName");
-                localStorage.removeItem("userType");
-                window.location.href = "/pages/login.html";
-            });
-        }
-
-        // Add New Project button redirect
-        const addProjectBtn = document.getElementById("add-project-btn");
-        if (addProjectBtn) {
-            addProjectBtn.addEventListener("click", () => {
-                window.location.href = "/pages/new-project.html";
-            });
-        }
 
     </script>
 
