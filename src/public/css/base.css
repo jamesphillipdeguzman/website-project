@@ -94,7 +94,49 @@ h2 {
   max-width: 100%;
 }
 
-/* ================== NAVIGATION ====================== */
+/* ---------------- Mobile menu ---------------- */
+
+.navigation .open {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navigation .logo {
+  display: flex;
+}
+
+/* Optional: focus style for accessibility */
+/*
+.navigation a:focus {
+  outline: 2px solid white;
+  outline-offset: 4px;
+}
+*/
+
+/* ================== HEADER & NAVIGATION ====================== */
+header {
+  min-height: 120px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--carmine);
+  color: whitesmoke;
+  font-family: var(--primary-font);
+  position: relative;
+  z-index: 1000;
+}
+
+.logo {
+  flex: 0 0 auto;
+  width: 100px;
+  height: 100px;
+}
+
+#menu {
+  display: none;
+}
 
 .highlight2 {
   color: navajowhite;
@@ -115,142 +157,76 @@ h2 {
   font-weight: bold;
 }
 
+/* NAVIGATION */
 .navigation {
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   background-color: var(--carmine);
-  /* background-color: #931621ff; */
-
-  flex: 1 1 35%;
+  position: relative;
+  height: 60px; /* fixed to prevent flicker */
 }
 
-/* .active::after {
-    content: '📌'; 
-    margin-right: 8px;
-    color: white; 
-    
-} */
+.navigation ul {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  margin: 0;
+}
 
-.navigation a.active::after {
-  content: "";
-  display: block;
-  margin: 4px auto 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #ff6b6b; /* accent color */
+.navigation ul li {
+  margin: 0 15px;
+  position: relative;
+  text-align: center;
 }
 
 .navigation a {
   text-decoration: none;
-  padding: 0;
-  margin: 0 20px;
-  /* margin-right: 40px; */
   color: #fff;
   font-size: 1.2rem;
-  flex: 1 1 auto;
-  flex-wrap: nowrap;
+  display: inline-block;
+  padding: 10px 5px;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
-/* .navigation a:focus {
-    outline: 2px solid white;
-    outline-offset: 4px;
-} */
-
 .navigation a:hover {
-  text-decoration: none;
-
-  /* border-bottom: 2px solid yellow; */
-  /* border-radius: 4px; */
-  transition: background-color 0.5s ease;
   color: yellow;
 }
 
-.navigation a {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
+/* ACTIVE LINK */
 .navigation a.active::before {
   content: "";
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 0, 0.15);
   border-radius: 8px;
   z-index: -1;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.navigation a.active::before {
   transform: scaleX(1);
 }
 
-.navigation ul {
-  display: flex;
-  list-style-type: none;
-  justify-content: space-between;
-  align-content: center;
-  padding: 5px 20px;
-  flex: 1 1 auto;
+.navigation a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff9f43, #f368e0);
+  border-radius: 2px;
 }
 
-.navigation ul li {
-  flex: 1 1 auto;
+/* MOBILE NAV */
+.navigation .open {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 20px 10px;
 }
-
-.open a {
-  display: block;
-  /* color: #931621ff; */
-}
-
-/* .navigation ul .open {
-    display: none;
-} */
-
-/* ================== HEADER ====================== */
-
-h1 {
-  font-family: Roboto, Arial, sans-serif;
-  color: #333;
-}
-
-h3 {
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
-}
-
-header {
-  min-height: 120px; /* match your nav height */
-  background-color: var(--carmine);
-  display: flex;
-  justify-content: space-between;
-  /* background-color: #931621ff; */
-
-  text-align: center;
-  color: whitesmoke;
-  /* font-family: var(--primary-font); */
-  font-family: Roboto, Arial, san-serif;
-}
-
-.logo {
-  flex: 0 1 10%;
-  width: 100px;
-  height: 100px;
-}
-
-#menu {
-  display: none;
-}
-
 /* ================== MAIN ====================== */
 
 main {
@@ -1252,6 +1228,64 @@ fieldset {
   .actions-grid {
     justify-content: center;
   }
+
+  /* ================== MOBILE NAV DRAWER ====================== */
+  @media (max-width: 768px) {
+    .navigation ul {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 250px;
+      height: 100vh;
+      background-color: var(--carmine);
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+      padding-top: 80px;
+      gap: 30px;
+      transition: right 0.3s ease-in-out;
+      z-index: 1050;
+    }
+
+    .navigation ul.open {
+      right: 0;
+    }
+
+    #menu {
+      display: block;
+    }
+
+    .navigation ul li a {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* Optional overlay behind drawer */
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1040;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-overlay.active {
+    display: block;
+  }
+
+  /* ================== TRANSITIONS & EFFECTS ====================== */
+  .navigation ul li a {
+    transition: all 0.3s ease;
+  }
+
+  header,
+  .navigation ul {
+    transition: all 0.3s ease;
+  }
 }
 
 /* ================== MOBILE VIEW ====================== */
@@ -1428,15 +1462,27 @@ fieldset {
 
   #menu {
     font-size: 2rem;
-    border: 0;
-    position: absolute;
-    top: 0;
-    right: 10px;
     color: whitesmoke;
     background: none;
-    /* flex: 1 1 auto; */
-    display: flex;
-    justify-content: center;
+    border: 0;
+    position: fixed; /* fixed keeps it visible while sliding */
+    top: 0;
+    right: 1rem;
+    cursor: pointer;
+    z-index: 1100; /* higher than slider drawer */
+  }
+
+  nav#slider-menu {
+    position: fixed;
+    top: 0.5rem;
+    right: -100%;
+    width: 250px;
+    height: 100vh;
+    background-color: #111;
+    color: white;
+    transition: right 0.3s ease-in-out;
+    z-index: 1000; /* slightly lower than button */
+    padding-top: 4rem; /* space for the button */
   }
 
   #menu::before {
