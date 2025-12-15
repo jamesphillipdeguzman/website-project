@@ -59,31 +59,43 @@ export function setupHamburgerMenu() {
 // ---------- Active Nav Highlight ----------
 export function setActiveNavLink() {
   const navLinks = document.querySelectorAll(".nav-links li a");
-  const currentPath = window.location.pathname;
-  const userType = localStorage.getItem("userType"); // Client or Admin
+
+  // Normalize current page (e.g. index.html, about.html)
+  let currentPage = window.location.pathname.split("/").pop();
+
+  // Default to index.html
+  if (!currentPage || currentPage === "") {
+    currentPage = "index.html";
+  }
+
+  const userType = localStorage.getItem("userType");
 
   navLinks.forEach((link) => {
     link.classList.remove("active");
 
-    // For Admin, Dashboard logic
+    const linkPage = link.getAttribute("href")?.split("/").pop();
+
+    /* ---------- Admin logic ---------- */
     if (userType === "Admin" && link.id === "login-link") {
       if (
-        currentPath.includes("dashboard.html") ||
-        currentPath.includes("new-project.html")
+        currentPage === "dashboard.html" ||
+        currentPage === "new-project.html"
       ) {
         link.classList.add("active");
+        return;
       }
     }
 
-    // For Client, Profile logic
+    /* ---------- Client logic ---------- */
     if (userType === "Client" && link.id === "login-link") {
-      if (currentPath.includes("profile.html")) {
+      if (currentPage === "profile.html") {
         link.classList.add("active");
+        return;
       }
     }
 
-    // Generic matching for other links
-    if (currentPath.includes(link.getAttribute("href"))) {
+    /* ---------- Normal page match ---------- */
+    if (linkPage === currentPage) {
       link.classList.add("active");
     }
   });

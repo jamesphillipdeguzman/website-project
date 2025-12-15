@@ -94,10 +94,17 @@ function updateVisitCount() {
   fetch("/.netlify/functions/visit-count")
     .then((res) => res.json())
     .then((data) => {
+      console.log(
+        "🔹 Visit count fetched from serverless function:",
+        data.count,
+      );
       visitEl.textContent = data.count;
+      localStorage.setItem("visitCount", data.count);
     })
-    .catch(() => {
-      visitEl.textContent = "N/A";
+    .catch((err) => {
+      console.error("Failed to fetch visit count:", err);
+      // fallback to localStorage
+      visitEl.textContent = localStorage.getItem("visitCount") || "N/A";
     });
 }
 
@@ -112,34 +119,6 @@ function fetchVisitCount(visitEl) {
       // fallback to localStorage
       visitEl.textContent = localStorage.getItem("visitCount") || "N/A";
     });
-}
-
-// =========================
-// Site Visit Counter (Global)
-// =========================
-async function updateSiteVisitCount() {
-  // Try to get from localStorage first
-  const cachedCount = localStorage.getItem("siteVisitCount");
-  const visitEl = document.querySelector(".site-visit-count");
-
-  if (visitEl && cachedCount) {
-    visitEl.textContent = cachedCount;
-  }
-
-  try {
-    // Always call serverless function to increment
-    const res = await fetch("/.netlify/functions/visit-count");
-    if (!res.ok) throw new Error("Failed to fetch visit count");
-
-    const data = await res.json();
-    if (visitEl) visitEl.textContent = data.count;
-
-    // Save in localStorage
-    localStorage.setItem("siteVisitCount", data.count);
-  } catch (err) {
-    console.error("Error fetching visit count:", err);
-    if (visitEl && !cachedCount) visitEl.textContent = "N/A";
-  }
 }
 
 // =========================
@@ -166,7 +145,6 @@ async function initAfterPageLoad() {
   populateProductDropdown?.();
   setupButtons?.();
   updateVisitCount();
-  updateSiteVisitCount();
 }
 
 // DOMContentLoaded
