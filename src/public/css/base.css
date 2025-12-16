@@ -956,7 +956,7 @@ footer {
   color: whitesmoke;
   /* font-family: var(--primary-font); */
   font-family: Roboto, Arial, sans-serif;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
 }
 
 .footer-wrapper {
@@ -967,7 +967,7 @@ footer {
 
 .footer-text {
   color: #464444;
-  font-size: medium;
+  font-size: 1.2rem;
 }
 
 .social-links {
@@ -1760,7 +1760,7 @@ fieldset {
   }
 
   .footer-text {
-    font-size: 0.7rem;
+    font-size: 1.2rem;
   }
 
   body {
@@ -1771,7 +1771,7 @@ fieldset {
 
 #header-container,
 #footer-container {
-  min-height: 50px;
+  min-height: 70px;
 }
 
 #footer-container {
