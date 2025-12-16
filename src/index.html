@@ -171,7 +171,27 @@
                         </div>
                     </div>
 
-                    <button class="mybutton" id="signup-btn">Sign Up</button>
+                    <div class="backdrop" id="signup-backdrop"></div>
+                    <div id="signup-modal" class="modal hidden">
+                        <div class="modal-content">
+                            <span class="close" id="close-signup">&times;</span>
+                            <!-- Insert signup.html contents here -->
+                            <h2>Sign Up</h2>
+                            <form id="signupForm">
+                                <label for="signup-name">Full Name</label>
+                                <input type="text" id="signup-name" name="name" required>
+
+                                <label for="signup-email">Email</label>
+                                <input type="email" id="signup-email" name="email" required>
+
+                                <label for="signup-password">Password</label>
+                                <input type="password" id="signup-password" name="password" required>
+
+                                <button type="submit" class="mybutton">Sign Up</button>
+                            </form>
+                        </div>
+                    </div>
+
                 </article>
 
             </div>

@@ -208,7 +208,6 @@ function showPortfolio(portfolio, container) {
 // Modal Handling
 // =========================
 function setupModals() {
-  // Map of buttons to modal/backdrop IDs
   const modalMap = [
     {
       buttonId: "get-quote-btn",
@@ -216,9 +215,14 @@ function setupModals() {
       backdropId: "quote-backdrop",
     },
     {
-      buttonId: "signup-btn",
+      buttonId: "login-btn", // if you have a dedicated login button
       modalId: "login-modal",
       backdropId: "login-backdrop",
+    },
+    {
+      buttonId: "signup-btn",
+      modalId: "signup-modal",
+      backdropId: "signup-backdrop",
     },
   ];
 
