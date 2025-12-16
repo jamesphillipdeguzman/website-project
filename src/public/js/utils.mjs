@@ -36,29 +36,39 @@ function injectHTML(targetSelector, html) {
 
 // ---------- Hamburger Menu ----------
 export function setupHamburgerMenu() {
-  const menuBtn = document.querySelector("#menu");
-  const navMenu = document.querySelector(".nav-links");
+  const btn = document.getElementById("menu");
+  const nav = document.getElementById("mobile-nav");
+  const overlay = document.querySelector(".nav-overlay");
 
-  if (!menuBtn || !navMenu) return;
+  if (!btn || !nav) return;
 
-  // remove previous listeners if any (safe re-init)
-  menuBtn.replaceWith(menuBtn.cloneNode(true));
-  const newMenuBtn = document.querySelector("#menu");
-  const newNavMenu = document.querySelector(".nav-links");
+  if (btn.dataset.bound) return;
+  btn.dataset.bound = "true";
 
-  if (!newMenuBtn || !newNavMenu) return;
+  const closeMenu = () => {
+    btn.classList.remove("open");
+    nav.classList.remove("open");
+    overlay.classList.remove("active");
+  };
 
-  newMenuBtn.addEventListener("click", () => {
-    newMenuBtn.classList.toggle("open");
-    newNavMenu.classList.toggle("open");
+  btn.addEventListener("click", () => {
+    btn.classList.toggle("open");
+    nav.classList.toggle("open");
+    overlay.classList.toggle("active");
+    btn.setAttribute("aria-expanded", isOpen);
   });
 
-  console.log("✅ setupHamburgerMenu()");
+  overlay.addEventListener("click", closeMenu);
+  nav
+    .querySelectorAll("a")
+    .forEach((a) => a.addEventListener("click", closeMenu));
 }
 
 // ---------- Active Nav Highlight ----------
 export function setActiveNavLink() {
-  const navLinks = document.querySelectorAll(".nav-links li a");
+  const navLinks = document.querySelectorAll(
+    ".header-center .nav-links a, #mobile-nav .nav-links a",
+  );
 
   // Normalize current page (e.g. index.html, about.html)
   let currentPage = window.location.pathname.split("/").pop();

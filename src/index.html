@@ -34,24 +34,52 @@
 <body class="loading">
 
     <div class="page-wrap">
-        <header id="header-container">
-            <nav class="navigation">
-                <div><a href="/index.html"><span class="highlight2">besys.tech</span></a></div>
-                <a href="/index.html" id="logolink"><img id="logo" src="/images/besystechlogo.png" alt="company logo"
-                        width="30" height="30"></a>
+        <header>
+            <div id="header-container" class="glass">
 
-                <ul class="nav-links">
-                    <li><a href="/index.html" id="home" class="active">Home</a></li>
-                    <li><a href="/pages/about.html" id="about">About</a></li>
-                    <li><a href="/pages/contact.html" id="contact">Contact</a></li>
-                    <li><a href="/pages/portfolios.html" id="portfolio">Portfolio</a></li>
-                    <li><a href="/pages/product.html" id="product">Review</a></li>
-                    <li><a href="/pages/login.html" id="login-link">Login</a></li>
+                <!-- LEFT: Logo -->
+                <div class="header-left">
+                    <a href="/index.html" class="logo">
+                        <img src="/images/besystechlogo.png" alt="BesysTech Logo" width="32" height="32" />
+                        <span class="logo-text">besys.tech</span>
+                    </a>
+                </div>
 
-                </ul>
-                <button id="menu" aria-label="menu"></button>
-            </nav>
+                <!-- CENTER: Desktop Navigation -->
+                <nav class="header-center">
+                    <ul class="nav-links">
+                        <li><a href="/index.html" id="home">Home</a></li>
+                        <li><a href="/pages/about.html" id="about">About</a></li>
+                        <li><a href="/pages/contact.html" id="contact">Contact</a></li>
+                        <li><a href="/pages/portfolios.html" id="portfolio">Portfolio</a></li>
+                        <li><a href="/pages/product.html" id="product">Review</a></li>
+                    </ul>
+                </nav>
+
+                <!-- RIGHT: Dashboard / Hamburger -->
+                <div class="header-right">
+                    <a href="/pages/login.html" id="login-link" class="dashboard-link">Dashboard</a>
+                    <button id="menu" aria-label="Open menu"></button>
+                </div>
+
+            </div>
         </header>
+
+        <!-- Mobile drawer -->
+        <nav id="mobile-nav">
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/pages/about.html">About</a></li>
+                <li><a href="/pages/contact.html">Contact</a></li>
+                <li><a href="/pages/portfolios.html">Portfolio</a></li>
+                <li><a href="/pages/product.html">Review</a></li>
+                <li><a href="/pages/login.html">Dashboard</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-overlay"></div>
+
+
 
         <main>
             <!-- <p>Window width: <span id="windowWidth"></span></p>

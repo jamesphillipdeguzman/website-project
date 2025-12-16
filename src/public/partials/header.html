@@ -1,16 +1,25 @@
-<nav class="navigation">
-    <div><a href="/index.html"><span class="highlight2">besys.tech</span></a></div>
-    <a href="/index.html" id="logolink"><img id="logo" src="/images/besystechlogo.png" alt="company logo" width="30"
-            height="30"></a>
+<!-- Left: Logo + Text -->
+<div class="header-left">
+    <a href="/index.html" id="logolink">
+        <img id="logo" src="/images/besystechlogo.png" alt="company logo" width="30" height="30">
+    </a>
+    <a href="/index.html"><span class="logo-text">besys.tech</span></a>
+</div>
 
+<!-- Center: Navigation links -->
+<nav class="header-center navigation">
     <ul class="nav-links">
-        <li><a href="/index.html" id="home">Home</a></li>
-        <li><a href="/pages/about.html" id="about" class="active">About</a></li>
+        <li><a href="/index.html" id="home" class="active">Home</a></li>
+        <li><a href="/pages/about.html" id="about">About</a></li>
         <li><a href="/pages/contact.html" id="contact">Contact</a></li>
         <li><a href="/pages/portfolios.html" id="portfolio">Portfolio</a></li>
         <li><a href="/pages/product.html" id="product">Review</a></li>
-        <li><a href="/pages/login.html" id="login-link">Login</a></li>
-
     </ul>
     <button id="menu" aria-label="menu"></button>
 </nav>
+
+<!-- Right: Login/Dashboard + Hamburger -->
+<div class="header-right navigation">
+    <a href="/pages/login.html" id="login-link" class="dashboard-link">Login</a>
+
+</div>

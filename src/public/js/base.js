@@ -204,6 +204,66 @@ function showPortfolio(portfolio, container) {
   `;
 }
 
+// =========================
+// Modal Handling
+// =========================
+function setupModals() {
+  const quoteBtn = document.getElementById("get-quote-btn");
+  const signupBtn = document.getElementById("signup-btn");
+
+  const quoteModal = document.getElementById("quote-modal");
+  const quoteBackdrop = document.getElementById("quote-backdrop");
+  const closeQuote = document.getElementById("close-btn");
+
+  const loginModal = document.getElementById("login-modal");
+  const loginBackdrop = document.getElementById("login-backdrop");
+  const closeLogin = document.getElementById("close-login");
+
+  // ----- Quote modal -----
+  if (quoteBtn && quoteModal && quoteBackdrop) {
+    quoteBtn.addEventListener("click", () => {
+      quoteModal.classList.remove("hidden");
+      quoteBackdrop.style.display = "block";
+    });
+  }
+
+  if (closeQuote) {
+    closeQuote.addEventListener("click", () => {
+      quoteModal.classList.add("hidden");
+      quoteBackdrop.style.display = "none";
+    });
+  }
+
+  if (quoteBackdrop) {
+    quoteBackdrop.addEventListener("click", () => {
+      quoteModal.classList.add("hidden");
+      quoteBackdrop.style.display = "none";
+    });
+  }
+
+  // ----- Login modal -----
+  if (signupBtn && loginModal && loginBackdrop) {
+    signupBtn.addEventListener("click", () => {
+      loginModal.classList.remove("hidden");
+      loginBackdrop.style.display = "block";
+    });
+  }
+
+  if (closeLogin) {
+    closeLogin.addEventListener("click", () => {
+      loginModal.classList.add("hidden");
+      loginBackdrop.style.display = "none";
+    });
+  }
+
+  if (loginBackdrop) {
+    loginBackdrop.addEventListener("click", () => {
+      loginModal.classList.add("hidden");
+      loginBackdrop.style.display = "none";
+    });
+  }
+}
+
 window.addEventListener("popstate", () => loadPage(location.href));
 
 // =========================
@@ -267,6 +327,7 @@ async function initAfterPageLoad() {
   setupLogout();
   initDate();
   fetchPortfolios();
+  setupModals();
   updateVisitCount();
 }
 
