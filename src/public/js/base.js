@@ -12,7 +12,6 @@ function updateUserUI() {
   const userNameEl = document.getElementById("user-name");
   const userEmailEl = document.getElementById("user-email");
   const userTypeEl = document.getElementById("user-type");
-  const loginLink = document.getElementById("login-link");
 
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName") || "Guest";
@@ -23,6 +22,8 @@ function updateUserUI() {
   if (userEmailEl) userEmailEl.textContent = userEmail;
   if (userTypeEl) userTypeEl.textContent = userType;
 
+  // update desktop login link
+  const loginLink = document.getElementById("login-link");
   if (loginLink) {
     if (!userId) {
       loginLink.textContent = "Login";
@@ -35,6 +36,21 @@ function updateUserUI() {
       loginLink.href = "/pages/profile.html";
     }
   }
+
+  // update mobile menu link(s) - add class or ID to mobile links
+  const mobileLinks = document.querySelectorAll(".mobile-login-link");
+  mobileLinks.forEach((link) => {
+    if (!userId) {
+      link.textContent = "Login";
+      link.href = "/pages/login.html";
+    } else if (userType === "Admin") {
+      link.textContent = "Dashboard";
+      link.href = "/pages/dashboard.html";
+    } else {
+      link.textContent = "Profile";
+      link.href = "/pages/profile.html";
+    }
+  });
 
   setActiveNavLink();
 }
