@@ -208,60 +208,49 @@ function showPortfolio(portfolio, container) {
 // Modal Handling
 // =========================
 function setupModals() {
-  const quoteBtn = document.getElementById("get-quote-btn");
-  const signupBtn = document.getElementById("signup-btn");
+  // Map of buttons to modal/backdrop IDs
+  const modalMap = [
+    {
+      buttonId: "get-quote-btn",
+      modalId: "quote-modal",
+      backdropId: "quote-backdrop",
+    },
+    {
+      buttonId: "signup-btn",
+      modalId: "login-modal",
+      backdropId: "login-backdrop",
+    },
+  ];
 
-  const quoteModal = document.getElementById("quote-modal");
-  const quoteBackdrop = document.getElementById("quote-backdrop");
-  const closeQuote = document.getElementById("close-btn");
+  modalMap.forEach(({ buttonId, modalId, backdropId }) => {
+    const btn = document.getElementById(buttonId);
+    const modal = document.getElementById(modalId);
+    const backdrop = document.getElementById(backdropId);
+    const closeBtn = modal?.querySelector(".close");
 
-  const loginModal = document.getElementById("login-modal");
-  const loginBackdrop = document.getElementById("login-backdrop");
-  const closeLogin = document.getElementById("close-login");
+    if (!btn || !modal || !backdrop) return;
 
-  // ----- Quote modal -----
-  if (quoteBtn && quoteModal && quoteBackdrop) {
-    quoteBtn.addEventListener("click", () => {
-      quoteModal.classList.remove("hidden");
-      quoteBackdrop.style.display = "block";
+    // Show modal
+    btn.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      modal.style.display = "block";
+      backdrop.style.display = "block";
     });
-  }
 
-  if (closeQuote) {
-    closeQuote.addEventListener("click", () => {
-      quoteModal.classList.add("hidden");
-      quoteBackdrop.style.display = "none";
+    // Close modal via close button
+    closeBtn?.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      modal.style.display = "none";
+      backdrop.style.display = "none";
     });
-  }
 
-  if (quoteBackdrop) {
-    quoteBackdrop.addEventListener("click", () => {
-      quoteModal.classList.add("hidden");
-      quoteBackdrop.style.display = "none";
+    // Close modal via backdrop click
+    backdrop.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      modal.style.display = "none";
+      backdrop.style.display = "none";
     });
-  }
-
-  // ----- Login modal -----
-  if (signupBtn && loginModal && loginBackdrop) {
-    signupBtn.addEventListener("click", () => {
-      loginModal.classList.remove("hidden");
-      loginBackdrop.style.display = "block";
-    });
-  }
-
-  if (closeLogin) {
-    closeLogin.addEventListener("click", () => {
-      loginModal.classList.add("hidden");
-      loginBackdrop.style.display = "none";
-    });
-  }
-
-  if (loginBackdrop) {
-    loginBackdrop.addEventListener("click", () => {
-      loginModal.classList.add("hidden");
-      loginBackdrop.style.display = "none";
-    });
-  }
+  });
 }
 
 window.addEventListener("popstate", () => loadPage(location.href));
