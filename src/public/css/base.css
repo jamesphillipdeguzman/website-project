@@ -1360,6 +1360,27 @@ fieldset {
   background-color: #af6d76;
 }
 
+/* AUTH STYLES */
+
+.auth-container {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center; /* vertical center (optional) */
+  min-height: 60vh; /* optional, to center vertically in main */
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* <-- this centers the logout button */
+  padding: 2rem;
+  gap: 1rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 /* Optional: make buttons full width on small screens */
 @media (max-width: 600px) {
   .actions-grid {
