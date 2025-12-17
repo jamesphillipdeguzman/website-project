@@ -5,9 +5,14 @@ import {
 } from "./utils.mjs";
 
 /* ======================================================
-   AUTH — SINGLE SOURCE OF TRUTH
+   CONSTANTS
 ====================================================== */
+const PLACEHOLDER_IMAGE = "/images/project-images/no-image-placeholder.webp";
+let portfolios = [];
 
+/* ======================================================
+   AUTH
+====================================================== */
 function getCurrentUser() {
   try {
     return JSON.parse(localStorage.getItem("user"));
@@ -18,7 +23,6 @@ function getCurrentUser() {
 
 function updateAuthLinks() {
   const user = getCurrentUser();
-
   const desktop = document.getElementById("login-link");
   const mobile = document.getElementById("mobile-login-link");
 
@@ -44,10 +48,6 @@ function updateAuthLinks() {
   set(mobile, "Profile", "/pages/profile.html");
 }
 
-/* ======================================================
-   LOGOUT
-====================================================== */
-
 function setupLogout() {
   document.querySelectorAll("#logout-btn, #logout-btn-main").forEach((btn) => {
     btn.onclick = () => {
@@ -57,13 +57,8 @@ function setupLogout() {
   });
 }
 
-/* ======================================================
-   RENDER USER
-====================================================== */
-
 function renderUserHeader() {
   const user = getCurrentUser();
-
   const nameEl = document.getElementById("user-name");
   const emailEl = document.getElementById("user-email");
   const typeEl = document.getElementById("user-type");
@@ -83,11 +78,8 @@ function renderUserHeader() {
 }
 
 /* ======================================================
-   PORTFOLIOS — SINGLE STATE
+   PORTFOLIOS
 ====================================================== */
-
-let portfolios = [];
-
 async function loadPortfolios() {
   try {
     const res = await fetch("/.netlify/functions/get-portfolios");
@@ -104,7 +96,6 @@ async function loadPortfolios() {
 }
 
 /* ---------- Carousel ---------- */
-
 function renderPortfolioCarousel() {
   const container = document.getElementById("portfolio-carousel");
   const select = document.getElementById("my-portfolios");
@@ -129,7 +120,7 @@ function renderPortfolioCarousel() {
       `
       <div class="card" data-title="${p.title}">
         <a href="${p.project_link}" target="_blank">
-          <img src="${p.image_url}" alt="${p.title}" loading="lazy">
+          <img src="${p.image_url || PLACEHOLDER_IMAGE}" alt="${p.title}" loading="lazy" class="portfolio-card-img">
         </a>
         <div class="databox">
           <h3>${p.title}</h3>
@@ -163,7 +154,6 @@ function setupCarouselButtons(container) {
 }
 
 /* ---------- Dropdown ---------- */
-
 function renderPortfolioDropdown() {
   const dropdown = document.getElementById("dynamic-product");
   if (!dropdown) return;
@@ -181,7 +171,6 @@ function renderPortfolioDropdown() {
 }
 
 /* ---------- Admin Editor ---------- */
-
 function renderPortfolioEditor() {
   const selector = document.getElementById("portfolio-selector");
   if (!selector) return;
@@ -203,23 +192,21 @@ function renderPortfolioEditor() {
   };
 }
 
-const PLACEHOLDER_IMAGE = "/images/project-images/no-image-placeholder.webp";
-
+/* ---------- Load / Reset Form ---------- */
 function loadPortfolioIntoForm(p) {
   const form = document.getElementById("portfolio-form");
   const preview = document.getElementById("image-preview");
   const statusEl = document.getElementById("status");
-
   if (!form) return;
 
   if (!p) {
-    // ----- New Portfolio -----
+    // New portfolio
     form.reset();
     delete form.dataset.editingId;
     delete form.dataset.existingImage;
 
     if (preview) {
-      preview.src = p?.image_url || PLACEHOLDER_IMAGE;
+      preview.src = PLACEHOLDER_IMAGE;
       preview.style.display = "block";
     }
 
@@ -227,7 +214,7 @@ function loadPortfolioIntoForm(p) {
     return;
   }
 
-  // ----- Editing existing portfolio -----
+  // Editing existing portfolio
   form.dataset.editingId = p.id || "new";
   form.dataset.existingImage = p.image_url || "";
 
@@ -252,10 +239,18 @@ function resetPortfolioForm() {
   loadPortfolioIntoForm(); // no argument = new portfolio
 }
 
+// ----- Add New Portfolio Button -----
+function setupAddNewPortfolioButton() {
+  const addNewBtn = document.getElementById("add-new-project");
+  addNewBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    resetPortfolioForm();
+  });
+}
+
 /* ======================================================
    MODALS
 ====================================================== */
-
 function setupModals() {
   [
     ["get-quote-btn", "quote-modal", "quote-backdrop"],
@@ -266,7 +261,6 @@ function setupModals() {
     const modal = document.getElementById(modalId);
     const backdrop = document.getElementById(backdropId);
     const close = modal?.querySelector(".close");
-
     if (!btn || !modal || !backdrop) return;
 
     const hide = () => {
@@ -285,13 +279,11 @@ function setupModals() {
 }
 
 /* ======================================================
-   VISITS (THROTTLED)
+   VISITS
 ====================================================== */
-
 function trackVisit() {
   const KEY = "lastVisitIncrement";
   const LIMIT = 30 * 60 * 1000;
-
   const now = Date.now();
   const last = Number(localStorage.getItem(KEY));
 
@@ -312,19 +304,18 @@ function trackVisit() {
 /* ======================================================
    FOOTER
 ====================================================== */
-
 function initDate() {
-  document.getElementById("lastModified").textContent =
-    getFormattedLastModified();
+  const lastModifiedEl = document.getElementById("lastModified");
+  if (lastModifiedEl) lastModifiedEl.textContent = getFormattedLastModified();
 
-  document.getElementById("currentyear").innerHTML =
-    `<span class="highlight">${new Date().getFullYear()}</span>`;
+  const currentYearEl = document.getElementById("currentyear");
+  if (currentYearEl)
+    currentYearEl.innerHTML = `<span class="highlight">${new Date().getFullYear()}</span>`;
 }
 
 /* ======================================================
    INIT
 ====================================================== */
-
 async function init() {
   setupHamburgerMenu();
   updateAuthLinks();
@@ -335,6 +326,7 @@ async function init() {
   setupModals();
   trackVisit();
   await loadPortfolios();
+  setupAddNewPortfolioButton(); // wire up Add New Project button
 }
 
 document.addEventListener("DOMContentLoaded", init);
