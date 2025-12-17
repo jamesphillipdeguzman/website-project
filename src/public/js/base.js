@@ -3,43 +3,43 @@ import {
   setActiveNavLink,
   getFormattedLastModified,
 } from "./utils.mjs";
-// import { initPortfolio } from "./portfolio.js";
 
-// =========================
-// User / Session Management
-// =========================
+/* ======================================================
+   GLOBAL STATE
+====================================================== */
+let portfolios = [];
+
+/* ======================================================
+   SESSION / USER UI
+====================================================== */
+function getUser() {
+  return {
+    id: localStorage.getItem("userId"),
+    name: localStorage.getItem("userName") || "Guest",
+    email: localStorage.getItem("userEmail") || "Not available",
+    type: localStorage.getItem("userType") || "Client",
+  };
+}
+
 function updateUserUI() {
+  const { id, name, email, type } = getUser();
+
   const userNameEl = document.getElementById("user-name");
   const userEmailEl = document.getElementById("user-email");
   const userTypeEl = document.getElementById("user-type");
 
-  const userId = localStorage.getItem("userId");
-  const userName = localStorage.getItem("userName") || "Guest";
-  const userEmail = localStorage.getItem("userEmail") || "Not available";
-  const userType = localStorage.getItem("userType") || "Client";
+  if (userNameEl) userNameEl.textContent = name;
+  if (userEmailEl) userEmailEl.textContent = email;
+  if (userTypeEl) userTypeEl.textContent = type;
 
-  if (userNameEl) userNameEl.textContent = userName;
-  if (userEmailEl) userEmailEl.textContent = userEmail;
-  if (userTypeEl) userTypeEl.textContent = userType;
+  updateLoginLinks(id, type);
+  setActiveNavLink();
+}
 
-  // update desktop login link
-  const loginLink = document.getElementById("login-link");
-  if (loginLink) {
-    if (!userId) {
-      loginLink.textContent = "Login";
-      loginLink.href = "/pages/login.html";
-    } else if (userType === "Admin") {
-      loginLink.textContent = "Dashboard";
-      loginLink.href = "/pages/dashboard.html";
-    } else {
-      loginLink.textContent = "Profile";
-      loginLink.href = "/pages/profile.html";
-    }
-  }
+function updateLoginLinks(userId, userType) {
+  const links = document.querySelectorAll("#login-link, .mobile-login-link");
 
-  // update mobile menu link(s) - add class or ID to mobile links
-  const mobileLinks = document.querySelectorAll(".mobile-login-link");
-  mobileLinks.forEach((link) => {
+  links.forEach((link) => {
     if (!userId) {
       link.textContent = "Login";
       link.href = "/pages/login.html";
@@ -51,294 +51,327 @@ function updateUserUI() {
       link.href = "/pages/profile.html";
     }
   });
-
-  setActiveNavLink();
 }
 
-// =========================
-// Logout
-// =========================
+/* ======================================================
+   LOGOUT
+====================================================== */
 function setupLogout() {
-  const logoutButtons = document.querySelectorAll(
-    "#logout-btn, #logout-btn-main",
-  );
-  if (!logoutButtons) return;
-
-  logoutButtons.forEach((btn) => {
+  document.querySelectorAll("#logout-btn, #logout-btn-main").forEach((btn) =>
     btn.addEventListener("click", () => {
-      ["userId", "userName", "userEmail", "userType"].forEach((key) =>
-        localStorage.removeItem(key),
+      ["userId", "userName", "userEmail", "userType"].forEach((k) =>
+        localStorage.removeItem(k),
       );
       window.location.href = "/pages/login.html";
-    });
-  });
+    }),
+  );
 }
 
-// =========================
-// SPA Loader
-// =========================
-async function loadPage(url) {
-  const main = document.querySelector("main");
-  if (!main) return;
-
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Failed to load page");
-    const html = await res.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-    const newContent = doc.querySelector("main").innerHTML;
-    main.innerHTML = newContent;
-
-    await initAfterPageLoad(); // re-initialize dynamic UI
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-// =========================
-// Get Portfolios
-// =========================
-
-async function fetchPortfolios() {
+/* ======================================================
+   PORTFOLIOS (Single Source of Truth)
+====================================================== */
+async function loadPortfolios() {
   try {
     const res = await fetch("/.netlify/functions/get-portfolios");
-    if (!res.ok) throw new Error("Failed to fetch portfolios");
+    if (!res.ok) throw new Error("Portfolio fetch failed");
 
-    const portfolios = await res.json();
-    setupPortfolioCarousel(portfolios);
-    populatePortfolioDropdown(portfolios); // ← correct function name
+    portfolios = await res.json();
+
+    console.log("Loaded portfolios:", portfolios); // <<-- check this
+    renderPortfolioCarousel();
+    renderPortfolioDropdown();
+    renderPortfolioEditor();
   } catch (err) {
-    console.error(err);
+    console.error("❌ Portfolio load error:", err);
   }
 }
 
-// existing carousel setup...
-function setupPortfolioCarousel(portfolios) {
+/* ---------- Carousel ---------- */
+function renderPortfolioCarousel() {
   const container = document.getElementById("portfolio-carousel");
-  const dropdown = document.getElementById("my-portfolios");
-  if (!container || !dropdown) return;
+  const select = document.getElementById("my-portfolios");
+  if (!container || !select) return;
+
+  // Make container horizontal
+  container.style.display = "flex";
+  container.style.gap = "16px";
+  container.style.overflowX = "auto";
+  container.style.scrollBehavior = "smooth";
+  container.style.paddingBottom = "10px";
 
   container.innerHTML = "";
-  dropdown.innerHTML = '<option value="">Select a portfolio</option>';
+  select.innerHTML = `<option value="">Select a portfolio</option>`;
 
   portfolios.forEach((p) => {
-    const opt = document.createElement("option");
-    opt.value = p.title;
-    opt.textContent = p.title;
-    dropdown.appendChild(opt);
+    // Populate dropdown
+    select.insertAdjacentHTML(
+      "beforeend",
+      `<option value="${p.title}">${p.title}</option>`,
+    );
 
-    const card = document.createElement("div");
-    card.className = "card";
-    card.style = "min-width: 300px; max-width: 300px; flex-shrink: 0;";
-    card.setAttribute("data-title", p.title);
-    card.innerHTML = `
-      <a href="${p.project_link}" target="_blank">
-        <img src="${p.image_url}" alt="${p.title}" style="width: 100%; border-radius: 5px;" loading="lazy">
-      </a>
-      <div class="databox" style="padding: 10px;">
-        <h3>${p.title}</h3>
-        <p>${p.description}</p>
+    // Add card
+    const cardHTML = `
+      <div class="card" data-title="${p.title}" style="
+        flex: 0 0 300px; 
+        min-width: 300px; 
+        max-width: 300px; 
+        border-radius: 5px;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        overflow: hidden;
+      ">
+        <a href="${p.project_link}" target="_blank">
+          <img src="${p.image_url}" alt="${p.title}" loading="lazy" style="width:100%; display:block;">
+        </a>
+        <div class="databox" style="padding:10px;">
+          <h3>${p.title}</h3>
+          <p>${p.description}</p>
+        </div>
       </div>
     `;
-    container.appendChild(card);
+    container.insertAdjacentHTML("beforeend", cardHTML);
   });
 
-  dropdown.addEventListener("change", () => {
-    const selected = container.querySelector(
-      `[data-title="${dropdown.value}"]`,
-    );
-    if (selected)
-      selected.scrollIntoView({ behavior: "smooth", inline: "center" });
-  });
+  // Scroll into view on dropdown change
+  select.onchange = () => {
+    container
+      .querySelector(`[data-title="${select.value}"]`)
+      ?.scrollIntoView({ behavior: "smooth", inline: "center" });
+  };
 
   setupCarouselButtons();
 }
 
 function setupCarouselButtons() {
   const container = document.getElementById("portfolio-carousel");
-  const btnPrev = document.querySelector(".carousel-btn.prev");
-  const btnNext = document.querySelector(".carousel-btn.next");
+  document
+    .querySelector(".carousel-btn.prev")
+    ?.addEventListener("click", () =>
+      container.scrollBy({ left: -300, behavior: "smooth" }),
+    );
 
-  if (!container || !btnPrev || !btnNext) return;
-
-  btnPrev.addEventListener("click", () => {
-    container.scrollBy({ left: -300, behavior: "smooth" });
-  });
-  btnNext.addEventListener("click", () => {
-    container.scrollBy({ left: 300, behavior: "smooth" });
-  });
+  document
+    .querySelector(".carousel-btn.next")
+    ?.addEventListener("click", () =>
+      container.scrollBy({ left: 300, behavior: "smooth" }),
+    );
 }
 
-// NEW: populate any <select id="dynamic-product">
-function populatePortfolioDropdown(portfolios) {
+/* ---------- Dynamic Dropdown ---------- */
+function renderPortfolioDropdown() {
   const dropdown = document.getElementById("dynamic-product");
   if (!dropdown) return;
 
-  // Only insert display container if it doesn't exist yet
-  let displayContainer = document.getElementById("portfolio-display");
-  if (!displayContainer) {
-    displayContainer = document.createElement("div");
-    displayContainer.id = "portfolio-display";
-    displayContainer.style =
-      "margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;";
-    dropdown.parentNode.insertBefore(displayContainer, dropdown);
-  }
-
   dropdown.innerHTML =
-    '<option value="" disabled selected>Select a portfolio...</option>';
+    `<option disabled selected>Select a portfolio...</option>` +
+    portfolios
+      .map((p) => `<option value="${p.id}">${p.title}</option>`)
+      .join("");
 
-  portfolios.forEach((p) => {
-    const option = document.createElement("option");
-    option.value = p.title;
-    option.textContent = p.title;
-    dropdown.appendChild(option);
-  });
-
-  dropdown.addEventListener("change", () => {
-    const selected = portfolios.find((p) => p.title === dropdown.value);
-    if (selected) showPortfolio(selected, displayContainer);
-  });
+  dropdown.onchange = () => {
+    const selected = portfolios.find((p) => String(p.id) === dropdown.value);
+    if (selected) loadPortfolioIntoForm(selected); // Use the same form loader
+  };
 }
 
-function showPortfolio(portfolio, container) {
-  container.innerHTML = `
-    <h3>${portfolio.title}</h3>
-    <a href="${portfolio.project_link}" target="_blank">
-      <img src="${portfolio.image_url}" alt="${portfolio.title}"
-        style="
-          width: 100%;
-          max-width: 100vw;
-          height: auto;
-          object-fit: cover;
-          border-radius: 5px;
-          display: block;
-          margin: 10px auto;
-        " />
+function showPortfolio(p) {
+  let box = document.getElementById("portfolio-display");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "portfolio-display";
+    document.getElementById("dynamic-product")?.before(box);
+  }
+
+  box.innerHTML = `
+    <h3>${p.title}</h3>
+    <a href="${p.project_link}" target="_blank">
+      <img src="${p.image_url}" alt="${p.title}">
     </a>
-    <p>${portfolio.description}</p>
+    <p>${p.description}</p>
   `;
 }
 
-// =========================
-// Modal Handling
-// =========================
-function setupModals() {
-  const modalMap = [
-    {
-      buttonId: "get-quote-btn",
-      modalId: "quote-modal",
-      backdropId: "quote-backdrop",
-    },
-    {
-      buttonId: "login-btn", // if you have a dedicated login button
-      modalId: "login-modal",
-      backdropId: "login-backdrop",
-    },
-    {
-      buttonId: "signup-btn",
-      modalId: "signup-modal",
-      backdropId: "signup-backdrop",
-    },
-  ];
+/* ---------- Admin Editor ---------- */
+function loadPortfolioIntoForm(portfolio) {
+  const form = document.getElementById("portfolio-form");
+  if (!form) return;
 
-  modalMap.forEach(({ buttonId, modalId, backdropId }) => {
-    const btn = document.getElementById(buttonId);
+  form.dataset.editingId = portfolio.id;
+
+  form.querySelector('[name="name"]').value = portfolio.title || "";
+  form.querySelector('[name="description"]').value =
+    portfolio.description || "";
+  form.querySelector('[name="category"]').value = portfolio.category || "";
+  form.querySelector('[name="url"]').value = portfolio.project_link || "";
+  form.querySelector('[name="github"]').value = portfolio.github_link || "";
+
+  // ---- Show existing image ----
+  const preview = document.getElementById("image-preview");
+  if (portfolio.image_url) {
+    preview.src = portfolio.image_url;
+    preview.style.display = "block";
+  } else {
+    preview.src = "";
+    preview.style.display = "none";
+  }
+
+  // ---- Attach file input change listener ----
+  const fileInput = form.querySelector('[name="image"]');
+  if (fileInput) {
+    fileInput.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file); // show selected file
+        preview.style.display = "block";
+      }
+    };
+  }
+
+  document.getElementById("status").textContent =
+    `✏️ Editing: ${portfolio.title}`;
+}
+
+function resetPortfolioForm() {
+  const form = document.getElementById("portfolio-form");
+  if (!form) return;
+
+  form.reset();
+  delete form.dataset.editingId;
+
+  // ---- Hide the preview image ----
+  const preview = document.getElementById("image-preview");
+  if (preview) {
+    preview.src = "";
+    preview.style.display = "none";
+  }
+
+  document.getElementById("status").textContent = "➕ Creating a new portfolio";
+}
+
+function renderPortfolioEditor() {
+  const selector = document.getElementById("portfolio-selector");
+  if (!selector) return;
+
+  selector.innerHTML =
+    `<option value="new">➕ Create New Portfolio</option>` +
+    portfolios
+      .map((p) => `<option value="${p.id}">✏️ ${p.title}</option>`)
+      .join("");
+
+  selector.onchange = () => {
+    if (selector.value === "new") {
+      resetPortfolioForm();
+      return;
+    }
+
+    const selected = portfolios.find(
+      (p) => String(p.id) === String(selector.value),
+    );
+
+    if (selected) {
+      loadPortfolioIntoForm(selected);
+    }
+  };
+}
+
+/* ======================================================
+   MODALS
+====================================================== */
+function setupModals() {
+  [
+    ["get-quote-btn", "quote-modal", "quote-backdrop"],
+    ["login-btn", "login-modal", "login-backdrop"],
+    ["signup-btn", "signup-modal", "signup-backdrop"],
+  ].forEach(([btnId, modalId, backdropId]) => {
+    const btn = document.getElementById(btnId);
     const modal = document.getElementById(modalId);
     const backdrop = document.getElementById(backdropId);
-    const closeBtn = modal?.querySelector(".close");
+    const close = modal?.querySelector(".close");
 
     if (!btn || !modal || !backdrop) return;
 
-    // Show modal
-    btn.addEventListener("click", () => {
+    const hide = () => {
+      modal.classList.add("hidden");
+      modal.style.display = "none";
+      backdrop.style.display = "none";
+    };
+
+    btn.onclick = () => {
       modal.classList.remove("hidden");
       modal.style.display = "block";
       backdrop.style.display = "block";
-    });
+    };
 
-    // Close modal via close button
-    closeBtn?.addEventListener("click", () => {
-      modal.classList.add("hidden");
-      modal.style.display = "none";
-      backdrop.style.display = "none";
-    });
-
-    // Close modal via backdrop click
-    backdrop.addEventListener("click", () => {
-      modal.classList.add("hidden");
-      modal.style.display = "none";
-      backdrop.style.display = "none";
-    });
+    close?.addEventListener("click", hide);
+    backdrop.addEventListener("click", hide);
   });
 }
 
-window.addEventListener("popstate", () => loadPage(location.href));
+/* ======================================================
+   VISIT TRACKING (30 min throttle)
+====================================================== */
+function trackVisit() {
+  console.log("🔹 trackVisit() running");
 
-// =========================
-// Dashboard Visit Count
-// =========================
-function updateVisitCount() {
-  const visitEl = document.querySelector(
-    ".dashboard-content .card:first-child p",
-  );
-  if (!visitEl) return;
+  const KEY = "lastVisitIncrement";
+  const LIMIT = 30 * 60 * 1000; // 30 minutes
+  const now = Date.now();
+  const last = Number(localStorage.getItem(KEY));
 
-  fetch("/.netlify/functions/visit-count")
+  // Increment visit if more than LIMIT passed
+  if (!last || now - last > LIMIT) {
+    fetch("/.netlify/functions/increment-visit")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to increment visit");
+      })
+      .catch(console.error);
+
+    localStorage.setItem(KEY, now);
+  }
+
+  // Always update the UI with latest count
+  const updateUI = (count) => {
+    const countEl = document.getElementById("visit-count");
+    if (countEl) {
+      countEl.textContent = count;
+      localStorage.setItem("visit_count", count); // save in localStorage
+    }
+  };
+
+  // Try to get from DB
+  fetch("/.netlify/functions/get-visit-count")
     .then((res) => res.json())
-    .then((data) => {
-      console.log(
-        "🔹 Visit count fetched from serverless function:",
-        data.count,
-      );
-      visitEl.textContent = data.count;
-      localStorage.setItem("visitCount", data.count);
-    })
+    .then((data) => updateUI(data.count ?? 0))
     .catch((err) => {
-      console.error("Failed to fetch visit count:", err);
-      // fallback to localStorage
-      visitEl.textContent = localStorage.getItem("visitCount") || "N/A";
+      console.error("Visit count error:", err);
+      const fallback = localStorage.getItem("visit_count") || 0;
+      updateUI(fallback);
     });
 }
 
-function fetchVisitCount(visitEl) {
-  fetch("/.netlify/functions/visit-count")
-    .then((res) => res.json())
-    .then((data) => {
-      visitEl.textContent = data.count;
-      localStorage.setItem("visitCount", data.count);
-    })
-    .catch(() => {
-      // fallback to localStorage
-      visitEl.textContent = localStorage.getItem("visitCount") || "N/A";
-    });
-}
-
-// =========================
-// Footer / Date
-// =========================
+/* ======================================================
+   FOOTER
+====================================================== */
 function initDate() {
-  const modifiedElement = document.getElementById("lastModified");
-  const yearElement = document.querySelector("#currentyear");
-
-  if (modifiedElement) modifiedElement.textContent = getFormattedLastModified();
-  if (yearElement)
-    yearElement.innerHTML = `<span class="highlight">${new Date().getFullYear()}</span>`;
+  document.getElementById("lastModified").textContent =
+    getFormattedLastModified();
+  document.getElementById("currentyear").innerHTML =
+    `<span class="highlight">${new Date().getFullYear()}</span>`;
 }
 
-// =========================
-// Main Initialization
-// =========================
-async function initAfterPageLoad() {
-  // await updateHeaderAndFooter();
+/* ======================================================
+   INIT
+====================================================== */
+async function init() {
+  console.log("🔹 init() running");
   setupHamburgerMenu();
   updateUserUI();
   setupLogout();
   initDate();
-  fetchPortfolios();
   setupModals();
-  updateVisitCount();
+  trackVisit();
+  await loadPortfolios();
 }
 
-// DOMContentLoaded
-document.addEventListener("DOMContentLoaded", initAfterPageLoad);
+document.addEventListener("DOMContentLoaded", init);
+window.addEventListener("popstate", () => init());

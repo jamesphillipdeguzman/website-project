@@ -88,6 +88,7 @@ a,
 h3,
 button {
   font-family: var(--primary-font);
+  color: var(--faint-black);
   font-size: 0.9rem;
 }
 
@@ -205,6 +206,10 @@ header {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+}
+
+.header-right a {
+  font-size: 1.1rem;
 }
 
 .dashboard-link {
@@ -352,7 +357,7 @@ header {
 .nav-links a {
   text-decoration: none;
   font-size: 1.1rem;
-  color: black;
+  color: var(--faint-black);
 }
 
 /* ACTIVE LINK */

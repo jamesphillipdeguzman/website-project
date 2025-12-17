@@ -81,6 +81,16 @@
 
         <div class="nav-overlay"></div>
 
+        <div class="form-group">
+            <label for="portfolio-selector">Portfolio Mode</label>
+            <select id="portfolio-selector">
+                <option value="new">➕ Create New Portfolio</option>
+            </select>
+        </div>
+
+        <hr />
+
+
         <main class="form-page">
             <h1>Add New Portfolio</h1>
 
@@ -119,10 +129,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Thumbnail Image</label>
+                    <label>Project Image</label>
+                    <img id="image-preview" src="" alt="Portfolio Image"
+                        style="display:block; max-width:200px; margin-bottom:10px;">
                     <input type="file" name="image" accept="image/*">
                     <small>Upload a representative image of your project (e.g., 300x200px)</small>
                 </div>
+
 
                 <button class="btn-primary" id="save-portfolio-btn" type="submit">Save Portfolio</button>
             </form>
