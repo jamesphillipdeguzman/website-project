@@ -55,7 +55,7 @@ export function setupHamburgerMenu() {
     btn.classList.toggle("open");
     nav.classList.toggle("open");
     overlay.classList.toggle("active");
-    btn.setAttribute("aria-expanded", isOpen);
+    // btn.setAttribute("aria-expanded", isOpen);
   });
 
   overlay.addEventListener("click", closeMenu);

@@ -4,15 +4,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!tbody) return;
 
   try {
-    const res = await fetch("/.netlify/functions/analytics");
-    const data = await res.json();
+    const data = await (
+      await fetch("/.netlify/functions/get-analytics")
+    ).json();
+    console.log(data);
 
-    if (!data.rows || data.rows.length === 0) {
+    if (!data || data.length === 0) {
       tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">No analytics data yet.</td></tr>`;
       return;
     }
 
-    tbody.innerHTML = data.rows
+    tbody.innerHTML = data
       .map((row, index) => {
         const date = new Date(row.created_at).toLocaleString();
         const type = row.visitor_type || "Guest";
@@ -23,10 +25,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             <td>${date}</td>
             <td>${row.visitor_name}</td>
             <td><span class="badge ${badgeClass}">${type}</span></td>
-            <td>${row.page || "-"}</td>
+            <td>${row.page_url || "-"}</td>
             <td>${row.event_type || "-"}</td>
-            <td>${row.referrer || "Direct"}</td>
-            <td>${row.device || "Unknown"}</td>
+            <td>${row.referrer_url || "Direct"}</td>
+            <td>${row.user_agent || "Unknown"}</td>
           </tr>
         `;
       })
