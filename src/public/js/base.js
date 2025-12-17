@@ -197,6 +197,7 @@ function loadPortfolioIntoForm(p) {
   const form = document.getElementById("portfolio-form");
   const preview = document.getElementById("image-preview");
   const statusEl = document.getElementById("status");
+  const statusEl2 = document.getElementById("status2");
   if (!form) return;
 
   if (!p) {
@@ -211,6 +212,7 @@ function loadPortfolioIntoForm(p) {
     }
 
     if (statusEl) statusEl.textContent = "➕ Creating a new portfolio";
+    if (statusEl2) statusEl2.textContent = "➕ Creating a new portfolio";
     return;
   }
 
@@ -233,10 +235,34 @@ function loadPortfolioIntoForm(p) {
     statusEl.textContent = p.id
       ? `✏️ Editing: ${p.title}`
       : "➕ Creating a new portfolio";
+  if (statusEl2)
+    statusEl2.textContent = p.id
+      ? `✏️ Editing: ${p.title}`
+      : "➕ Creating a new portfolio";
 }
 
 function resetPortfolioForm() {
-  loadPortfolioIntoForm(); // no argument = new portfolio
+  const form = document.getElementById("portfolio-form");
+  if (!form) return;
+
+  form.reset();
+  delete form.dataset.editingId;
+  delete form.dataset.existingImage;
+
+  const preview = document.getElementById("image-preview");
+  if (preview) {
+    preview.src = "/images/project-images/no-image-placeholder.webp";
+    preview.alt = "No Image";
+    preview.style.display = "block";
+  }
+
+  const fileInput = document.getElementById("portfolio-image");
+  if (fileInput) fileInput.value = "";
+
+  const statusEl = document.getElementById("status");
+  const statusEl2 = document.getElementById("status2");
+  if (statusEl) statusEl.textContent = "➕ Creating a new portfolio";
+  if (statusEl2) statusEl2.textContent = "➕ Creating a new portfolio";
 }
 
 // ----- Add New Portfolio Button -----
@@ -244,7 +270,8 @@ function setupAddNewPortfolioButton() {
   const addNewBtn = document.getElementById("add-new-project");
   addNewBtn?.addEventListener("click", (e) => {
     e.preventDefault();
-    resetPortfolioForm();
+    // Redirect to new-project page with a query param
+    window.location.href = "/pages/new-project.html?new=true";
   });
 }
 
@@ -326,6 +353,10 @@ async function init() {
   setupModals();
   trackVisit();
   await loadPortfolios();
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("new") === "true") {
+    resetPortfolioForm();
+  }
   setupAddNewPortfolioButton(); // wire up Add New Project button
 }
 
