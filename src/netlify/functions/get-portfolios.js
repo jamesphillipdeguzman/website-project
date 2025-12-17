@@ -8,7 +8,7 @@ export async function handler(event) {
 
   try {
     const portfolios = await sql`
-      SELECT id, title, description, image_url, project_link, github_link
+      SELECT id, title, description, category, image_url, project_link, github_link
       FROM portfolios 
       ORDER BY id ASC;
     `;

@@ -193,17 +193,43 @@ function renderPortfolioEditor() {
       .join("");
 
   selector.onchange = () => {
-    if (selector.value === "new") return resetPortfolioForm();
+    if (selector.value === "new") {
+      resetPortfolioForm();
+      return;
+    }
+
     const p = portfolios.find((x) => String(x.id) === selector.value);
     if (p) loadPortfolioIntoForm(p);
   };
 }
 
+const PLACEHOLDER_IMAGE = "/images/project-images/no-image-placeholder.webp";
+
 function loadPortfolioIntoForm(p) {
   const form = document.getElementById("portfolio-form");
+  const preview = document.getElementById("image-preview");
+  const statusEl = document.getElementById("status");
+
   if (!form) return;
 
-  form.dataset.editingId = p.id;
+  if (!p) {
+    // ----- New Portfolio -----
+    form.reset();
+    delete form.dataset.editingId;
+    delete form.dataset.existingImage;
+
+    if (preview) {
+      preview.src = p?.image_url || PLACEHOLDER_IMAGE;
+      preview.style.display = "block";
+    }
+
+    if (statusEl) statusEl.textContent = "➕ Creating a new portfolio";
+    return;
+  }
+
+  // ----- Editing existing portfolio -----
+  form.dataset.editingId = p.id || "new";
+  form.dataset.existingImage = p.image_url || "";
 
   form.name.value = p.title || "";
   form.description.value = p.description || "";
@@ -211,22 +237,19 @@ function loadPortfolioIntoForm(p) {
   form.url.value = p.project_link || "";
   form.github.value = p.github_link || "";
 
-  const preview = document.getElementById("image-preview");
   if (preview) {
-    preview.src = p.image_url || "";
-    preview.style.display = p.image_url ? "block" : "none";
+    preview.src = p.image_url || PLACEHOLDER_IMAGE;
+    preview.style.display = "block";
   }
+
+  if (statusEl)
+    statusEl.textContent = p.id
+      ? `✏️ Editing: ${p.title}`
+      : "➕ Creating a new portfolio";
 }
 
 function resetPortfolioForm() {
-  const form = document.getElementById("portfolio-form");
-  if (!form) return;
-
-  form.reset();
-  delete form.dataset.editingId;
-
-  const preview = document.getElementById("image-preview");
-  if (preview) preview.style.display = "none";
+  loadPortfolioIntoForm(); // no argument = new portfolio
 }
 
 /* ======================================================
