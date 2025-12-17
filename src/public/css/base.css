@@ -1405,7 +1405,7 @@ fieldset {
   font-size: 1rem;
 }
 
-#user-name,
+#user-name2,
 #user-email {
   font-size: 1rem;
 }
@@ -1666,7 +1666,7 @@ fieldset {
     font-size: 0.8rem;
   }
 
-  #user-name,
+  #user-name2,
   #user-email {
     font-size: 0.8rem;
   }
