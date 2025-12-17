@@ -119,6 +119,9 @@ h2 {
   justify-content: center;
   max-width: 100%;
 }
+#mode {
+  color: white;
+}
 
 /* ---------------- Mobile menu ---------------- */
 
@@ -658,6 +661,13 @@ span#color2 {
 
 .image-container h1 {
   text-align: center;
+}
+
+#image-preview {
+  display: block;
+  margin: 0 auto; /* horizontal centering */
+  max-width: 100%; /* optional: responsive */
+  height: auto;
 }
 
 .layout-section {
@@ -1295,6 +1305,10 @@ fieldset {
   font-weight: 600;
 }
 
+#status {
+  font-size: 1rem;
+}
+
 /* ---------- QUICK ACTIONS SECTION ---------- */
 .quick-actions {
   padding: 2rem 3rem 3rem;
@@ -1624,6 +1638,14 @@ fieldset {
 
   footer-text {
     font-size: 1rem;
+  }
+
+  .lastmodified {
+    font-size: 0.8rem;
+  }
+
+  #status {
+    font-size: 0.8rem;
   }
 }
 

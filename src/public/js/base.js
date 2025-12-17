@@ -37,7 +37,7 @@ function updateUserUI() {
 }
 
 function updateLoginLinks(userId, userType) {
-  const links = document.querySelectorAll("#login-link, .mobile-login-link");
+  const links = document.querySelectorAll("#login-link, #mobile-login-link");
 
   links.forEach((link) => {
     if (!userId) {
@@ -250,6 +250,7 @@ function resetPortfolioForm() {
 
 function renderPortfolioEditor() {
   const selector = document.getElementById("portfolio-selector");
+  const selectProject = document.getElementById("select-project");
   if (!selector) return;
 
   selector.innerHTML =
@@ -260,8 +261,11 @@ function renderPortfolioEditor() {
 
   selector.onchange = () => {
     if (selector.value === "new") {
+      selectProject.textContent = "Add New Portfolio";
       resetPortfolioForm();
       return;
+    } else {
+      selectProject.textContent = "Edit Portfolio";
     }
 
     const selected = portfolios.find(
