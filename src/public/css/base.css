@@ -92,6 +92,11 @@ button {
   font-size: 0.9rem;
 }
 
+button a {
+  color: white;
+  text-decoration: none;
+}
+
 h1,
 h2 {
   font-family: Roboto;

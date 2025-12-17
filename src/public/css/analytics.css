@@ -1,0 +1,125 @@
+/* ===============================
+   Analytics Table
+================================ */
+
+.analytics-section {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.analytics-header {
+  margin-bottom: 1.5rem;
+}
+
+.analytics-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.analytics-header p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.analytics-table-wrapper {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+/* Table */
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.analytics-table thead {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.analytics-table th,
+.analytics-table td {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.analytics-table th {
+  font-weight: 600;
+  color: #333;
+}
+
+.analytics-table tbody tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.analytics-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* ===============================
+   Visitor Badges
+================================ */
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.badge.guest {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.badge.client {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge.admin {
+  background: #fce4ec;
+  color: #ad1457;
+}
+
+/* ===============================
+   Alternating Row Colors
+================================ */
+
+/* Light blue */
+.analytics-table tbody tr:nth-child(odd) {
+  background-color: rgba(227, 242, 253, 0.6); /* light blue */
+}
+
+/* Light peach */
+.analytics-table tbody tr:nth-child(even) {
+  background-color: rgba(255, 235, 230, 0.6); /* light peach */
+}
+
+/* Hover overrides striping */
+.analytics-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+/* ===============================
+   Responsive
+================================ */
+
+@media (max-width: 768px) {
+  .analytics-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .analytics-table th,
+  .analytics-table td {
+    font-size: 0.85rem;
+    padding: 12px;
+  }
+}
