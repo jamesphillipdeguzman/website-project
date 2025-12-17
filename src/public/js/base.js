@@ -335,13 +335,6 @@ async function init() {
   setupModals();
   trackVisit();
   await loadPortfolios();
-
-  // ----- Add New Project button logic -----
-  const addBtn = document.getElementById("add-new-project");
-  addBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    loadPortfolioIntoForm(null); // null signals "new project", resets form + placeholder
-  });
 }
 
 document.addEventListener("DOMContentLoaded", init);
