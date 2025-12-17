@@ -25,6 +25,7 @@ export default defineConfig({
         newproject: resolve(__dirname, "src/pages/new-project.html"),
         profile: resolve(__dirname, "src/pages/profile.html"),
         register: resolve(__dirname, "src/pages/register.html"),
+        analytics: resolve(__dirname, "src/pages/analytics.html"),
       },
     },
   },
