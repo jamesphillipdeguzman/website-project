@@ -1,3 +1,4 @@
+// netlify/functions/track-event.js
 import { sql } from "../../src/lib/db.js";
 
 export const handler = async (event) => {
@@ -11,7 +12,7 @@ export const handler = async (event) => {
 
     const {
       visitor_id,
-      visitor_type = "guest",
+      visitor_type,
       email = null,
       name = null,
       page_url = null,
@@ -21,16 +22,24 @@ export const handler = async (event) => {
       screen_width = null,
       screen_height = null,
       language = null,
-      event_type = "unknown",
+      event_type,
       event_payload = {},
     } = payload;
+
+    // ---------- Safeguards ----------
+    if (!visitor_id) {
+      throw new Error("visitor_id is required");
+    }
+
+    const safeVisitorType = (visitor_type || "unknown").slice(0, 50);
+    const safeEventType = (event_type || "unknown").slice(0, 50);
 
     // ---------- Insert or update visitor ----------
     await sql`
       INSERT INTO visitors (id, visitor_type, email, name, first_seen, last_seen, session_count)
       VALUES (
-        ${visitor_id}::uuid,
-        ${visitor_type.slice(0, 50)},
+        ${visitor_id},
+        ${safeVisitorType},
         ${email},
         ${name},
         NOW(),
@@ -52,8 +61,8 @@ export const handler = async (event) => {
         (visitor_id, event_type, page_url, page_title, referrer_url, device, screen_width, screen_height, language, event_payload, created_at)
       VALUES
         (
-          ${visitor_id}::uuid,
-          ${event_type.slice(0, 50)},
+          ${visitor_id},
+          ${safeEventType},
           ${page_url},
           ${page_title},
           ${referrer_url},
