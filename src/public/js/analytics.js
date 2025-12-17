@@ -66,7 +66,7 @@ function trackEvent(event_type, data = {}) {
   };
 
   // Optional: skip admin traffic entirely
-  if (payload.visitor_type === "admin") return;
+  // if (payload.visitor_type === "admin") return;
 
   fetch(ANALYTICS_ENDPOINT, {
     method: "POST",
