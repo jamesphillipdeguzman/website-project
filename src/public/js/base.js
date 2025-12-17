@@ -5,71 +5,89 @@ import {
 } from "./utils.mjs";
 
 /* ======================================================
-   GLOBAL STATE
+   AUTH — SINGLE SOURCE OF TRUTH
 ====================================================== */
-let portfolios = [];
 
-/* ======================================================
-   SESSION / USER UI
-====================================================== */
-function getUser() {
-  return {
-    id: localStorage.getItem("userId"),
-    name: localStorage.getItem("userName") || "Guest",
-    email: localStorage.getItem("userEmail") || "Not available",
-    type: localStorage.getItem("userType") || "Client",
+function getCurrentUser() {
+  try {
+    return JSON.parse(localStorage.getItem("user"));
+  } catch {
+    return null;
+  }
+}
+
+function updateAuthLinks() {
+  const user = getCurrentUser();
+
+  const desktop = document.getElementById("login-link");
+  const mobile = document.getElementById("mobile-login-link");
+
+  const set = (el, text, href) => {
+    if (!el) return;
+    el.textContent = text;
+    el.href = href;
   };
-}
 
-function updateUserUI() {
-  const { id, name, email, type } = getUser();
+  if (!user) {
+    set(desktop, "Login", "/pages/login.html");
+    set(mobile, "Login", "/pages/login.html");
+    return;
+  }
 
-  const userNameEl = document.getElementById("user-name");
-  const userEmailEl = document.getElementById("user-email");
-  const userTypeEl = document.getElementById("user-type");
+  if (user.user_type === "Admin") {
+    set(desktop, "Dashboard", "/pages/dashboard.html");
+    set(mobile, "Dashboard", "/pages/dashboard.html");
+    return;
+  }
 
-  if (userNameEl) userNameEl.textContent = name;
-  if (userEmailEl) userEmailEl.textContent = email;
-  if (userTypeEl) userTypeEl.textContent = type;
-
-  updateLoginLinks(id, type);
-  setActiveNavLink();
-}
-
-function updateLoginLinks(userId, userType) {
-  const links = document.querySelectorAll("#login-link, #mobile-login-link");
-
-  links.forEach((link) => {
-    if (!userId) {
-      link.textContent = "Login";
-      link.href = "/pages/login.html";
-    } else if (userType === "Admin") {
-      link.textContent = "Dashboard";
-      link.href = "/pages/dashboard.html";
-    } else {
-      link.textContent = "Profile";
-      link.href = "/pages/profile.html";
-    }
-  });
+  set(desktop, "Profile", "/pages/profile.html");
+  set(mobile, "Profile", "/pages/profile.html");
 }
 
 /* ======================================================
    LOGOUT
 ====================================================== */
+
 function setupLogout() {
-  document.querySelectorAll("#logout-btn, #logout-btn-main").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      ["userId", "userName", "userEmail", "userType"].forEach((k) =>
-        localStorage.removeItem(k),
-      );
+  document.querySelectorAll("#logout-btn, #logout-btn-main").forEach((btn) => {
+    btn.onclick = () => {
+      localStorage.removeItem("user");
       window.location.href = "/pages/login.html";
-    }),
-  );
+    };
+  });
 }
 
 /* ======================================================
-   PORTFOLIOS (Single Source of Truth)
+   RENDER USER
 ====================================================== */
+
+function renderUserHeader() {
+  const user = getCurrentUser();
+
+  const nameEl = document.getElementById("user-name");
+  const emailEl = document.getElementById("user-email");
+  const typeEl = document.getElementById("user-type");
+
+  if (!nameEl && !emailEl && !typeEl) return;
+
+  if (!user) {
+    if (nameEl) nameEl.textContent = "Guest";
+    if (emailEl) emailEl.textContent = "";
+    if (typeEl) typeEl.textContent = "";
+    return;
+  }
+
+  if (nameEl) nameEl.textContent = user.name;
+  if (emailEl) emailEl.textContent = user.email;
+  if (typeEl) typeEl.textContent = user.user_type;
+}
+
+/* ======================================================
+   PORTFOLIOS — SINGLE STATE
+====================================================== */
+
+let portfolios = [];
+
 async function loadPortfolios() {
   try {
     const res = await fetch("/.netlify/functions/get-portfolios");
@@ -77,7 +95,6 @@ async function loadPortfolios() {
 
     portfolios = await res.json();
 
-    console.log("Loaded portfolios:", portfolios); // <<-- check this
     renderPortfolioCarousel();
     renderPortfolioDropdown();
     renderPortfolioEditor();
@@ -87,63 +104,51 @@ async function loadPortfolios() {
 }
 
 /* ---------- Carousel ---------- */
+
 function renderPortfolioCarousel() {
   const container = document.getElementById("portfolio-carousel");
   const select = document.getElementById("my-portfolios");
   if (!container || !select) return;
 
-  // Make container horizontal
   container.style.display = "flex";
   container.style.gap = "16px";
   container.style.overflowX = "auto";
   container.style.scrollBehavior = "smooth";
-  container.style.paddingBottom = "10px";
 
   container.innerHTML = "";
   select.innerHTML = `<option value="">Select a portfolio</option>`;
 
   portfolios.forEach((p) => {
-    // Populate dropdown
     select.insertAdjacentHTML(
       "beforeend",
       `<option value="${p.title}">${p.title}</option>`,
     );
 
-    // Add card
-    const cardHTML = `
-      <div class="card" data-title="${p.title}" style="
-        flex: 0 0 300px; 
-        min-width: 300px; 
-        max-width: 300px; 
-        border-radius: 5px;
-        background: #fff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        overflow: hidden;
-      ">
+    container.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="card" data-title="${p.title}">
         <a href="${p.project_link}" target="_blank">
-          <img src="${p.image_url}" alt="${p.title}" loading="lazy" style="width:100%; display:block;">
+          <img src="${p.image_url}" alt="${p.title}" loading="lazy">
         </a>
-        <div class="databox" style="padding:10px;">
+        <div class="databox">
           <h3>${p.title}</h3>
           <p>${p.description}</p>
         </div>
       </div>
-    `;
-    container.insertAdjacentHTML("beforeend", cardHTML);
+    `,
+    );
   });
 
-  // Scroll into view on dropdown change
-  select.onchange = () => {
+  select.onchange = () =>
     container
       .querySelector(`[data-title="${select.value}"]`)
       ?.scrollIntoView({ behavior: "smooth", inline: "center" });
-  };
 
-  setupCarouselButtons();
+  setupCarouselButtons(container);
 }
 
-function setupCarouselButtons() {
-  const container = document.getElementById("portfolio-carousel");
+function setupCarouselButtons(container) {
   document
     .querySelector(".carousel-btn.prev")
     ?.addEventListener("click", () =>
@@ -157,7 +162,8 @@ function setupCarouselButtons() {
     );
 }
 
-/* ---------- Dynamic Dropdown ---------- */
+/* ---------- Dropdown ---------- */
+
 function renderPortfolioDropdown() {
   const dropdown = document.getElementById("dynamic-product");
   if (!dropdown) return;
@@ -169,88 +175,15 @@ function renderPortfolioDropdown() {
       .join("");
 
   dropdown.onchange = () => {
-    const selected = portfolios.find((p) => String(p.id) === dropdown.value);
-    if (selected) loadPortfolioIntoForm(selected); // Use the same form loader
+    const p = portfolios.find((x) => String(x.id) === dropdown.value);
+    if (p) loadPortfolioIntoForm(p);
   };
 }
 
-function showPortfolio(p) {
-  let box = document.getElementById("portfolio-display");
-  if (!box) {
-    box = document.createElement("div");
-    box.id = "portfolio-display";
-    document.getElementById("dynamic-product")?.before(box);
-  }
-
-  box.innerHTML = `
-    <h3>${p.title}</h3>
-    <a href="${p.project_link}" target="_blank">
-      <img src="${p.image_url}" alt="${p.title}">
-    </a>
-    <p>${p.description}</p>
-  `;
-}
-
 /* ---------- Admin Editor ---------- */
-function loadPortfolioIntoForm(portfolio) {
-  const form = document.getElementById("portfolio-form");
-  if (!form) return;
-
-  form.dataset.editingId = portfolio.id;
-
-  form.querySelector('[name="name"]').value = portfolio.title || "";
-  form.querySelector('[name="description"]').value =
-    portfolio.description || "";
-  form.querySelector('[name="category"]').value = portfolio.category || "";
-  form.querySelector('[name="url"]').value = portfolio.project_link || "";
-  form.querySelector('[name="github"]').value = portfolio.github_link || "";
-
-  // ---- Show existing image ----
-  const preview = document.getElementById("image-preview");
-  if (portfolio.image_url) {
-    preview.src = portfolio.image_url;
-    preview.style.display = "block";
-  } else {
-    preview.src = "";
-    preview.style.display = "none";
-  }
-
-  // ---- Attach file input change listener ----
-  const fileInput = form.querySelector('[name="image"]');
-  if (fileInput) {
-    fileInput.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        preview.src = URL.createObjectURL(file); // show selected file
-        preview.style.display = "block";
-      }
-    };
-  }
-
-  document.getElementById("status").textContent =
-    `✏️ Editing: ${portfolio.title}`;
-}
-
-function resetPortfolioForm() {
-  const form = document.getElementById("portfolio-form");
-  if (!form) return;
-
-  form.reset();
-  delete form.dataset.editingId;
-
-  // ---- Hide the preview image ----
-  const preview = document.getElementById("image-preview");
-  if (preview) {
-    preview.src = "";
-    preview.style.display = "none";
-  }
-
-  document.getElementById("status").textContent = "➕ Creating a new portfolio";
-}
 
 function renderPortfolioEditor() {
   const selector = document.getElementById("portfolio-selector");
-  const selectProject = document.getElementById("select-project");
   if (!selector) return;
 
   selector.innerHTML =
@@ -260,27 +193,46 @@ function renderPortfolioEditor() {
       .join("");
 
   selector.onchange = () => {
-    if (selector.value === "new") {
-      selectProject.textContent = "Add New Portfolio";
-      resetPortfolioForm();
-      return;
-    } else {
-      selectProject.textContent = "Edit Portfolio";
-    }
-
-    const selected = portfolios.find(
-      (p) => String(p.id) === String(selector.value),
-    );
-
-    if (selected) {
-      loadPortfolioIntoForm(selected);
-    }
+    if (selector.value === "new") return resetPortfolioForm();
+    const p = portfolios.find((x) => String(x.id) === selector.value);
+    if (p) loadPortfolioIntoForm(p);
   };
+}
+
+function loadPortfolioIntoForm(p) {
+  const form = document.getElementById("portfolio-form");
+  if (!form) return;
+
+  form.dataset.editingId = p.id;
+
+  form.name.value = p.title || "";
+  form.description.value = p.description || "";
+  form.category.value = p.category || "";
+  form.url.value = p.project_link || "";
+  form.github.value = p.github_link || "";
+
+  const preview = document.getElementById("image-preview");
+  if (preview) {
+    preview.src = p.image_url || "";
+    preview.style.display = p.image_url ? "block" : "none";
+  }
+}
+
+function resetPortfolioForm() {
+  const form = document.getElementById("portfolio-form");
+  if (!form) return;
+
+  form.reset();
+  delete form.dataset.editingId;
+
+  const preview = document.getElementById("image-preview");
+  if (preview) preview.style.display = "none";
 }
 
 /* ======================================================
    MODALS
 ====================================================== */
+
 function setupModals() {
   [
     ["get-quote-btn", "quote-modal", "quote-backdrop"],
@@ -295,70 +247,53 @@ function setupModals() {
     if (!btn || !modal || !backdrop) return;
 
     const hide = () => {
-      modal.classList.add("hidden");
       modal.style.display = "none";
       backdrop.style.display = "none";
     };
 
     btn.onclick = () => {
-      modal.classList.remove("hidden");
       modal.style.display = "block";
       backdrop.style.display = "block";
     };
 
     close?.addEventListener("click", hide);
-    backdrop.addEventListener("click", hide);
+    backdrop.onclick = hide;
   });
 }
 
 /* ======================================================
-   VISIT TRACKING (30 min throttle)
+   VISITS (THROTTLED)
 ====================================================== */
-function trackVisit() {
-  console.log("🔹 trackVisit() running");
 
+function trackVisit() {
   const KEY = "lastVisitIncrement";
-  const LIMIT = 30 * 60 * 1000; // 30 minutes
+  const LIMIT = 30 * 60 * 1000;
+
   const now = Date.now();
   const last = Number(localStorage.getItem(KEY));
 
-  // Increment visit if more than LIMIT passed
   if (!last || now - last > LIMIT) {
-    fetch("/.netlify/functions/increment-visit")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to increment visit");
-      })
-      .catch(console.error);
-
+    fetch("/.netlify/functions/increment-visit").catch(console.error);
     localStorage.setItem(KEY, now);
   }
 
-  // Always update the UI with latest count
-  const updateUI = (count) => {
-    const countEl = document.getElementById("visit-count");
-    if (countEl) {
-      countEl.textContent = count;
-      localStorage.setItem("visit_count", count); // save in localStorage
-    }
-  };
-
-  // Try to get from DB
   fetch("/.netlify/functions/get-visit-count")
-    .then((res) => res.json())
-    .then((data) => updateUI(data.count ?? 0))
-    .catch((err) => {
-      console.error("Visit count error:", err);
-      const fallback = localStorage.getItem("visit_count") || 0;
-      updateUI(fallback);
-    });
+    .then((r) => r.json())
+    .then((d) => {
+      const el = document.getElementById("visit-count");
+      if (el) el.textContent = d.count ?? 0;
+    })
+    .catch(console.error);
 }
 
 /* ======================================================
    FOOTER
 ====================================================== */
+
 function initDate() {
   document.getElementById("lastModified").textContent =
     getFormattedLastModified();
+
   document.getElementById("currentyear").innerHTML =
     `<span class="highlight">${new Date().getFullYear()}</span>`;
 }
@@ -366,11 +301,13 @@ function initDate() {
 /* ======================================================
    INIT
 ====================================================== */
+
 async function init() {
-  console.log("🔹 init() running");
   setupHamburgerMenu();
-  updateUserUI();
+  updateAuthLinks();
+  renderUserHeader();
   setupLogout();
+  setActiveNavLink();
   initDate();
   setupModals();
   trackVisit();
@@ -378,4 +315,3 @@ async function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
-window.addEventListener("popstate", () => init());

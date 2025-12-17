@@ -1,59 +1,70 @@
-// public/js/login.js
-document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.querySelector("#loginForm");
-  const loginMessage = document.getElementById("login-message"); // optional <p> for messages
+// /public/js/login.js
+// ===============================
+// LOGIN HANDLER (SINGLE BIND)
+// ===============================
 
-  if (!loginForm) {
-    console.error("❌ Login form not found!");
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("loginForm");
+
+  // Guard: page does not have login form
+  if (!form) return;
+
+  // Guard: prevent double binding
+  if (form.dataset.bound === "true") return;
+  form.dataset.bound = "true";
+
+  form.addEventListener("submit", handleLogin);
+});
+
+// ===============================
+// LOGIN FUNCTION
+// ===============================
+async function handleLogin(e) {
+  e.preventDefault();
+
+  const form = e.currentTarget;
+  const email = form.email.value.trim();
+  const password = form.password.value.trim();
+
+  if (!email || !password) {
+    alert("⚠️ Please enter email and password.");
     return;
   }
 
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  disableForm(form, true);
 
-    const email = document.querySelector("#email").value.trim();
-    const password = document.querySelector("#password").value.trim();
+  try {
+    const response = await fetch("/.netlify/functions/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (!email || !password) {
-      alert("⚠️ Please enter both email and password.");
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(`❌ ${data.error || "Login failed"}`);
+      disableForm(form, false);
       return;
     }
 
-    try {
-      const response = await fetch(`${window.location.origin}/.netlify/functions/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+    // ✅ LOGIN SUCCESS
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-      const data = await response.json();
-      console.log("🔍 Login response:", data);
+    // Redirect once only
+    window.location.replace("/dashboard.html");
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("⚠️ Network or server error.");
+    disableForm(form, false);
+  }
+}
 
-      if (response.ok) {
-        const user = data.user; // Extract nested user object
-
-        // Store minimal safe info
-        localStorage.setItem("userId", user.id);
-        localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("userName", user.name || "");
-        localStorage.setItem("userType", user.user_type);
-
-        alert("✅ " + data.message);
-
-        // Redirect based on user type
-        const redirectUrl = user.user_type === "Admin" ? "/pages/dashboard.html" : "/index.html";
-        console.log("➡️ Redirecting to:", redirectUrl);
-
-        setTimeout(() => {
-          window.location.href = redirectUrl;
-        }, 500);
-
-      } else {
-        alert("❌ " + (data.error || "Login failed"));
-      }
-    } catch (err) {
-      console.error("🚨 Login error:", err);
-      alert("Something went wrong. Please try again later.");
-    }
+// ===============================
+// UI HELPERS
+// ===============================
+function disableForm(form, disabled) {
+  [...form.elements].forEach((el) => {
+    el.disabled = disabled;
   });
-});
+}
