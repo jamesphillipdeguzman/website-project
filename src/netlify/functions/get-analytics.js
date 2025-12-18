@@ -19,26 +19,27 @@ export const handler = async (event) => {
 
     // Fetch all analytics events with visitor info
     const analytics = await sql`
-  SELECT 
-    ae.id,
-    ae.visitor_id,
-    v.name AS visitor_name,
-    v.visitor_type,
-    ae.event_type,
-    ae.page_url,
-    ae.page_title,
-    ae.referrer_url,
-    ae.device AS user_agent,
-    ae.screen_width,
-    ae.screen_height,
-    ae.language,
-    ae.event_payload,
-    ae.created_at
-  FROM analytics_events AS ae
-  LEFT JOIN visitors AS v
-  ON ae.visitor_id = v.id
-  ORDER BY ae.created_at DESC
-  LIMIT 100
+  SELECT
+        ae.id,
+        ae.visitor_id,
+        COALESCE(v.name, 'Guest') AS visitor_name,
+        COALESCE(v.email, '') AS visitor_email,
+        COALESCE(v.visitor_type, 'unknown') AS visitor_type,
+        ae.event_type,
+        ae.page_url,
+        ae.page_title,
+        ae.referrer_url,
+        ae.device,
+        ae.screen_width,
+        ae.screen_height,
+        ae.language,
+        ae.event_payload,
+        ae.created_at
+      FROM analytics_events ae
+      LEFT JOIN visitors v
+        ON ae.visitor_id = v.id
+      ORDER BY ae.created_at DESC
+      LIMIT 100;
 `;
 
     return {

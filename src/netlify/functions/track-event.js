@@ -26,7 +26,6 @@ export const handler = async (event) => {
       event_payload = {},
     } = payload;
 
-    // ---------- Safeguards ----------
     if (!visitor_id) {
       throw new Error("visitor_id is required");
     }
@@ -35,6 +34,7 @@ export const handler = async (event) => {
     const safeEventType = (event_type || "unknown").slice(0, 50);
 
     // ---------- Insert or update visitor ----------
+    // Only updates last_seen and session_count to avoid overwriting visitor_type/email/name
     await sql`
       INSERT INTO visitors (id, visitor_type, email, name, first_seen, last_seen, session_count)
       VALUES (
@@ -49,11 +49,21 @@ export const handler = async (event) => {
       ON CONFLICT (id) DO UPDATE
       SET
         last_seen = NOW(),
-        session_count = visitors.session_count + 1,
-        visitor_type = EXCLUDED.visitor_type,
-        email = EXCLUDED.email,
-        name = EXCLUDED.name;
+        session_count = visitors.session_count + 1;
     `;
+
+    // ---------- Optional: Skip admin events ----------
+    // Only skip sending if visitor_type === "admin" AND the checkbox says false
+    if (
+      safeVisitorType === "admin" &&
+      localStorage.getItem("trackAdmin") === "false"
+    ) {
+      console.log("Skipping admin tracking due to checkbox");
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: "Admin tracking skipped" }),
+      };
+    }
 
     // ---------- Insert analytics event ----------
     await sql`
