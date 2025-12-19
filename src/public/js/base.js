@@ -383,32 +383,32 @@ function getVisitorId() {
 // ===== Track Page View =====
 
 // Example usage when tracking an event
-function trackPageView() {
-  const visitorId = getVisitorId();
-  if (!visitorId) return; // no user info
+// function trackPageView() {
+//   const visitorId = getVisitorId();
+//   if (!visitorId) return; // no user info
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+//   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  fetch("/.netlify/functions/track-event", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      visitor_id: visitorId,
-      name: user.name,
-      email: user.email,
-      user_agent: navigator.userAgent,
-      page_url: window.location.href,
-      page_title: document.title,
-      referrer_url: document.referrer,
-      screen_width: window.screen.width,
-      screen_height: window.screen.height,
-      language: navigator.language,
-      event_type: "pageview",
-      event_payload: null,
-      trackAdmin: user.user_type === "Admin",
-    }),
-  }).catch(console.error);
-}
+//   fetch("/.netlify/functions/track-event", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({
+//       visitor_id: visitorId,
+//       name: user.name,
+//       email: user.email,
+//       user_agent: navigator.userAgent,
+//       page_url: window.location.href,
+//       page_title: document.title,
+//       referrer_url: document.referrer,
+//       screen_width: window.screen.width,
+//       screen_height: window.screen.height,
+//       language: navigator.language,
+//       event_type: "pageview",
+//       event_payload: null,
+//       trackAdmin: user.user_type === "Admin",
+//     }),
+//   }).catch(console.error);
+// }
 
 // ===== Clear Analytics =====
 
