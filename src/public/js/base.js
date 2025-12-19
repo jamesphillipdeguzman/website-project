@@ -376,6 +376,12 @@ function getVisitorId() {
   return visitorId;
 }
 
+/* ======================================================
+   ANALYTICS
+====================================================== */
+
+// ===== Track Page View =====
+
 // Example usage when tracking an event
 function trackPageView() {
   const visitorId = getVisitorId();
@@ -404,6 +410,37 @@ function trackPageView() {
   }).catch(console.error);
 }
 
+// ===== Clear Analytics =====
+
+function clearAnalytics() {
+  const clearBtn = document.getElementById("clearAnalyticsBtn");
+  if (!clearBtn) return;
+
+  clearBtn.addEventListener("click", async () => {
+    if (!confirm("Are you sure you want to clear all analytics events?"))
+      return;
+
+    try {
+      const res = await fetch("/.netlify/functions/clear-analytics", {
+        method: "POST",
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message || "Analytics cleared successfully.");
+        // Reset visit count on dashboard
+        const visitCountEl = document.getElementById("visit-count");
+        if (visitCountEl) visitCountEl.textContent = 0;
+      } else {
+        alert(data.error || "Failed to clear analytics.");
+      }
+    } catch (err) {
+      console.error("Error clearing analytics:", err);
+      alert("Error clearing analytics events.");
+    }
+  });
+}
+
 /* ======================================================
    INIT
 ====================================================== */
@@ -424,6 +461,7 @@ async function init() {
   }
   setupAddNewPortfolioButton(); // wire up Add New Project button
   trackAdmin();
+  clearAnalytics();
 }
 
 document.addEventListener("DOMContentLoaded", init);
