@@ -77,9 +77,8 @@ function renderUserHeader() {
   if (typeEl) typeEl.textContent = user.user_type;
 }
 
-const confettiWrapper = document.querySelector(".confetti-wrapper");
-
 function createConfetti(num = 30) {
+  const confettiWrapper = document.querySelector(".confetti-wrapper");
   const colors = [
     "#2196f3",
     "#64b5f6",
