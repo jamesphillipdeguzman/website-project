@@ -26,6 +26,7 @@ export default defineConfig({
         profile: resolve(__dirname, "src/pages/profile.html"),
         register: resolve(__dirname, "src/pages/register.html"),
         analytics: resolve(__dirname, "src/pages/analytics.html"),
+        clients: resolve(__dirname, "src/pages/clients.html"),
       },
     },
   },

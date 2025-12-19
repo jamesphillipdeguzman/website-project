@@ -1,6 +1,24 @@
 // netlify/functions/track-event.js
 import { sql } from "../../src/lib/db.js";
 
+// Helper to normalize device names
+const getDeviceName = (userAgent) => {
+  if (!userAgent) return "Unknown";
+  const ua = userAgent.toLowerCase();
+  if (/mobile/i.test(ua) || /iphone/i.test(ua) || /android/i.test(ua))
+    return "Mobile";
+  if (/ipad|tablet/i.test(ua)) return "Tablet";
+  return "Desktop";
+};
+
+// Auto-detect visitor type based on email
+const getVisitorType = (email, trackAdmin) => {
+  if (trackAdmin) return "admin";
+  if (email === "jamesphillipdeguzman@gmail.com") return "admin";
+  if (email === "jamesphillipd@yahoo.com") return "client";
+  return "guest";
+};
+
 export const handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
@@ -8,40 +26,38 @@ export const handler = async (event) => {
 
   try {
     const payload = JSON.parse(event.body);
-    console.log("Parsed payload:", payload);
+
+    if (!payload.visitor_id) {
+      return { statusCode: 400, body: "visitor_id is required" };
+    }
 
     const {
       visitor_id,
-      visitor_type,
-      email = null,
-      name = null,
-      page_url = null,
-      page_title = null,
-      referrer_url = null,
-      user_agent = null,
-      screen_width = null,
-      screen_height = null,
-      language = null,
+      name,
+      email,
+      user_agent,
+      page_url,
+      page_title,
+      referrer_url,
+      screen_width,
+      screen_height,
+      language,
       event_type,
-      event_payload = {},
+      event_payload,
+      trackAdmin = false,
     } = payload;
 
-    if (!visitor_id) {
-      throw new Error("visitor_id is required");
-    }
+    const device = getDeviceName(user_agent);
+    const typeToLog = getVisitorType(email, trackAdmin);
 
-    const safeVisitorType = (visitor_type || "unknown").slice(0, 50);
-    const safeEventType = (event_type || "unknown").slice(0, 50);
-
-    // ---------- Insert or update visitor ----------
-    // Only updates last_seen and session_count to avoid overwriting visitor_type/email/name
+    // 1️⃣ Upsert visitor
     await sql`
-      INSERT INTO visitors (id, visitor_type, email, name, first_seen, last_seen, session_count)
+      INSERT INTO visitors (id, name, email, visitor_type, first_seen, last_seen, session_count)
       VALUES (
         ${visitor_id},
-        ${safeVisitorType},
-        ${email},
-        ${name},
+        ${name || null},
+        ${email || null},
+        ${typeToLog},
         NOW(),
         NOW(),
         1
@@ -49,48 +65,28 @@ export const handler = async (event) => {
       ON CONFLICT (id) DO UPDATE
       SET
         last_seen = NOW(),
-        session_count = visitors.session_count + 1;
+        session_count = visitors.session_count + 1
+      -- intentionally not overriding visitor_type
     `;
 
-    // ---------- Optional: Skip admin events ----------
-    // Only skip sending if visitor_type === "admin" AND the checkbox says false
-    if (
-      safeVisitorType === "admin" &&
-      localStorage.getItem("trackAdmin") === "false"
-    ) {
-      console.log("Skipping admin tracking due to checkbox");
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: "Admin tracking skipped" }),
-      };
-    }
-
-    // ---------- Insert analytics event ----------
+    // 2️⃣ Insert analytics event
     await sql`
-      INSERT INTO analytics_events
-        (visitor_id, event_type, page_url, page_title, referrer_url, device, screen_width, screen_height, language, event_payload, created_at)
-      VALUES
-        (
-          ${visitor_id},
-          ${safeEventType},
-          ${page_url},
-          ${page_title},
-          ${referrer_url},
-          ${user_agent},
-          ${screen_width},
-          ${screen_height},
-          ${language},
-          ${JSON.stringify(event_payload)},
-          NOW()
-        )
+      INSERT INTO analytics_events (
+        visitor_id, visitor_type, name, email,
+        page_url, page_title, referrer_url, device,
+        screen_width, screen_height, language,
+        event_type, event_payload, created_at
+      ) VALUES (
+        ${visitor_id}, ${typeToLog}, ${name || null}, ${email || null},
+        ${page_url}, ${page_title || null}, ${referrer_url || "Direct"}, ${device},
+        ${screen_width || null}, ${screen_height || null}, ${language || null},
+        ${event_type || "pageview"}, ${JSON.stringify(event_payload) || null}, NOW()
+      )
     `;
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: "Event tracked" }),
-    };
+    return { statusCode: 200, body: JSON.stringify({ success: true }) };
   } catch (err) {
     console.error("Analytics function error:", err);
-    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+    return { statusCode: 500, body: err.message };
   }
 };

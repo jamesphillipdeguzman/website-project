@@ -1,11 +1,9 @@
-// js/analytics.js
-
 // ==================================
 // In-house Analytics (GTM-style)
 // ==================================
+
 const ANALYTICS_ENDPOINT = "/.netlify/functions/track-event";
 const VISITOR_KEY = "analytics_visitor_id";
-const TRACK_ADMIN_KEY = "trackAdmin";
 
 // ---------- Visitor ID ----------
 function getVisitorId() {
@@ -17,24 +15,35 @@ function getVisitorId() {
   return id;
 }
 
+// ---------- Device Detection ----------
+function getDeviceType() {
+  const ua = navigator.userAgent;
+
+  if (/iPhone|iPod/i.test(ua)) return "Mobile / iPhone";
+  if (/iPad/i.test(ua)) return "Tablet / iPad";
+  if (/Android/i.test(ua)) return "Mobile / Android";
+  if (/Mobi/i.test(ua)) return "Mobile / Other";
+
+  return "Desktop";
+}
+
 // ---------- Visitor Type ----------
 function getVisitorContext() {
   try {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) return { visitor_type: "guest" };
+    const stored = JSON.parse(localStorage.getItem("user"));
+    if (!stored) return { visitor_type: "guest" };
 
-    if (user.user_type === "Admin") {
-      return {
-        visitor_type: "admin",
-        email: user.email,
-        name: user.name,
-      };
-    }
+    // support object or array
+    const users = Array.isArray(stored) ? stored : [stored];
+    const adminUser = users.find((u) => u.user_type === "Admin");
+    const user = adminUser || users[0];
+
+    const type = user.user_type ? user.user_type.toLowerCase() : "client";
 
     return {
-      visitor_type: "client",
-      email: user.email,
+      visitor_type: type,
       name: user.name,
+      email: user.email,
     };
   } catch {
     return { visitor_type: "guest" };
@@ -43,13 +52,28 @@ function getVisitorContext() {
 
 // ---------- Base Payload ----------
 function getBasePayload() {
+  const trackAdminCheckbox = document.getElementById("trackAdmin");
+  const trackAdmin = localStorage.getItem("trackAdmin") === "true";
+
+  if (trackAdminCheckbox) {
+    trackAdminCheckbox.checked = trackAdmin;
+    trackAdminCheckbox.addEventListener("change", (e) => {
+      localStorage.setItem("trackAdmin", e.target.checked);
+      console.log("trackAdmin set to:", e.target.checked);
+    });
+  }
+
+  const visitorContext = getVisitorContext();
+
   return {
     visitor_id: getVisitorId(),
-    ...getVisitorContext(),
+    ...visitorContext,
+    trackAdmin,
     page_url: location.href,
     page_title: document.title,
     referrer_url: document.referrer || null,
     user_agent: navigator.userAgent,
+    device: getDeviceType(),
     screen_width: window.innerWidth,
     screen_height: window.innerHeight,
     language: navigator.language,
@@ -64,9 +88,9 @@ function trackEvent(event_type, data = {}) {
     event_payload: data,
   };
 
-  // Skip admin events if checkbox says false
-  const trackAdmin = localStorage.getItem(TRACK_ADMIN_KEY) === "true";
-  if (payload.visitor_type === "admin" && !trackAdmin) return;
+  // skip tracking admin if disabled
+  if (payload.visitor_type === "admin" && !payload.trackAdmin) return;
+  if (!payload.visitor_id) return;
 
   fetch(ANALYTICS_ENDPOINT, {
     method: "POST",
@@ -94,64 +118,5 @@ document.addEventListener("click", (e) => {
   });
 });
 
-// ---------- Admin Tracking Toggle ----------
-function initAdminTrackingCheckbox() {
-  const checkbox = document.getElementById("trackAdmin");
-  if (!checkbox) return;
-
-  // Set checkbox state from localStorage
-  checkbox.checked = localStorage.getItem(TRACK_ADMIN_KEY) !== "false";
-
-  // Listen for changes
-  checkbox.addEventListener("change", () => {
-    localStorage.setItem(TRACK_ADMIN_KEY, checkbox.checked ? "true" : "false");
-  });
-}
-
-// ---------- Clear Analytics ----------
-async function clearAnalyticsData() {
-  if (
-    !confirm(
-      "Are you sure you want to wipe all analytics data? This cannot be undone.",
-    )
-  ) {
-    return;
-  }
-
-  try {
-    const res = await fetch("/.netlify/functions/clear-analytics", {
-      method: "POST",
-    });
-
-    const result = await res.json();
-    if (res.ok) {
-      alert("Analytics data cleared successfully.");
-      // Optionally refresh the page or analytics dashboard
-      location.reload();
-    } else {
-      alert("Failed to clear analytics: " + (result.error || "Unknown error"));
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Error clearing analytics data.");
-  }
-}
-
-// ---------- Bind Clear Button ----------
-document.addEventListener("DOMContentLoaded", () => {
-  const clearBtn = document.getElementById("clearAnalyticsBtn");
-  if (clearBtn) {
-    clearBtn.addEventListener("click", clearAnalyticsData);
-  }
-
-  // Init the admin tracking checkbox
-  initAdminTrackingCheckbox();
-});
-
-// ---------- Initialize ----------
-document.addEventListener("DOMContentLoaded", () => {
-  initAdminTrackingCheckbox();
-});
-
-// ---------- Expose global GTM-like API ----------
+// ---------- Global API ----------
 window.analytics = { track: trackEvent };

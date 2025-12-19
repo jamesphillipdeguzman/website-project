@@ -2,12 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-
-    <title>Analytics Dashboard | BESYSTECH</title>
-    <meta name="description" content="Admin analytics dashboard" />
-    <meta name="author" content="James Phillip K. De Guzman" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Manage Clients | BESYSTECH</title>
+    <meta name="description" content="Admin page to manage clients">
+    <meta name="author" content="James Phillip K. De Guzman">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,23 +18,19 @@
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/analytics.css">
 
-    <!-- Base JS -->
-    <script src="/js/base.js" type="module"></script>
-    <script src="/js/analytics-dashboard.js" type="module"></script>
-    <!-- <script type="module" src="/js/analytics.js"></script> -->
+    <!-- JS -->
+    <script type="module" src="/js/base.js"></script>
+    <script type="module" src="/js/clients.js"></script>
+
 
     <link rel="icon" href="/images/project-images/favicon_io/favicon2.ico" />
-
 </head>
 
 <body class="loading">
-
     <div class="page-wrap">
-
         <!-- ================= HEADER ================= -->
         <header>
             <div id="header-container" class="glass">
-
                 <div class="header-left">
                     <a href="/index.html" class="logo">
                         <img src="/images/besystechlogo.png" alt="BesysTech Logo" width="32" height="32" />
@@ -57,7 +52,6 @@
                     <a href="/pages/login.html" id="login-link" class="dashboard-link">Dashboard</a>
                     <button id="menu" aria-label="Open menu"></button>
                 </div>
-
             </div>
         </header>
 
@@ -72,83 +66,65 @@
                 <li><a href="/pages/login.html" id="mobile-login-link">Dashboard</a></li>
             </ul>
         </nav>
-
         <div class="nav-overlay"></div>
 
         <!-- ================= MAIN ================= -->
         <main class="analytics-page">
-
             <section class="analytics-section">
                 <header class="analytics-header">
-                    <h1>Site Analytics</h1>
-                    <p>Traffic, engagement, and user activity overview</p>
-                </header>
+                    <h1>Manage Clients</h1>
+                    <p>View and manage registered clients</p>
 
-                <!-- Total events counter -->
-                <div id="total-events">Total Events: <span id="events-count">0</span></div>
+                </header>
 
                 <div class="analytics-table-wrapper">
                     <table class="analytics-table">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Date</th>
                                 <th>Name</th>
-                                <th>Type</th>
-                                <th>Page</th>
-                                <th>Event</th>
-                                <th>Referrer</th>
-                                <th>Device</th>
+                                <th>Email</th>
+                                <th>Created At</th>
+                                <th>Last Login</th>
                             </tr>
                         </thead>
-                        <tbody id="analytics-body">
-                            <!-- JS will inject rows here -->
+                        <tbody id="clients-body">
+                            <tr>
+                                <td colspan="5" style="text-align:center;">Loading clients...</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="analytics-table-actions">
-                    <button id="export-csv" class="btn-primary">Export to CSV</button>
-                </div>
-
+                <button id="export-csv2" class="btn-primary">Export CSV</button>
             </section>
-
         </main>
 
         <!-- ================= FOOTER ================= -->
         <footer id="footer-container">
             <div class="footer-wrapper">
                 <div class="social-links">
-
                     <a href="/pages/siteplan.html">
                         <img src="/images/svg/site-plan-logo.svg" width="50" height="50" />
                     </a>
-
                     <div class="footer-text">
                         &copy;<span id="currentyear"></span> James Phillip K. De Guzman
                         <p class="lastmodified">Last Modified: <span id="lastModified"></span></p>
                     </div>
-
                     <a href="https://www.facebook.com/diet.deguzman" target="_blank">
                         <img src="/images/svg/fb-logo.svg" width="50" height="50" />
                     </a>
-
                     <a href="https://www.linkedin.com/in/jamesphillipdeguzman/" target="_blank">
                         <img src="/images/svg/linkedin-logo.svg" width="50" height="50" />
                     </a>
-
                     <a href="https://www.youtube.com/@JamesPhillipDeGuzman" target="_blank">
                         <img src="/images/svg/youtube-logo.svg" width="50" height="50" />
                     </a>
-
                 </div>
             </div>
         </footer>
-
     </div>
 
     <div class="wireframe-overlay"></div>
-
 </body>
 
 </html>

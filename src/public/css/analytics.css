@@ -1,5 +1,5 @@
 /* ===============================
-   Analytics Table
+   Analytics Section & Header
 ================================ */
 
 .analytics-section {
@@ -23,15 +23,24 @@
   font-size: 0.95rem;
 }
 
+/* ===============================
+   Analytics Table Wrapper
+================================ */
+
 .analytics-table-wrapper {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(12px);
   border-radius: 14px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   overflow-x: auto;
+  max-height: 600px; /* optional: add vertical scrollbar */
+  overflow-y: auto;
 }
 
-/* Table */
+/* ===============================
+   Analytics Table
+================================ */
+
 .analytics-table {
   width: 100%;
   border-collapse: collapse;
@@ -55,11 +64,25 @@
 }
 
 .analytics-table tbody tr {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease;
 }
 
+/* ===============================
+   Alternating Row Colors
+================================ */
+
+.analytics-table tbody tr:nth-child(odd) {
+  background-color: rgba(227, 242, 253, 0.6); /* light blue */
+}
+
+.analytics-table tbody tr:nth-child(even) {
+  background-color: rgba(255, 235, 230, 0.6); /* light peach */
+}
+
+/* Hover Highlight */
 .analytics-table tbody tr:hover {
-  background: rgba(0, 0, 0, 0.03);
+  background-color: #d0f0ff !important; /* bright light blue highlight */
+  cursor: pointer;
 }
 
 /* ===============================
@@ -90,36 +113,76 @@
 }
 
 /* ===============================
-   Alternating Row Colors
+   Responsive (Mobile Friendly)
 ================================ */
 
-/* Light blue */
-.analytics-table tbody tr:nth-child(odd) {
-  background-color: rgba(227, 242, 253, 0.6); /* light blue */
-}
-
-/* Light peach */
-.analytics-table tbody tr:nth-child(even) {
-  background-color: rgba(255, 235, 230, 0.6); /* light peach */
-}
-
-/* Hover overrides striping */
-.analytics-table tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.06);
-}
-
-/* ===============================
-   Responsive
-================================ */
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .analytics-header h1 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
-
   .analytics-table th,
   .analytics-table td {
     font-size: 0.85rem;
     padding: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .analytics-section {
+    padding: 1rem;
+  }
+
+  .analytics-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .analytics-header p {
+    font-size: 0.85rem;
+  }
+
+  .analytics-table-wrapper {
+    max-height: 60vh;
+  }
+
+  /* Make table scroll horizontally on small devices */
+  .analytics-table {
+    display: block;
+    width: 100%;
+  }
+
+  .analytics-table thead,
+  .analytics-table tbody,
+  .analytics-table th,
+  .analytics-table td,
+  .analytics-table tr {
+    display: block;
+  }
+
+  .analytics-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .analytics-table tbody tr {
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #ddd;
+  }
+
+  .analytics-table td {
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+  }
+
+  .analytics-table td::before {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: 600;
+    content: attr(data-label);
   }
 }

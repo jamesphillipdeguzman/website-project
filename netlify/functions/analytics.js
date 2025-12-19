@@ -1,55 +1,28 @@
 // netlify/functions/analytics.js
 import { sql } from "../../src/lib/db.js";
 
-export async function handler(event, context) {
+export const handler = async (event) => {
   try {
-    if (event.httpMethod === "POST") {
-      const body = JSON.parse(event.body);
-
-      const {
-        visitor_id,
-        visitor_type,
-        email,
-        name,
-        page_url,
-        event_type,
-        referrer_url,
-        user_agent,
-      } = body;
-
-      // 1️⃣ Upsert visitor
-      await sql`
-        INSERT INTO visitors (id, visitor_type, email, name)
-        VALUES (${visitor_id}, ${visitor_type}, ${email || null}, ${name || null})
-        ON CONFLICT (id) DO UPDATE
-        SET last_seen = now(),
-            session_count = visitors.session_count + 1;
-      `;
-
-      // 2️⃣ Insert analytics event
-      await sql`
-        INSERT INTO analytics_events (visitor_id, page, event_type, referrer, device)
-        VALUES (
-          ${visitor_id},
-          ${page_url},
-          ${event_type},
-          ${referrer_url || "Direct"},
-          ${user_agent || "Unknown"}
-        )
-      `;
-
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ success: true }),
-      };
+    if (event.httpMethod !== "GET") {
+      return { statusCode: 405, body: "Method Not Allowed" };
     }
 
-    return { statusCode: 405, body: "Method Not Allowed" };
+    const analytics = await sql`
+      SELECT *
+      FROM analytics_events
+      ORDER BY created_at DESC
+      LIMIT 100;
+    `;
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(analytics),
+    };
   } catch (err) {
-    console.error("Analytics function error:", err);
+    console.error("Failed to fetch analytics:", err);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: err.message }),
     };
   }
-}
+};

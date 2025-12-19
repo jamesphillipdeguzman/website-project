@@ -328,6 +328,23 @@ function trackVisit() {
     .catch(console.error);
 }
 
+function trackAdmin() {
+  // Select the checkbox in dashboard.html
+  const trackAdminCheckbox = document.getElementById("trackAdmin");
+  if (!trackAdminCheckbox) return;
+
+  // Get the current value from localStorage
+  const trackAdmin = localStorage.getItem("trackAdmin") === "true";
+
+  // Set the checkbox state
+  trackAdminCheckbox.checked = trackAdmin;
+
+  // Update localStorage whenever checkbox is toggled
+  trackAdminCheckbox.addEventListener("change", (e) => {
+    localStorage.setItem("trackAdmin", e.target.checked);
+  });
+}
+
 /* ======================================================
    FOOTER
 ====================================================== */
@@ -358,6 +375,7 @@ async function init() {
     resetPortfolioForm();
   }
   setupAddNewPortfolioButton(); // wire up Add New Project button
+  trackAdmin();
 }
 
 document.addEventListener("DOMContentLoaded", init);
