@@ -357,6 +357,53 @@ function initDate() {
     currentYearEl.innerHTML = `<span class="highlight">${new Date().getFullYear()}</span>`;
 }
 
+// ===== Analytics Visitor ID Management =====
+function getVisitorId() {
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+  if (!user?.email) return null;
+
+  const storedEmail = localStorage.getItem("analytics_visitor_email");
+  let visitorId = localStorage.getItem("analytics_visitor_id");
+
+  // If no ID exists or the email has changed, generate a new visitor ID
+  if (!visitorId || storedEmail !== user.email) {
+    visitorId = crypto.randomUUID(); // generate new UUID
+    localStorage.setItem("analytics_visitor_id", visitorId);
+    localStorage.setItem("analytics_visitor_email", user.email);
+    console.log("✅ New analytics visitor ID generated:", visitorId);
+  }
+
+  return visitorId;
+}
+
+// Example usage when tracking an event
+function trackPageView() {
+  const visitorId = getVisitorId();
+  if (!visitorId) return; // no user info
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  fetch("/.netlify/functions/track-event", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      visitor_id: visitorId,
+      name: user.name,
+      email: user.email,
+      user_agent: navigator.userAgent,
+      page_url: window.location.href,
+      page_title: document.title,
+      referrer_url: document.referrer,
+      screen_width: window.screen.width,
+      screen_height: window.screen.height,
+      language: navigator.language,
+      event_type: "pageview",
+      event_payload: null,
+      trackAdmin: user.user_type === "Admin",
+    }),
+  }).catch(console.error);
+}
+
 /* ======================================================
    INIT
 ====================================================== */
@@ -364,6 +411,7 @@ async function init() {
   setupHamburgerMenu();
   updateAuthLinks();
   renderUserHeader();
+  trackPageView();
   setupLogout();
   setActiveNavLink();
   initDate();
