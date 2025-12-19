@@ -20,6 +20,7 @@
   margin-top: 6px;
   font-size: 0.9rem;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .analytics-header h1 {
