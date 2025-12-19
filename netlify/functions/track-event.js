@@ -1,5 +1,6 @@
 // netlify/functions/track-event.js
 import { sql } from "../../src/lib/db.js";
+import { randomUUID } from "crypto";
 
 // Helper to normalize device names
 const getDeviceName = (userAgent) => {
@@ -11,11 +12,11 @@ const getDeviceName = (userAgent) => {
   return "Desktop";
 };
 
-// Auto-detect visitor type based on email
+// Determine visitor type based on email or trackAdmin
 const getVisitorType = (email, trackAdmin) => {
   if (trackAdmin) return "admin";
-  if (email === "jamesphillipdeguzman@gmail.com") return "admin";
-  if (email === "jamesphillipd@yahoo.com") return "client";
+  if (email?.toLowerCase() === "jamesphillipdeguzman@gmail.com") return "admin";
+  if (email?.toLowerCase() === "jamesphillipd@yahoo.com") return "client";
   return "guest";
 };
 
@@ -27,12 +28,10 @@ export const handler = async (event) => {
   try {
     const payload = JSON.parse(event.body);
 
-    if (!payload.visitor_id) {
-      return { statusCode: 400, body: "visitor_id is required" };
-    }
+    // 1️⃣ Generate new visitor_id if not provided or empty
+    const visitor_id = payload.visitor_id?.trim() || randomUUID();
 
     const {
-      visitor_id,
       name,
       email,
       user_agent,
@@ -50,7 +49,7 @@ export const handler = async (event) => {
     const device = getDeviceName(user_agent);
     const typeToLog = getVisitorType(email, trackAdmin);
 
-    // 1️⃣ Upsert visitor
+    // 2️⃣ Upsert visitor (keep visitor_type intact)
     await sql`
       INSERT INTO visitors (id, name, email, visitor_type, first_seen, last_seen, session_count)
       VALUES (
@@ -66,10 +65,9 @@ export const handler = async (event) => {
       SET
         last_seen = NOW(),
         session_count = visitors.session_count + 1
-      -- intentionally not overriding visitor_type
     `;
 
-    // 2️⃣ Insert analytics event
+    // 3️⃣ Insert analytics event
     await sql`
       INSERT INTO analytics_events (
         visitor_id, visitor_type, name, email,
@@ -84,7 +82,11 @@ export const handler = async (event) => {
       )
     `;
 
-    return { statusCode: 200, body: JSON.stringify({ success: true }) };
+    // 4️⃣ Return visitor_id so frontend can store it in localStorage
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: true, visitor_id }),
+    };
   } catch (err) {
     console.error("Analytics function error:", err);
     return { statusCode: 500, body: err.message };
