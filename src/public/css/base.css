@@ -2244,3 +2244,12 @@ fieldset {
 #footer-container {
   background: #f7f6f6;
 }
+
+@media (max-width: 639px) {
+  .profile img,
+  .profile2 img,
+  .image-container img {
+    width: clamp(140px, 50vw, 220px);
+    height: auto;
+  }
+}

@@ -493,8 +493,6 @@ async function init() {
   setupHamburgerMenu();
   updateAuthLinks();
   renderUserHeader();
-  // Trigger once or on page load
-  createConfetti(50);
   trackAdmin(); // wire checkbox listener first
   trackPageView(); // now it reads correct checkbox value
   setupLogout();
@@ -507,6 +505,10 @@ async function init() {
   if (params.get("new") === "true") resetPortfolioForm();
   setupAddNewPortfolioButton();
   clearAnalytics();
+  const confettiWrapper = document.querySelector(".confetti-wrapper");
+  if (confettiWrapper) {
+    createConfetti(50);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", init);

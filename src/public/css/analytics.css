@@ -249,7 +249,7 @@
 
   .analytics-table td {
     position: relative;
-    padding-left: 40%;
+    padding-left: 30%;
     font-size: 0.8rem;
     text-align: left;
   }
@@ -258,7 +258,7 @@
     position: absolute;
     top: 14px;
     left: 16px;
-    width: 45%;
+    width: 40%;
     padding-right: 10px;
     white-space: nowrap;
     font-weight: 600;
@@ -266,9 +266,22 @@
   }
 }
 
-@media (max-width: 330px) {
+@media (max-width: 512px) {
   .analytics-table td {
-    padding-left: 40%;
+    padding-left: 30%;
     font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .analytics-table td {
+    padding-left: 20%;
+    font-size: 0.6rem;
+  }
+
+  .analytics-table-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
   }
 }
