@@ -144,10 +144,10 @@ h2 {
   position: absolute;
   width: 8px;
   height: 8px;
-  background-color: red;
-  opacity: 0.9;
   border-radius: 2px;
+  opacity: 0.9;
   will-change: transform;
+  animation: fall var(--duration, 3s) linear forwards;
 }
 
 @keyframes fall {

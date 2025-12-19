@@ -80,7 +80,14 @@ function renderUserHeader() {
 const confettiWrapper = document.querySelector(".confetti-wrapper");
 
 function createConfetti(num = 30) {
-  const colors = ["#2196f3", "#64b5f6", "#42a5f5", "#1976d2"];
+  const colors = [
+    "#2196f3",
+    "#64b5f6",
+    "#42a5f5",
+    "#1976d2",
+    "#ffeb3b",
+    "#ff5722",
+  ];
 
   for (let i = 0; i < num; i++) {
     const confetti = document.createElement("div");
@@ -90,14 +97,16 @@ function createConfetti(num = 30) {
     confetti.style.setProperty("--x-start", `${Math.random() * 100}vw`);
     confetti.style.setProperty("--x-end", `${Math.random() * 50 - 25}vw`);
 
+    // Random duration
+    confetti.style.setProperty("--duration", `${Math.random() * 2 + 3}s`);
+
     // Random color
     confetti.style.backgroundColor =
       colors[Math.floor(Math.random() * colors.length)];
 
-    // Append to wrapper
     confettiWrapper.appendChild(confetti);
 
-    // Clean up after animation
+    // Remove after animation
     confetti.addEventListener("animationend", () => confetti.remove());
   }
 }
