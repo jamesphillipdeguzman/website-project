@@ -471,7 +471,7 @@ main {
 
 .hook {
   font-size: 2rem;
-  line-height: 3.5rem;
+  line-height: 3rem;
   text-align: center;
 }
 
@@ -640,8 +640,7 @@ span#color2 {
 
 .profile img {
   height: auto;
-  max-width: 20vw;
-  width: 20%;
+  width: 100%;
 }
 
 .profile2 {
@@ -658,6 +657,9 @@ span#color2 {
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   margin: 0 auto;
+  height: auto; /* Set a fixed height */
+  object-fit: cover; /* This prevents the image from resizing at all */
+  object-position: center; /* Choose which part of the image to stay locked on */
 }
 
 .hero {
@@ -689,6 +691,7 @@ span#color2 {
   align-items: center;
   /* gap: 10px; */
   /* margin-bottom: 20px; */
+  flex-shrink: 0;
 }
 
 .profile-wrapper p {
