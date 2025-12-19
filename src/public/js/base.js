@@ -486,6 +486,59 @@ function clearAnalytics() {
   });
 }
 
+// ===== New Leads =====
+
+async function loadNewLeads() {
+  const res = await fetch("/.netlify/functions/new-leads");
+  const data = await res.json();
+
+  document.getElementById("new-leads-count").textContent = data.newLeads || 0;
+}
+
+// ===== Last Project =====
+
+async function loadLastProject() {
+  const res = await fetch("/.netlify/functions/last-project");
+  const data = await res.json();
+
+  if (!data.project) {
+    document.getElementById("last-project-title").textContent =
+      "No projects yet";
+    return;
+  }
+
+  document.getElementById("last-project-title").textContent =
+    data.project.title;
+
+  if (data.project.created_at) {
+    document.getElementById("last-project-date").textContent =
+      "Added on " + new Date(data.project.created_at).toLocaleDateString();
+  }
+}
+
+// ===== System Status =====
+
+async function loadSystemStatus() {
+  try {
+    const res = await fetch("/.netlify/functions/system-status");
+    const data = await res.json();
+
+    const el = document.getElementById("system-status-text");
+
+    if (data.status === "operational") {
+      el.textContent = "Active within the last 24 hours ✅";
+      el.className = "status-ok";
+    } else {
+      el.textContent = "System degraded ⚠️";
+      el.className = "status-warn";
+    }
+  } catch {
+    const el = document.getElementById("system-status-text");
+    el.textContent = "System unavailable ❌";
+    el.className = "status-error";
+  }
+}
+
 /* ======================================================
    INIT
 ====================================================== */
@@ -509,6 +562,9 @@ async function init() {
   if (confettiWrapper) {
     createConfetti(50);
   }
+  loadNewLeads();
+  loadLastProject();
+  loadSystemStatus();
 }
 
 document.addEventListener("DOMContentLoaded", init);
