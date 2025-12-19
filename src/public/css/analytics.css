@@ -11,6 +11,7 @@
 
 .analytics-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1rem;
@@ -26,6 +27,13 @@
   font-size: 0.9rem;
   cursor: pointer;
   white-space: nowrap;
+
+  /* ensure checkbox aligns consistently */
+}
+
+.track-admin-toggle input[type="checkbox"] {
+  margin: 0; /* remove default spacing */
+  vertical-align: middle; /* for legacy browser alignment */
 }
 
 .analytics-header h1 {
@@ -50,6 +58,7 @@
   overflow-x: auto;
   max-height: 600px; /* optional: add vertical scrollbar */
   overflow-y: auto;
+  width: 100%; /* ensure full width */
 }
 
 /* ===============================
@@ -80,6 +89,11 @@
 
 .analytics-table tbody tr {
   transition: background-color 0.2s ease;
+}
+
+.analytics-table-actions {
+  display: flex;
+  gap: 2rem;
 }
 
 /* ===============================
@@ -156,7 +170,16 @@
 
   .track-admin-toggle input[type="checkbox"] {
     display: inline-block !important;
+    gap: 1rem;
   }
+
+  #total-events {
+    display: flex;
+    flex-wrap: wrap; /* allows counter + checkbox to wrap neatly */
+    gap: 12px;
+    align-items: center;
+  }
+
   .analytics-section {
     padding: 1rem;
   }
@@ -171,6 +194,7 @@
 
   .analytics-table-wrapper {
     max-height: 60vh;
+    white-space: nowrap;
   }
 
   /* Make table scroll horizontally on small devices */
@@ -198,9 +222,35 @@
     border-bottom: 2px solid #ddd;
   }
 
+  @media (max-width: 768px) {
+    .analytics-table td {
+      position: relative;
+      padding-left: 40%; /* reduced from 50% to make cells closer */
+      padding-top: 8px; /* reduce vertical spacing */
+      padding-bottom: 8px;
+      text-align: left;
+    }
+
+    .analytics-table td::before {
+      position: absolute;
+      top: 8px; /* align with reduced padding */
+      left: 12px; /* reduce left offset */
+      width: 35%; /* shrink label width */
+      padding-right: 8px;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .analytics-table tbody tr {
+      margin-bottom: 0.5rem; /* reduce space between stacked rows */
+      border-bottom: 1px solid #ddd;
+    }
+  }
+
   .analytics-table td {
     position: relative;
-    padding-left: 50%;
+    padding-left: 40%;
+    font-size: 0.8rem;
     text-align: left;
   }
 
@@ -213,5 +263,12 @@
     white-space: nowrap;
     font-weight: 600;
     content: attr(data-label);
+  }
+}
+
+@media (max-width: 330px) {
+  .analytics-table td {
+    padding-left: 40%;
+    font-size: 0.7rem;
   }
 }
