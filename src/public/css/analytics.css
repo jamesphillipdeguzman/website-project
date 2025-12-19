@@ -10,7 +10,12 @@
 }
 
 .analytics-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   margin-bottom: 1.5rem;
+  z-index: 1;
 }
 
 .track-admin-toggle {
@@ -138,6 +143,20 @@
 }
 
 @media (max-width: 768px) {
+  .track-admin-toggle {
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .track-admin-toggle input[type="checkbox"] {
+    display: inline-block !important;
+  }
   .analytics-section {
     padding: 1rem;
   }
