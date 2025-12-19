@@ -10,10 +10,16 @@
 }
 
 .analytics-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
   margin-bottom: 1.5rem;
+}
+
+.track-admin-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .analytics-header h1 {
