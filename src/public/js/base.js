@@ -77,6 +77,31 @@ function renderUserHeader() {
   if (typeEl) typeEl.textContent = user.user_type;
 }
 
+const confettiWrapper = document.querySelector(".confetti-wrapper");
+
+function createConfetti(num = 30) {
+  for (let i = 0; i < num; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+
+    // Random start and end positions
+    const xStart = Math.random() * 100 + "vw";
+    const xEnd = Math.random() * 50 - 25 + "vw";
+    confetti.style.setProperty("--x-start", xStart);
+    confetti.style.setProperty("--x-end", xEnd);
+
+    // Random color (optional)
+    const colors = ["#2196f3", "#64b5f6", "#42a5f5", "#1976d2"];
+    confetti.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
+
+    confettiWrapper.appendChild(confetti);
+
+    // Remove confetti after animation
+    confetti.addEventListener("animationend", () => confetti.remove());
+  }
+}
+
 /* ======================================================
    PORTFOLIOS
 ====================================================== */
@@ -460,6 +485,8 @@ async function init() {
   setupHamburgerMenu();
   updateAuthLinks();
   renderUserHeader();
+  // Trigger once or on page load
+  createConfetti(50);
   trackAdmin(); // wire checkbox listener first
   trackPageView(); // now it reads correct checkbox value
   setupLogout();

@@ -128,6 +128,41 @@ h2 {
   color: white;
 }
 
+/* ---------------- Confetti Animation ---------------- */
+
+.confetti-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* allows clicking through */
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #2196f3; /* tech blue */
+  opacity: 0.9;
+  transform: rotate(0deg);
+  border-radius: 2px;
+  animation: fall 3s forwards;
+}
+
+@keyframes fall {
+  0% {
+    transform: translate3d(var(--x-start), 0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--x-end), 100vh, 100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
 /* ---------------- Mobile menu ---------------- */
 
 .navigation .open {
