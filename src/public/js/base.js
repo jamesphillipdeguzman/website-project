@@ -328,23 +328,6 @@ function trackVisit() {
     .catch(console.error);
 }
 
-function trackAdmin() {
-  // Select the checkbox in dashboard.html
-  const trackAdminCheckbox = document.getElementById("trackAdmin");
-  if (!trackAdminCheckbox) return;
-
-  // Get the current value from localStorage
-  const trackAdmin = localStorage.getItem("trackAdmin") === "true";
-
-  // Set the checkbox state
-  trackAdminCheckbox.checked = trackAdmin;
-
-  // Update localStorage whenever checkbox is toggled
-  trackAdminCheckbox.addEventListener("change", (e) => {
-    localStorage.setItem("trackAdmin", e.target.checked);
-  });
-}
-
 /* ======================================================
    FOOTER
 ====================================================== */
@@ -380,35 +363,64 @@ function getVisitorId() {
    ANALYTICS
 ====================================================== */
 
+// ===== Track Admin =====
+
+function trackAdmin() {
+  const trackAdminCheckbox = document.getElementById("trackAdmin");
+  if (!trackAdminCheckbox) return false;
+
+  // Initialize checkbox state from localStorage
+  const trackAdmin = localStorage.getItem("trackAdmin") === "true";
+  trackAdminCheckbox.checked = trackAdmin;
+
+  // Update localStorage when user toggles
+  trackAdminCheckbox.addEventListener("change", (e) => {
+    localStorage.setItem("trackAdmin", e.target.checked);
+  });
+
+  return trackAdminCheckbox.checked;
+}
+
 // ===== Track Page View =====
 
 // Example usage when tracking an event
-// function trackPageView() {
-//   const visitorId = getVisitorId();
-//   if (!visitorId) return; // no user info
+function trackPageView() {
+  const visitorId = getVisitorId();
+  if (!visitorId) return;
 
-//   const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const userType = user.user_type?.toLowerCase() || "guest";
+  const trackAdminEnabled = trackAdmin(); // checkbox value
 
-//   fetch("/.netlify/functions/track-event", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({
-//       visitor_id: visitorId,
-//       name: user.name,
-//       email: user.email,
-//       user_agent: navigator.userAgent,
-//       page_url: window.location.href,
-//       page_title: document.title,
-//       referrer_url: document.referrer,
-//       screen_width: window.screen.width,
-//       screen_height: window.screen.height,
-//       language: navigator.language,
-//       event_type: "pageview",
-//       event_payload: null,
-//       trackAdmin: user.user_type === "Admin",
-//     }),
-//   }).catch(console.error);
-// }
+  // Decide whether to send event
+  const shouldTrack =
+    (userType === "admin" && trackAdminEnabled) ||
+    userType === "client" ||
+    userType === "guest"; // <-- now guests are tracked
+
+  if (!shouldTrack) return;
+
+  fetch("/.netlify/functions/track-event", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      visitor_id: visitorId,
+      name: user.name,
+      email: user.email,
+      user_agent: navigator.userAgent,
+      page_url: window.location.href,
+      page_title: document.title,
+      referrer_url: document.referrer,
+      screen_width: window.screen.width,
+      screen_height: window.screen.height,
+      language: navigator.language,
+      event_type: "pageview",
+      event_payload: null,
+      trackAdmin: userType === "admin" && trackAdminEnabled,
+      visitor_type: userType, // include type explicitly
+    }),
+  }).catch(console.error);
+}
 
 // ===== Clear Analytics =====
 
@@ -448,7 +460,8 @@ async function init() {
   setupHamburgerMenu();
   updateAuthLinks();
   renderUserHeader();
-  trackPageView();
+  trackAdmin(); // wire checkbox listener first
+  trackPageView(); // now it reads correct checkbox value
   setupLogout();
   setActiveNavLink();
   initDate();
@@ -456,11 +469,8 @@ async function init() {
   trackVisit();
   await loadPortfolios();
   const params = new URLSearchParams(window.location.search);
-  if (params.get("new") === "true") {
-    resetPortfolioForm();
-  }
-  setupAddNewPortfolioButton(); // wire up Add New Project button
-  trackAdmin();
+  if (params.get("new") === "true") resetPortfolioForm();
+  setupAddNewPortfolioButton();
   clearAnalytics();
 }
 
