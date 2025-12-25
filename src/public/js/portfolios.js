@@ -64,11 +64,23 @@ function setupCarouselButtons() {
 
   if (!container || !btnPrev || !btnNext) return;
 
+  // Get width of a single card including gap
+  function getCardWidth() {
+    const card = container.querySelector(".card");
+    if (!card) return 0;
+    const style = window.getComputedStyle(card);
+    const gap = parseInt(style.marginRight) || 0; // adjust if you use gap in flex
+    return card.offsetWidth + gap;
+  }
+
   btnPrev.addEventListener("click", () => {
-    container.scrollBy({ left: -200, behavior: "smooth" });
+    const scrollAmount = getCardWidth();
+    container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
   });
+
   btnNext.addEventListener("click", () => {
-    container.scrollBy({ left: 200, behavior: "smooth" });
+    const scrollAmount = getCardWidth();
+    container.scrollBy({ left: scrollAmount, behavior: "smooth" });
   });
 }
 
@@ -98,6 +110,7 @@ function populatePortfolioDropdown(portfolios) {
 
   dropdown.addEventListener("change", () => {
     const selected = portfolios.find((p) => p.title === dropdown.value);
+    if (displayContainer) displayContainer.style.display = "block";
     if (selected) showPortfolio(selected, displayContainer);
   });
 }

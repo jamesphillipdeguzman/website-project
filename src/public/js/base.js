@@ -189,6 +189,9 @@ function setupCarouselButtons(container) {
 /* ---------- Dropdown ---------- */
 function renderPortfolioDropdown() {
   const dropdown = document.getElementById("dynamic-product");
+
+  const portfolioDisplay = document.getElementById("portfolio-display");
+
   if (!dropdown) return;
 
   dropdown.innerHTML =
@@ -199,6 +202,7 @@ function renderPortfolioDropdown() {
 
   dropdown.onchange = () => {
     const p = portfolios.find((x) => String(x.id) === dropdown.value);
+    if (portfolioDisplay) portfolioDisplay.style.display = "block";
     if (p) loadPortfolioIntoForm(p);
   };
 }

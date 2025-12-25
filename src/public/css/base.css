@@ -400,7 +400,8 @@ body {
 
 /* Bottom Section / Main Content */
 .bottom-section {
-  max-width: 900px;
+  max-width: 80vw;
+  width: 80%;
   margin: 0 auto;
   padding: 4rem 2rem;
   display: flex;
@@ -509,6 +510,10 @@ body {
   text-align: center;
   line-height: 1.5;
   margin: 0.3rem 0;
+}
+
+#portfolio-name {
+  color: #333;
 }
 /* Portfolios Page Dropdown */
 .dropdown-container {
@@ -1268,5 +1273,63 @@ fieldset {
   .modal-content {
     width: 90%;
     max-width: 90vw;
+  }
+}
+
+/* ================== CAROUSEL: SMALL DEVICES ================== */
+@media (max-width: 480px) {
+  .bottom-section {
+    width: 95%;
+    max-width: 95vw;
+    padding: 2rem 1rem;
+  }
+
+  .carousel-wrapper {
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    justify-content: flex-start;
+  }
+
+  .carousel {
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  #portfolio-carousel {
+    gap: 8px;
+    padding: 8px 0;
+  }
+
+  #portfolio-carousel .card {
+    min-width: 180px; /* smaller card width */
+    max-width: 200px;
+    flex-shrink: 0;
+    border-radius: 8px;
+  }
+
+  #portfolio-carousel .card img {
+    height: 120px; /* smaller image */
+  }
+
+  #portfolio-carousel h3 {
+    font-size: 1rem;
+  }
+
+  #portfolio-carousel p {
+    font-size: 0.8rem;
+  }
+
+  .carousel-btn {
+    padding: 0.5rem 0.7rem;
+    font-size: 1.2rem;
+  }
+
+  .dropdown-container {
+    width: 90%; /* make dropdown full width */
+    max-width: 90vw;
+  }
+
+  .dropdown-container select {
+    font-size: 0.85rem;
   }
 }

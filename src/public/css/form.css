@@ -331,6 +331,10 @@ textarea:focus {
   width: 100%;
 }
 
+#portfolio-display {
+  display: none;
+}
+
 .review textarea {
   width: 100%;
   max-width: 100%;
@@ -475,6 +479,17 @@ legend {
 
 /* =============== RESPONSIVE DESIGN =============== */
 
+@media (max-width: 768px) {
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .form-group {
+    width: 90%;
+    padding: 0.5rem;
+  }
+}
 /* ===========================
    LOGIN & AUTH CARD MOBILE FIXES
 =========================== */
@@ -561,5 +576,10 @@ legend {
   body.register-page {
     align-items: flex-start;
     padding-top: 2rem;
+  }
+
+  #review-form {
+    max-width: 90vw;
+    width: 90%;
   }
 }
