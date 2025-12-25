@@ -241,10 +241,14 @@ form.join-form,
   font-family: Arial, sans-serif;
 }
 
+.form-group label {
+  color: white;
+}
+
 .form-section h3 {
   font-size: 1.5rem;
   margin: 2rem;
-  color: #333;
+  color: #00d8ff;
   text-align: center;
 }
 
@@ -378,7 +382,24 @@ fieldset.stars-rating {
   /* Filled star */
 }
 
+.features p {
+  color: #333;
+}
+
+#portfolio-display {
+  background: radial-gradient(circle at top, #020617, #000);
+}
+
+legend {
+  color: #333;
+}
+
 /* =============== CHECKBOX SECTION =============== */
+
+.form-group label {
+  color: white;
+  font-size: 1rem;
+}
 
 .wrap-checkbox {
   display: flex;
@@ -391,6 +412,11 @@ fieldset.stars-rating {
 .wrap-checkbox label {
   display: flex;
   align-items: center;
+  color: #333;
+}
+
+.review label {
+  color: #333;
 }
 
 .large-checkbox {

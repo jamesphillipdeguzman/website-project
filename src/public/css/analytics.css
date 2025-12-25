@@ -60,6 +60,10 @@
   font-size: 0.95rem;
 }
 
+.analytics-table td {
+  color: #333;
+}
+
 /* ===============================
    Analytics Table Wrapper
 ================================ */

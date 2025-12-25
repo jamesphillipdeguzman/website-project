@@ -39,9 +39,9 @@ export function setupHamburgerMenu() {
   const btn = document.getElementById("menu");
   const nav = document.getElementById("mobile-nav");
   const overlay = document.querySelector(".nav-overlay");
+  const closeBtn = nav.querySelector(".close-btn"); // real X button
 
   if (!btn || !nav) return;
-
   if (btn.dataset.bound) return;
   btn.dataset.bound = "true";
 
@@ -51,14 +51,20 @@ export function setupHamburgerMenu() {
     overlay.classList.remove("active");
   };
 
+  // Hamburger click
   btn.addEventListener("click", () => {
     btn.classList.toggle("open");
     nav.classList.toggle("open");
     overlay.classList.toggle("active");
-    // btn.setAttribute("aria-expanded", isOpen);
   });
 
+  // Overlay click
   overlay.addEventListener("click", closeMenu);
+
+  // X button click
+  if (closeBtn) closeBtn.addEventListener("click", closeMenu);
+
+  // Close when clicking nav links
   nav
     .querySelectorAll("a")
     .forEach((a) => a.addEventListener("click", closeMenu));

@@ -69,6 +69,7 @@
 
         <!-- Mobile drawer -->
         <nav id="mobile-nav">
+            <button class="close-btn" aria-label="Close Menu">✕</button>
             <ul class="nav-links">
                 <li><a href="/index.html">Home</a></li>
                 <li><a href="/pages/about.html">About</a></li>
@@ -78,7 +79,6 @@
                 <li><a href="/pages/login.html" id="mobile-login-link">Dashboard</a></li>
             </ul>
         </nav>
-
         <div class="nav-overlay"></div>
 
         <main>
@@ -89,14 +89,36 @@
                 <!-- <img src="images/site-planning.svg" alt="picture of a notebook with wireframe sketches" width="200" -->
                 <!-- height="100"> -->
                 <!-- </div> -->
+                <section class="contact-intro">
+                    <p>
+                        Have a project in mind, a question about my work, or looking to collaborate?
+                        I’m always open to discussing ideas, freelance opportunities, and technical
+                        challenges. Let’s build something meaningful together.
+                    </p>
+                </section>
+
+                <section class="contact-reasons">
+                    <h2>What You Can Reach Me For</h2>
+                    <ul>
+                        <li>Website and web application development</li>
+                        <li>Backend API design and integration</li>
+                        <li>Frontend UI/UX implementation</li>
+                        <li>Freelance or contract opportunities</li>
+                        <li>Technical questions or consultations</li>
+                    </ul>
+                </section>
+
 
             </div>
+
+
 
             <div class="bottom-section">
                 <div class="contact-wrapper">
                     <!-- <h2>Contact James!</h2> -->
-                    <img src="/images/project-images/profile.png" alt="circle profile of besys tech" width="200"
-                        height="200">
+                    <div class="profile2"><img src="/images/project-images/james.webp"
+                            alt="circle profile of besys tech" width="200" height="200"></div>
+
                     <div class="contact-section">
 
                         <div id="mobile">
@@ -124,34 +146,64 @@
 
         </main>
 
-        <footer id="footer-container">
-            <div class="footer-wrapper">
-                <div class="social-links">
-                    <a href="/pages/siteplan.html">
-                        <img src="/images/svg/site-plan-logo.svg" alt="site plan logo" width="50" height="50">
+        <footer class="site-footer">
+            <div class="footer-inner">
+
+                <!-- Brand -->
+                <div class="footer-brand">
+                    <a href="/index.html" class="footer-logo">
+                        <img src="/images/besystechlogo.png" alt="BesysTech Logo" width="32" height="32">
+                        <span>besys.tech</span>
                     </a>
-                    <div class="footer-text">
-                        &copy;<span id="currentyear"></span> James Phillip K. De Guzman <p class="lastmodified">Last
-                            Modified:
-                            <span id="lastModified"></span>
-                        </p>
-                        <div class="local-storage-info">
-                            <p id="today"></p>
-                            <p id="search"></p>
-                        </div>
+                    <p class="footer-tagline">
+                        Building modern web solutions for people and small businesses.
+                    </p>
+                </div>
+
+                <!-- Navigation (same as header) -->
+                <nav class="footer-nav">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/pages/about.html">About</a></li>
+                        <li><a href="/pages/portfolios.html">Portfolio</a></li>
+                        <li><a href="/pages/product.html">Review</a></li>
+                        <li><a href="/pages/contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+
+                <!-- Social -->
+                <div class="footer-social">
+                    <h4>Connect</h4>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/diet.deguzman" target="_blank">
+                            <img src="/images/svg/facebook-logo-white.svg" alt="Facebook">
+                        </a>
+                        <a href="https://www.linkedin.com/in/jamesphillipdeguzman/" target="_blank">
+                            <img src="/images/svg/linkedin-logo-white.svg" alt="LinkedIn">
+                        </a>
+                        <a href="https://www.youtube.com/@JamesPhillipDeGuzman" target="_blank">
+                            <img src="/images/svg/youtube-logo-white.svg" alt="YouTube">
+                        </a>
                     </div>
-                    <a href="https://www.facebook.com/diet.deguzman" target="_blank">
-                        <img src="/images/svg/fb-logo.svg" alt="facebook logo" width="50" height="50">
-                    </a>
-                    <a href="https://www.linkedin.com/in/jamesphillipdeguzman/" target="_blank">
-                        <img src="/images/svg/linkedin-logo.svg" alt="LinkedIn logo" width="50" height="50">
-                    </a>
-                    <a href="https://www.youtube.com/@JamesPhillipDeGuzman" target="_blank">
-                        <img src="/images/svg/youtube-logo.svg" alt="YouTube logo" width="50" height="50">
-                    </a>
+                </div>
+
+            </div>
+
+            <!-- Bottom bar -->
+            <div class="footer-bottom">
+                <p>
+                    &copy; <span id="currentyear"></span> James Phillip K. De Guzman
+                </p>
+
+                <div class="footer-text">
+                    <p class="lastmodified">Last Modified: <span id="lastModified"></span></p>
                 </div>
             </div>
         </footer>
+
+    </div>
     </div>
     <div class="wireframe-overlay"></div>
 
