@@ -163,6 +163,7 @@
    Responsive (Mobile Friendly)
 ================================ */
 
+/* Tablets & below */
 @media (max-width: 1024px) {
   .analytics-header h1 {
     font-size: 1.8rem;
@@ -174,134 +175,94 @@
   }
 }
 
+/* Mobile (768px and below) */
 @media (max-width: 768px) {
-  .track-admin-toggle {
-    display: flex !important;
-    align-items: center;
-    gap: 6px;
-    margin-top: 8px;
-    font-size: 0.9rem;
-    white-space: nowrap;
-    visibility: visible !important;
-    opacity: 1 !important;
-    touch-action: manipulation;
-    user-select: none;
-  }
-
-  .track-admin-toggle input[type="checkbox"] {
-    display: inline-block !important;
-    gap: 1rem;
-  }
-
-  #total-events {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
   .analytics-section {
     padding: 1rem;
   }
-
   .analytics-header h1 {
     font-size: 1.5rem;
   }
-
   .analytics-header p {
     font-size: 0.85rem;
   }
 
   .analytics-table-wrapper {
     max-height: 60vh;
+    overflow-x: auto;
     white-space: nowrap;
   }
 
-  /* Make table scroll horizontally on small devices */
+  /* Convert table to stacked cards for mobile */
   .analytics-table {
     display: block;
     width: 100%;
   }
-
-  .analytics-table thead,
-  .analytics-table tbody,
-  .analytics-table th,
-  .analytics-table td,
-  .analytics-table tr {
+  .analytics-table thead {
+    display: none;
+  }
+  .analytics-table tbody {
     display: block;
   }
-
-  .analytics-table thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
-
   .analytics-table tbody tr {
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #ddd;
+    display: block;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 0.5rem 0;
   }
-
-  @media (max-width: 768px) {
-    .analytics-table td {
-      position: relative;
-      padding-left: 40%; /* reduced from 50% to make cells closer */
-      padding-top: 8px; /* reduce vertical spacing */
-      padding-bottom: 8px;
-      text-align: left;
-    }
-
-    .analytics-table td::before {
-      position: absolute;
-      top: 8px; /* align with reduced padding */
-      left: 12px; /* reduce left offset */
-      width: 35%; /* shrink label width */
-      padding-right: 8px;
-      white-space: nowrap;
-      font-weight: 600;
-    }
-
-    .analytics-table tbody tr {
-      margin-bottom: 0.5rem; /* reduce space between stacked rows */
-      border-bottom: 1px solid #ddd;
-    }
-  }
-
   .analytics-table td {
-    position: relative;
-    padding-left: 30%;
-    font-size: 0.8rem;
+    display: block;
     text-align: left;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    position: relative;
+    padding-left: 35%;
   }
-
   .analytics-table td::before {
-    position: absolute;
-    top: 14px;
-    left: 16px;
-    width: 40%;
-    padding-right: 10px;
-    white-space: nowrap;
-    font-weight: 600;
     content: attr(data-label);
-  }
-}
-
-@media (max-width: 512px) {
-  .analytics-table td {
-    padding-left: 30%;
-    font-size: 0.7rem;
-  }
-}
-
-@media (max-width: 400px) {
-  .analytics-table td {
-    padding-left: 20%;
-    font-size: 0.6rem;
+    position: absolute;
+    left: 12px;
+    top: 8px;
+    font-weight: 600;
+    width: 30%;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    color: #333;
   }
 
   .analytics-table-actions {
     flex-direction: column;
-    align-items: center;
-    gap: 0;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* Extra small devices (below 512px) */
+@media (max-width: 512px) {
+  .analytics-table td {
+    padding-left: 28%;
+    font-size: 0.75rem;
+  }
+  .analytics-table td::before {
+    width: 32%;
+    font-size: 0.7rem;
+  }
+}
+
+/* Very small devices (below 400px) */
+@media (max-width: 400px) {
+  .analytics-table td {
+    padding-left: 22%;
+    font-size: 0.65rem;
+  }
+  .analytics-table td::before {
+    width: 28%;
+    font-size: 0.65rem;
+  }
+  .analytics-table-actions {
+    width: 100%;
+    align-items: stretch;
   }
 }

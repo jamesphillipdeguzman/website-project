@@ -65,10 +65,10 @@ function setupCarouselButtons() {
   if (!container || !btnPrev || !btnNext) return;
 
   btnPrev.addEventListener("click", () => {
-    container.scrollBy({ left: -300, behavior: "smooth" });
+    container.scrollBy({ left: -200, behavior: "smooth" });
   });
   btnNext.addEventListener("click", () => {
-    container.scrollBy({ left: 300, behavior: "smooth" });
+    container.scrollBy({ left: 200, behavior: "smooth" });
   });
 }
 
