@@ -83,6 +83,11 @@
    Analytics Table
 ================================ */
 
+#last-project-date {
+  color: #555;
+  font-weight: 500;
+}
+
 .analytics-table {
   width: 100%;
   border-collapse: collapse;
