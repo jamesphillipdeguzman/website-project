@@ -94,7 +94,7 @@ function setupPortfolioCarousel(portfolios) {
     }
 
     const card = document.createElement("article");
-    card.className = "card modern-portfolio-card";
+    card.className = "card modern-portfolio-card portfolio-card";
     card.setAttribute("data-id", p.id);
     card.setAttribute("data-title", p.title);
     card.setAttribute("tabindex", "0");
@@ -136,7 +136,7 @@ function setupPortfolioCarousel(portfolios) {
           <p class="card-desc" style="color: #cbd5e1; font-size: 0.92rem; line-height: 1.55;">${p.description || "Interactive web application crafted with modern web standards and responsive layout."}</p>
         </div>
         
-        <div class="card-actions">
+        <div class="card-actions portfolio-actions">
           <a href="${p.project_link || '#'}" target="_blank" rel="noopener noreferrer" class="btn-action btn-primary" aria-label="Live Demo for ${p.title}">
             <span>Live Demo</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
