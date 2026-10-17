@@ -2,6 +2,7 @@ import {
   handleLogin,
   handleRegister,
   handleGetUser,
+  handlePurgeBots,
 } from "../src/server/auth.js";
 import {
   handleTrackEvent,
@@ -65,12 +66,17 @@ export default async function handler(req, res) {
     case "register":
       return handleRegister(req, res);
 
+    case "purge-bots":
+    case "cleanup-bots":
+      return handlePurgeBots(req, res);
+
     case "get-user":
       return handleGetUser(req, res);
 
     case "auth": {
       const action = subRoute || req.query?.action;
       if (action === "register") return handleRegister(req, res);
+      if (action === "purge-bots" || action === "cleanup-bots") return handlePurgeBots(req, res);
       if (action === "user" || action === "get-user") return handleGetUser(req, res);
       return handleLogin(req, res);
     }

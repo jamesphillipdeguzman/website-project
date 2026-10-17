@@ -60,7 +60,40 @@ export async function handleLogin(req, res) {
 }
 
 /**
- * Handle user registration
+ * Helper to detect random bot generated names
+ */
+function isBotName(name) {
+  if (!name || typeof name !== "string") return true;
+  const clean = name.trim();
+  if (clean.length < 2 || clean.length > 70) return true;
+
+  // Must contain at least one vowel
+  if (!/[aeiouy]/i.test(clean)) return true;
+
+  // Reject continuous strings with no spaces longer than 15 chars lacking double vowels
+  if (!clean.includes(" ") && clean.length > 15 && !/[aeiouy]{2,}/i.test(clean)) {
+    return true;
+  }
+
+  // Reject long continuous words with 6 or more consecutive consonants
+  const words = clean.split(/\s+/);
+  for (const word of words) {
+    if (/[bcdfghjklmnpqrstvwxyz]{6,}/i.test(word)) {
+      return true;
+    }
+  }
+
+  // Reject high-entropy alternating mixed case spam with no spaces (e.g. jCUmyYdJFPJalZbEchMS)
+  if (!clean.includes(" ") && clean.length >= 12) {
+    const caseFlips = (clean.match(/([a-z][A-Z]|[A-Z][a-z])/g) || []).length;
+    if (caseFlips >= 4) return true;
+  }
+
+  return false;
+}
+
+/**
+ * Handle user registration with anti-bot defense
  */
 export async function handleRegister(req, res) {
   if (req.method !== "POST") {
@@ -68,7 +101,38 @@ export async function handleRegister(req, res) {
   }
 
   const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-  const { name, email, password, user_type } = body;
+  const { name, email, password, user_type, company_fax, extra_security_token, form_start_time } = body;
+
+  // 1. Honeypot Trap: Silent discard if bot filled hidden field
+  if (company_fax || extra_security_token) {
+    console.warn("Honeypot trap triggered by automated bot. Silently discarding submission:", { email, company_fax });
+    return res.status(200).json({ success: true, message: "User registered successfully" });
+  }
+
+  // 2. Time-to-Submit Guard: Humans take at least 2 seconds
+  if (form_start_time) {
+    const elapsed = Date.now() - Number(form_start_time);
+    if (!isNaN(elapsed) && elapsed < 2000) {
+      console.warn("Bot rejected: Form submitted in under 2 seconds:", `${elapsed}ms`);
+      return res.status(400).json({ error: "Form submission too fast. Please try again." });
+    }
+  }
+
+  // 3. Email Pattern Guard: Reject burner emails with more than 2 dots in local part
+  if (email && typeof email === "string") {
+    const localPart = email.split("@")[0] || "";
+    const dotCount = (localPart.match(/\./g) || []).length;
+    if (dotCount > 2) {
+      console.warn("Bot rejected: Dotted burner email detected:", email);
+      return res.status(400).json({ error: "Invalid email address format." });
+    }
+  }
+
+  // 4. Name Pattern Guard: Reject random alphanumeric strings without vowels or spaces
+  if (isBotName(name)) {
+    console.warn("Bot rejected: Random spam name pattern detected:", name);
+    return res.status(400).json({ error: "Please enter a valid full name." });
+  }
 
   const client = new Client({ connectionString: process.env.DATABASE_URL });
 
@@ -79,7 +143,7 @@ export async function handleRegister(req, res) {
 
     await client.query(
       `INSERT INTO users (name, email, password, user_type) VALUES ($1, $2, $3, $4)`,
-      [name, email, hashedPassword, user_type ?? "Client"]
+      [name.trim(), email.trim().toLowerCase(), hashedPassword, user_type ?? "Client"]
     );
 
     return res.status(200).json({ message: "User registered successfully" });
@@ -118,3 +182,49 @@ export async function handleGetUser(req, res) {
       .json({ name: null, message: "Internal Server Error" });
   }
 }
+
+/**
+ * Handle purging existing bot records from users/clients table
+ */
+export async function handlePurgeBots(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  const client = new Client({ connectionString: process.env.DATABASE_URL });
+
+  try {
+    await client.connect();
+
+    const deleteQuery = `
+      DELETE FROM users 
+      WHERE (
+        email ~* '^[a-z0-9]+\\.[a-z0-9]+\\.[a-z0-9]+\\.[a-z0-9]+'
+        OR (LENGTH(name) > 15 AND name !~* '[aeiouy]{2,}')
+        OR (name ~* '^[a-zA-Z0-9]{12,}$' AND name !~* '\\s')
+        OR (LENGTH(name) >= 10 AND name !~* '[aeiouy]')
+      )
+      AND (user_type = 'Client' OR user_type IS NULL)
+      RETURNING id, name, email;
+    `;
+
+    const result = await client.query(deleteQuery);
+
+    return res.status(200).json({
+      success: true,
+      message: `Successfully purged ${result.rowCount} bot records.`,
+      purgedCount: result.rowCount,
+      purgedUsers: result.rows,
+    });
+  } catch (error) {
+    console.error("Purge error:", error);
+    return res.status(500).json({ error: error.message });
+  } finally {
+    await client.end();
+  }
+}
+

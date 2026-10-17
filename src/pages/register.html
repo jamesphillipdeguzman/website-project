@@ -40,6 +40,7 @@
     <meta name="description" content="Register a new account on BESYSTECH to access your dashboard.">
 
     <script type="module" src="/js/base.js"></script>
+    <script type="module" src="/js/register.js"></script>
     <script type="module" src="/js/analytics.js"></script>
 
 
@@ -99,14 +100,18 @@
                 <h2>Create an Account</h2>
 
                 <form class="register-form">
+                    <!-- Honeypot Trap (Hidden from users, attractive to spam bots) -->
+                    <input type="text" name="company_fax" id="company_fax" tabindex="-1" autocomplete="off" style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;" />
+                    <input type="hidden" name="form_start_time" id="form_start_time" value="" />
+
                     <label for="name">Full Name</label>
-                    <input type="text" id="name" required placeholder="John Doe">
+                    <input type="text" id="name" name="name" required placeholder="John Doe">
 
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" required placeholder="john@example.com">
+                    <input type="email" id="email" name="email" required placeholder="john@example.com">
 
                     <label for="password">Password</label>
-                    <input type="password" id="password" required placeholder="••••••••">
+                    <input type="password" id="password" name="password" required placeholder="••••••••">
 
                     <button type="submit" class="btn-register">Register</button>
                 </form>
