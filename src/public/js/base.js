@@ -852,19 +852,33 @@ function getVisitorId() {
    ANALYTICS
 ====================================================== */
 
-// ===== Track Admin =====
+// ===== Track Admin Activity Toggle =====
 
 function trackAdmin() {
-  const trackAdminCheckbox = document.getElementById("trackAdmin");
-  if (!trackAdminCheckbox) return false;
+  const trackAdminCheckbox =
+    document.querySelector(
+      'input[type="checkbox"]#track-admin, #track-admin-activity, #trackAdmin, #track-admin-checkbox'
+    ) || document.getElementById("trackAdmin");
+
+  if (!trackAdminCheckbox) {
+    return (
+      localStorage.getItem("track_admin_activity") === "true" ||
+      localStorage.getItem("trackAdmin") === "true"
+    );
+  }
 
   // Initialize checkbox state from localStorage
-  const trackAdmin = localStorage.getItem("trackAdmin") === "true";
-  trackAdminCheckbox.checked = trackAdmin;
+  const isEnabled =
+    localStorage.getItem("track_admin_activity") === "true" ||
+    localStorage.getItem("trackAdmin") === "true";
+
+  trackAdminCheckbox.checked = isEnabled;
 
   // Update localStorage when user toggles
   trackAdminCheckbox.addEventListener("change", (e) => {
-    localStorage.setItem("trackAdmin", e.target.checked);
+    const val = e.target.checked ? "true" : "false";
+    localStorage.setItem("track_admin_activity", val);
+    localStorage.setItem("trackAdmin", val);
   });
 
   return trackAdminCheckbox.checked;
@@ -906,6 +920,7 @@ function trackPageView() {
       event_type: "pageview",
       event_payload: null,
       trackAdmin: userType === "admin" && trackAdminEnabled,
+      allowAdminTracking: trackAdminEnabled,
       visitor_type: userType, // include type explicitly
     }),
   }).catch(console.error);
@@ -913,17 +928,27 @@ function trackPageView() {
 
 // ===== Automatic Global Event Capture =====
 function captureAnalyticsEvent(eventName = "pageview", eventType = "navigation") {
-  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-  let userName = localStorage.getItem("user_name");
-  if (!userName) {
-    try {
-      const u = JSON.parse(localStorage.getItem("user"));
-      if (u && u.name) userName = u.name;
-    } catch {}
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const userRole = localStorage.getItem("user_role") || localStorage.getItem("user_type") || user.user_type || "";
+  const userName = localStorage.getItem("user_name") || user.name || "";
+  const isAdmin =
+    (userRole && userRole.toLowerCase() === "admin") ||
+    userName === "James" ||
+    (userName && userName.toLowerCase().includes("james"));
+  const allowAdminTracking =
+    localStorage.getItem("track_admin_activity") === "true" ||
+    localStorage.getItem("trackAdmin") === "true";
+
+  // Do not track admin activity by default unless explicitly opted in
+  if (isAdmin && !allowAdminTracking) {
+    return;
   }
 
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
   const payload = {
     name: userName || "Anonymous",
+    role: userRole || "Guest",
+    allowAdminTracking: allowAdminTracking,
     type: eventType,
     page: window.location.pathname,
     event: eventName,
@@ -941,20 +966,46 @@ function captureAnalyticsEvent(eventName = "pageview", eventType = "navigation")
 // ===== Global Page Visit Tracking =====
 async function trackVisit() {
   try {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userRole = localStorage.getItem("user_role") || localStorage.getItem("user_type") || user.user_type || "";
+    const userName = localStorage.getItem("user_name") || user.name || "";
+    const isAdmin =
+      (userRole && userRole.toLowerCase() === "admin") ||
+      userName === "James" ||
+      (userName && userName.toLowerCase().includes("james"));
+    const allowAdminTracking =
+      localStorage.getItem("track_admin_activity") === "true" ||
+      localStorage.getItem("trackAdmin") === "true";
+
+    const updateCountEl = async () => {
+      const countEl = document.getElementById("visit-count");
+      if (countEl) {
+        const res = await fetch("/api/get-visit-count");
+        if (res.ok) {
+          const data = await res.json();
+          countEl.textContent = data.count;
+        }
+      }
+    };
+
+    // Do not track admin visit unless opted in
+    if (isAdmin && !allowAdminTracking) {
+      await updateCountEl();
+      return;
+    }
+
     await fetch("/api/record-visit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ page: window.location.pathname }),
+      body: JSON.stringify({
+        page: window.location.pathname,
+        name: userName || "Anonymous",
+        role: userRole || "Guest",
+        allowAdminTracking,
+      }),
     });
 
-    const countEl = document.getElementById("visit-count");
-    if (countEl) {
-      const res = await fetch("/api/get-visit-count");
-      if (res.ok) {
-        const data = await res.json();
-        countEl.textContent = data.count;
-      }
-    }
+    await updateCountEl();
   } catch (err) {
     console.warn("Visit tracking blip:", err);
   }

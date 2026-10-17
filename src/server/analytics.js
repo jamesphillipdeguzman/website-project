@@ -21,6 +21,19 @@ export async function handleRecordEvent(req, res) {
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
     const name = (body.name || body.user_name || "Anonymous").trim();
+    const role = (body.role || body.user_role || body.user_type || "").trim();
+    const isAdmin =
+      name === "James" ||
+      role === "Admin" ||
+      (name && name.toLowerCase().includes("james")) ||
+      (role && role.toLowerCase() === "admin");
+    const allowAdminTracking = body.allowAdminTracking === true || body.allowAdminTracking === "true";
+
+    // Safeguard: do not insert admin event unless explicitly opted in
+    if (isAdmin && !allowAdminTracking) {
+      return res.status(200).json({ success: true, message: "Admin event tracking suppressed." });
+    }
+
     const type = (body.type || body.visitor_type || "navigation").trim();
     const page = (body.page || body.page_url || "/").trim();
     const event = (body.event || body.event_type || "pageview").trim();

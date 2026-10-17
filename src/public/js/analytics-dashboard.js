@@ -76,6 +76,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // Track Admin Activity Toggle
+  const trackAdminCheckbox =
+    document.querySelector(
+      'input[type="checkbox"]#track-admin, #track-admin-activity, #trackAdmin, #track-admin-checkbox'
+    ) || document.getElementById("trackAdmin");
+
+  if (trackAdminCheckbox) {
+    trackAdminCheckbox.checked =
+      localStorage.getItem("track_admin_activity") === "true" ||
+      localStorage.getItem("trackAdmin") === "true";
+
+    trackAdminCheckbox.addEventListener("change", (e) => {
+      const isChecked = e.target.checked ? "true" : "false";
+      localStorage.setItem("track_admin_activity", isChecked);
+      localStorage.setItem("trackAdmin", isChecked);
+    });
+  }
+
   function downloadCSV(filename, rows) {
     const csvContent = rows
       .map((e) => e.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(","))

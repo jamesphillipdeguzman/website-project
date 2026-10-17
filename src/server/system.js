@@ -401,6 +401,20 @@ export async function handleRecordVisit(req, res) {
 
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    const name = (body?.name || body?.user_name || "").trim();
+    const role = (body?.role || body?.user_role || body?.user_type || "").trim();
+    const isAdmin =
+      name === "James" ||
+      role === "Admin" ||
+      (name && name.toLowerCase().includes("james")) ||
+      (role && role.toLowerCase() === "admin");
+    const allowAdminTracking = body?.allowAdminTracking === true || body?.allowAdminTracking === "true";
+
+    // Safeguard: do not insert admin visit unless explicitly opted in
+    if (isAdmin && !allowAdminTracking) {
+      return res.status(200).json({ success: true, message: "Admin visit tracking suppressed." });
+    }
+
     const page = body?.page || req.url || "home";
     const rawIp = req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown";
     const ip = String(rawIp).split(",")[0].trim();
