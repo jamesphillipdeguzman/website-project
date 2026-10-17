@@ -843,14 +843,30 @@ header {
   outline: none;
 }
 
-/* Invisible hover bridge on bottom edge prevents hover loop jitter */
+/* Overlay pseudo-elements must never block clicks */
 .modern-portfolio-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  bottom: -10px;
-  pointer-events: auto;
+  pointer-events: none;
   z-index: 1;
+}
+
+/* Ensure Buttons and Interactive Elements Have Proper Stacking */
+.portfolio-card a,
+.portfolio-card button,
+.portfolio-card .card-actions,
+.portfolio-card .live-demo-btn,
+.portfolio-card .code-btn,
+.modern-portfolio-card a,
+.modern-portfolio-card button,
+.modern-portfolio-card .card-actions,
+.modern-portfolio-card .btn-action,
+.modern-portfolio-card .card-image-link {
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .modern-portfolio-card:hover,
@@ -1280,8 +1296,7 @@ header {
   content: "";
   position: absolute;
   inset: 0;
-  bottom: -8px;
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 .card:not(.modern-portfolio-card):hover {

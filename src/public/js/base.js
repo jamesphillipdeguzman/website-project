@@ -276,9 +276,14 @@ function renderPortfolioCarousel() {
     `;
 
     // Click & Focus view tracking
-    card.addEventListener("click", () => {
+    card.addEventListener("click", (e) => {
       const badge = card.querySelector(".views-badge");
       trackPortfolioView(p.id, badge);
+
+      if (e.target.closest("a") || e.target.closest("button")) {
+        // Do not prevent default navigation for buttons/links
+        return;
+      }
     });
 
     card.addEventListener("focus", () => {
