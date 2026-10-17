@@ -229,3 +229,5 @@ export async function handlePurgeBots(req, res) {
   }
 }
 
+export { handleGetClients } from "./system.js";
+

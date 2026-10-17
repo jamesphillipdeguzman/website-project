@@ -5,16 +5,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   let clientsData = [];
 
   try {
-    const res = await fetch("/api/get-clients");
+    let res = await fetch("/api/clients");
+    if (!res.ok) {
+      res = await fetch("/api/get-clients");
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const clients = await res.json();
 
-    if (!clients || clients.length === 0) {
+    if (!Array.isArray(clients) || clients.length === 0) {
       tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No clients found.</td></tr>`;
       return;
     }
 
     clientsData = clients.map((client, index) => {
-      const createdAt = new Date(client.created_at).toLocaleString();
+      const createdAt = client.created_at
+        ? new Date(client.created_at).toLocaleString()
+        : "-";
       const lastLogin = client.last_login
         ? new Date(client.last_login).toLocaleString()
         : "-";

@@ -41,20 +41,75 @@ export async function handleSystemStatus(req, res) {
 }
 
 /**
- * Handle get-clients
+ * Handle get-clients / clients
+ * Queries users where user_type = 'Client' (or all users if untyped)
  */
 export async function handleGetClients(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  const cleanUrl = getCleanDatabaseUrl(process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL);
+  if (!cleanUrl) {
+    return res.status(200).json([]);
+  }
+
+  let client;
   try {
-    const clients = await sql`
-      SELECT id, name, email, created_at, last_login
-      FROM users
-      WHERE user_type = 'Client'
-      ORDER BY created_at DESC
-    `;
-    return res.status(200).json(clients);
+    client = new Client({ connectionString: cleanUrl });
+    await client.connect();
+
+    // Ensure users table and columns exist
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255),
+        email VARCHAR(255) UNIQUE,
+        password VARCHAR(255),
+        user_type VARCHAR(50) DEFAULT 'Client',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        last_login TIMESTAMP
+      );
+    `);
+
+    try {
+      await client.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS user_type VARCHAR(50) DEFAULT 'Client';");
+      await client.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_login TIMESTAMP;");
+      await client.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;");
+    } catch {}
+
+    let rows = [];
+    try {
+      const result = await client.query(`
+        SELECT id, name, email, created_at, last_login
+        FROM users
+        WHERE user_type = 'Client' OR user_type IS NULL OR LOWER(user_type) = 'client'
+        ORDER BY created_at DESC;
+      `);
+      rows = result.rows;
+    } catch {
+      const fallbackResult = await client.query(`
+        SELECT id, name, email, created_at, last_login
+        FROM users
+        ORDER BY created_at DESC;
+      `);
+      rows = fallbackResult.rows;
+    }
+
+    return res.status(200).json(rows || []);
   } catch (err) {
     console.error("Error fetching clients:", err);
-    return res.status(500).json({ error: err.message });
+    return res.status(200).json([]);
+  } finally {
+    if (client) {
+      try {
+        await client.end();
+      } catch {}
+    }
   }
 }
 

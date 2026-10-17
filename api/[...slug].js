@@ -6,6 +6,7 @@ import {
 } from "../src/server/auth.js";
 import {
   handleTrackEvent,
+  handleRecordEvent,
   handleGetAnalytics,
   handleClearAnalytics,
   handleIncrementVisit,
@@ -113,8 +114,10 @@ export default async function handler(req, res) {
     }
 
     // ===== Analytics & Visits Routes =====
+    case "record-event":
+    case "recordevent":
     case "track-event":
-      return handleTrackEvent(req, res);
+      return handleRecordEvent(req, res);
 
     case "get-analytics":
       return handleGetAnalytics(req, res);
@@ -134,6 +137,9 @@ export default async function handler(req, res) {
       return handleIncrementVisit(req, res);
 
     case "analytics": {
+      if (req.method === "DELETE") {
+        return handleClearAnalytics(req, res);
+      }
       const action = subRoute || req.query?.action;
       if (action === "clear" || action === "clear-analytics")
         return handleClearAnalytics(req, res);
@@ -141,8 +147,8 @@ export default async function handler(req, res) {
         return handleGetVisitCount(req, res);
       if (action === "increment-visit" || action === "increment")
         return handleIncrementVisit(req, res);
-      if (action === "track" || action === "track-event" || req.method === "POST")
-        return handleTrackEvent(req, res);
+      if (action === "record-event" || action === "track" || action === "track-event" || req.method === "POST")
+        return handleRecordEvent(req, res);
       return handleGetAnalytics(req, res);
     }
 

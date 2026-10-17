@@ -908,6 +908,33 @@ function trackPageView() {
   }).catch(console.error);
 }
 
+// ===== Automatic Global Event Capture =====
+function captureAnalyticsEvent(eventName = "pageview", eventType = "navigation") {
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  let userName = localStorage.getItem("user_name");
+  if (!userName) {
+    try {
+      const u = JSON.parse(localStorage.getItem("user"));
+      if (u && u.name) userName = u.name;
+    } catch {}
+  }
+
+  const payload = {
+    name: userName || "Anonymous",
+    type: eventType,
+    page: window.location.pathname,
+    event: eventName,
+    referrer: document.referrer || "Direct",
+    device: isMobile ? "Mobile" : "Desktop",
+  };
+
+  fetch("/api/record-event", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  }).catch((err) => console.debug("Analytics log error:", err));
+}
+
 // ===== Global Page Visit Tracking =====
 async function trackVisit() {
   try {
@@ -941,8 +968,8 @@ function clearAnalytics() {
       return;
 
     try {
-      const res = await fetch("/api/clear-analytics", {
-        method: "POST",
+      const res = await fetch("/api/analytics", {
+        method: "DELETE",
       });
       const data = await res.json();
 
@@ -951,6 +978,12 @@ function clearAnalytics() {
         // Reset visit count on dashboard
         const visitCountEl = document.getElementById("visit-count");
         if (visitCountEl) visitCountEl.textContent = 0;
+        const eventsCountEl = document.getElementById("events-count");
+        if (eventsCountEl) eventsCountEl.textContent = 0;
+        const tbody = document.getElementById("analytics-body");
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">No analytics data yet.</td></tr>`;
+        }
       } else {
         alert(data.error || "Failed to clear analytics.");
       }
@@ -1061,6 +1094,7 @@ async function init() {
   setupModals();
   setupQuoteForm();
   trackVisit();
+  captureAnalyticsEvent();
   await loadPortfolios();
   const params = new URLSearchParams(window.location.search);
   if (params.get("new") === "true") resetPortfolioForm();
