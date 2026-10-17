@@ -131,8 +131,10 @@ function setupPortfolioCarousel(portfolios) {
       </div>
 
       <div class="databox modern-databox">
-        <h3 class="card-title" style="color: #ffffff; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.6rem;">${p.title}</h3>
-        <p class="card-desc" style="color: #cbd5e1; font-size: 0.92rem; line-height: 1.55;">${p.description || "Interactive web application crafted with modern web standards and responsive layout."}</p>
+        <div class="card-info-wrap">
+          <h3 class="card-title" style="color: #ffffff; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.6rem;">${p.title}</h3>
+          <p class="card-desc" style="color: #cbd5e1; font-size: 0.92rem; line-height: 1.55;">${p.description || "Interactive web application crafted with modern web standards and responsive layout."}</p>
+        </div>
         
         <div class="card-actions">
           <a href="${p.project_link || '#'}" target="_blank" rel="noopener noreferrer" class="btn-action btn-primary" aria-label="Live Demo for ${p.title}">
@@ -188,6 +190,7 @@ function setupPortfolioCarousel(portfolios) {
   }
 
   setupCarouselButtons(container, dotsContainer);
+  initPortfolioViewToggle();
 }
 
 function setupCarouselButtons(container, dotsContainer) {
@@ -251,6 +254,70 @@ function setupCarouselButtons(container, dotsContainer) {
       { passive: true }
     );
   }
+}
+
+/* ---------- Layout View Switcher (Carousel / Grid / List) ---------- */
+function initPortfolioViewToggle() {
+  const section = document.querySelector(".portfolio-showcase-section");
+  const container = document.getElementById("portfolio-carousel");
+  const toolbar = document.querySelector(".portfolio-view-toolbar");
+  if (!section || !container || !toolbar) return;
+
+  const buttons = toolbar.querySelectorAll(".view-toggle-btn");
+  const subtext = document.querySelector(".showcase-subtext");
+
+  const subtextMap = {
+    carousel: "Swipe or scroll horizontally to explore projects and track live metrics.",
+    grid: "Browse featured projects in a responsive multi-column grid layout.",
+    list: "Browse detailed project records in a structured row overview.",
+  };
+
+  const applyViewMode = (mode, persist = true) => {
+    const validModes = ["carousel", "grid", "list"];
+    const activeMode = validModes.includes(mode) ? mode : "carousel";
+
+    if (persist) {
+      try {
+        localStorage.setItem("portfolio_view_mode", activeMode);
+      } catch (err) {}
+    }
+
+    buttons.forEach((btn) => {
+      const isActive = btn.dataset.view === activeMode;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-checked", isActive ? "true" : "false");
+    });
+
+    if (subtext && subtextMap[activeMode]) {
+      subtext.textContent = subtextMap[activeMode];
+    }
+
+    container.classList.add("view-transitioning");
+    setTimeout(() => {
+      section.classList.remove("mode-carousel", "mode-grid", "mode-list");
+      section.classList.add(`mode-${activeMode}`);
+
+      container.classList.remove("view-carousel", "view-grid", "view-list");
+      container.classList.add(`view-${activeMode}`);
+
+      container.classList.remove("view-transitioning");
+
+      if (activeMode === "carousel") {
+        container.scrollTo({ left: 0, behavior: "smooth" });
+      }
+    }, 120);
+  };
+
+  buttons.forEach((btn) => {
+    btn.onclick = () => applyViewMode(btn.dataset.view);
+  });
+
+  let savedMode = "carousel";
+  try {
+    savedMode = localStorage.getItem("portfolio_view_mode") || "carousel";
+  } catch (err) {}
+
+  applyViewMode(savedMode, false);
 }
 
 // NEW: populate any <select id="dynamic-product">
