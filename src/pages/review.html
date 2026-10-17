@@ -91,11 +91,12 @@
 
                 <form id="review-form" method="POST">
                     <fieldset class="form-group">
-                        <label for="dynamic-product" id="portfolio-name">Portfolio Name</label>
-                        <select id="dynamic-product" name="portfolio" required>
+                        <label for="portfolio-select" id="portfolio-name">Portfolio Name</label>
+                        <select id="portfolio-select" name="portfolio" class="portfolio-select" required>
                             <option value="" disabled selected>Select a portfolio...</option>
                         </select>
                         <div id="select-error-message"></div>
+                        <div id="portfolio-display" class="portfolio-preview-container" style="display: none;"></div>
 
                         <fieldset class="stars-rating">
                             <legend>Overall Rating</legend>

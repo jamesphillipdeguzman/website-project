@@ -51,8 +51,8 @@ async function handleLogin(e) {
     // ✅ LOGIN SUCCESS
     localStorage.setItem("user", JSON.stringify(data.user));
 
-    // Redirect once only
-    window.location.replace("/dashboard.html");
+    // Redirect to pages/dashboard.html
+    window.location.href = "/pages/dashboard.html";
   } catch (error) {
     console.error("Login error:", error);
     alert("⚠️ Network or server error.");

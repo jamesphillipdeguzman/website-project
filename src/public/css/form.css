@@ -108,30 +108,38 @@ small {
   line-height: 1.4;
 }
 
-.btn-submit {
-  padding: 0.8rem 1.5rem;
-  background: var(--aether-accent-gradient, linear-gradient(135deg, #0284c7 0%, #6366f1 100%));
-  color: #fff;
-  border: none;
-  border-radius: var(--aether-radius-md, 0.75rem);
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.01em;
-  font-family: var(--aether-font-display, "Poppins", sans-serif);
-  transition: transform 0.2s var(--aether-ease, ease), box-shadow 0.2s ease, background 0.2s ease;
-  align-self: center;
+.login-btn,
+.btn-submit,
+form button[type="submit"] {
   width: 100%;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+  padding: 0.85rem 1.5rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-submit:hover {
-  background: var(--aether-accent-gradient-hover, linear-gradient(135deg, #0ea5e9 0%, #4f46e5 100%));
-  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
-  transform: translateY(-2px);
+.login-btn:hover,
+.btn-submit:hover,
+form button[type="submit"]:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+  transform: translateY(-1px);
 }
 
-.btn-submit:focus-visible {
+.login-btn:focus-visible,
+.btn-submit:focus-visible,
+form button[type="submit"]:focus-visible {
   outline: 2px solid var(--aether-focus, #38bdf8);
   outline-offset: 3px;
 }

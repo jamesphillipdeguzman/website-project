@@ -149,8 +149,8 @@ function trackPortfolioView(id, badgeEl) {
     .then((res) => res.json())
     .then((data) => {
       if (data && data.views !== undefined && badgeEl) {
-        const countSpan = badgeEl.querySelector(".views-count");
-        if (countSpan) countSpan.textContent = formatPortfolioViews(data.views);
+        const countSpan = badgeEl.querySelector(".count") || badgeEl.querySelector(".views-count");
+        if (countSpan) countSpan.textContent = `${data.views || 0} views`;
         badgeEl.classList.add("updated");
         setTimeout(() => badgeEl.classList.remove("updated"), 1200);
       }
@@ -190,7 +190,7 @@ function renderPortfolioCarousel() {
         if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
           const card = entry.target;
           const id = card.dataset.id;
-          const badgeEl = card.querySelector(".views-badge");
+          const badgeEl = card.querySelector(".view-count-badge") || card.querySelector(".views-badge");
 
           if (id && !sessionStorage.getItem(`session_viewed_portfolio_${id}`)) {
             const timer = setTimeout(() => {
@@ -245,14 +245,6 @@ function renderPortfolioCarousel() {
           <img src="${p.image_url || PLACEHOLDER_IMAGE}" alt="${p.title}" loading="lazy" class="portfolio-card-img" />
           <div class="card-image-overlay"></div>
         </a>
-        ${categoryBadge}
-        <span class="views-badge" aria-label="${formattedViews}">
-          <svg class="views-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-          <span class="views-count" style="color: #ffffff; font-weight: 600;">${formattedViews}</span>
-        </span>
       </div>
 
       <div class="databox modern-databox">
@@ -261,23 +253,36 @@ function renderPortfolioCarousel() {
           <p class="card-desc" style="color: #cbd5e1; font-size: 0.92rem; line-height: 1.55;">${p.description || "Interactive web application crafted with modern web standards and responsive layout."}</p>
         </div>
         
-        <div class="card-actions">
-          <a href="${p.project_link || '#'}" target="_blank" rel="noopener noreferrer" class="btn-action btn-primary" aria-label="Live Demo for ${p.title}">
-            <span>Live Demo</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-              <polyline points="15 3 21 3 21 9"></polyline>
-              <line x1="10" y1="14" x2="21" y2="3"></line>
-            </svg>
-          </a>
-          ${githubBtn}
+        <div class="card-actions-col">
+          <div class="card-actions">
+            <a href="${p.project_link || '#'}" target="_blank" rel="noopener noreferrer" class="btn-action btn-primary" aria-label="Live Demo for ${p.title}">
+              <span>Live Demo</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+            ${githubBtn}
+          </div>
+
+          <div class="card-footer-meta">
+            <span class="view-count-badge">
+              <svg class="eye-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <span class="count">${p.views || 0} views</span>
+            </span>
+            <span class="category-tag">${p.category || 'PROJECT'}</span>
+          </div>
         </div>
       </div>
     `;
 
     // Click & Focus view tracking
     card.addEventListener("click", (e) => {
-      const badge = card.querySelector(".views-badge");
+      const badge = card.querySelector(".view-count-badge") || card.querySelector(".views-badge");
       trackPortfolioView(p.id, badge);
 
       if (e.target.closest("a") || e.target.closest("button")) {
@@ -287,7 +292,7 @@ function renderPortfolioCarousel() {
     });
 
     card.addEventListener("focus", () => {
-      const badge = card.querySelector(".views-badge");
+      const badge = card.querySelector(".view-count-badge") || card.querySelector(".views-badge");
       trackPortfolioView(p.id, badge);
     });
 
@@ -576,11 +581,13 @@ function setupAddNewPortfolioButton() {
    MODALS
 ====================================================== */
 function setupModals() {
-  [
+  const modalConfigs = [
     ["get-quote-btn", "quote-modal", "quote-backdrop"],
     ["login-btn", "login-modal", "login-backdrop"],
     ["signup-btn", "signup-modal", "signup-backdrop"],
-  ].forEach(([btnId, modalId, backdropId]) => {
+  ];
+
+  modalConfigs.forEach(([btnId, modalId, backdropId]) => {
     const btn = document.getElementById(btnId);
     const modal = document.getElementById(modalId);
     const backdrop = document.getElementById(backdropId);
@@ -588,17 +595,60 @@ function setupModals() {
     if (!btn || !modal || !backdrop) return;
 
     const hide = () => {
+      modal.classList.add("hidden");
+      modal.classList.remove("active", "open");
       modal.style.display = "none";
+      backdrop.classList.add("hidden");
+      backdrop.classList.remove("active", "open");
       backdrop.style.display = "none";
+      document.body.style.overflow = "";
     };
 
-    btn.onclick = () => {
-      modal.style.display = "block";
+    const show = () => {
+      modal.classList.remove("hidden");
+      modal.classList.add("active", "open");
+      modal.style.display = "flex";
+      backdrop.classList.remove("hidden");
+      backdrop.classList.add("active", "open");
       backdrop.style.display = "block";
+      document.body.style.overflow = "hidden";
     };
 
-    close?.addEventListener("click", hide);
-    backdrop.onclick = hide;
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      show();
+    });
+
+    close?.addEventListener("click", (e) => {
+      e.preventDefault();
+      hide();
+    });
+
+    backdrop.addEventListener("click", hide);
+
+    // Dismiss if clicking directly on modal background area outside modal-content
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        hide();
+      }
+    });
+  });
+
+  // Global Escape key listener to dismiss open modals
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      document.querySelectorAll(".modal.active, .modal.open, .modal:not(.hidden)").forEach((m) => {
+        m.classList.add("hidden");
+        m.classList.remove("active", "open");
+        m.style.display = "none";
+      });
+      document.querySelectorAll(".backdrop.active, .backdrop.open, .backdrop:not(.hidden)").forEach((b) => {
+        b.classList.add("hidden");
+        b.classList.remove("active", "open");
+        b.style.display = "none";
+      });
+      document.body.style.overflow = "";
+    }
   });
 }
 

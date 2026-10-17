@@ -90,56 +90,7 @@
                 <button id="get-quote-btn" class="mybutton">Get Quote</button>
             </div>
 
-            <div class="backdrop" id="quote-backdrop"></div>
-            <div id="quote-modal" class="modal hidden">
-                <div class="modal-content">
-                    <span class="close" id="close-btn">&times;</span>
-                    <h2>Request a Quote</h2>
-                    <form name="quoteForm" id="quoteForm" method="POST" data-netlify="true"
-                        netlify-honeypot="bot-field">
-                        <input type="hidden" name="form-name" value="quoteForm">
-                        <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
 
-                        <fieldset>
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
-
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-
-                            <label for="phone">Phone</label>
-                            <input type="tel" id="phone" name="phone" placeholder="e.g. (123) 456-7890" required>
-                            <label for="message">Your Question</label>
-
-                            <textarea name="message" id="message" required></textarea>
-
-                        </fieldset>
-
-
-                        <button id="submit-enquiry" class="mybutton">Submit Enquiry</button>
-
-
-                    </form>
-                </div>
-            </div>
-
-            <div class="backdrop" id="login-backdrop"></div>
-            <div id="login-modal" class="modal hidden">
-                <div class="modal-content">
-                    <span class="close" id="close-login">&times;</span>
-                    <h2>Login</h2>
-                    <form id="loginForm">
-                        <label for="login-email">Email</label>
-                        <input type="email" id="login-email" name="email" required>
-
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" name="password" required>
-
-                        <button type="submit" class="mybutton">Login</button>
-                    </form>
-                    <p id="login-message"></p>
-                </div>
-            </div>
 
 
             <div class="hero">
@@ -167,26 +118,7 @@
 
                     </div>
 
-                    <div class="backdrop" id="signup-backdrop"></div>
-                    <div id="signup-modal" class="modal hidden">
-                        <div class="modal-content">
-                            <span class="close" id="close-signup">&times;</span>
-                            <!-- Insert signup.html contents here -->
-                            <h2>Sign Up</h2>
-                            <form id="signupForm">
-                                <label for="signup-name">Full Name</label>
-                                <input type="text" id="signup-name" name="name" required>
 
-                                <label for="signup-email">Email</label>
-                                <input type="email" id="signup-email" name="email" required>
-
-                                <label for="signup-password">Password</label>
-                                <input type="password" id="signup-password" name="password" required>
-
-                                <button type="submit" class="mybutton">Sign Up</button>
-                            </form>
-                        </div>
-                    </div>
 
                 </article>
 
@@ -251,6 +183,75 @@
         </footer>
     </div>
     <div class="wireframe-overlay"></div>
+
+    <!-- Top-Level Dialog Modals & Backdrops -->
+    <div class="backdrop" id="quote-backdrop"></div>
+    <div id="quote-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="close-btn" aria-label="Close modal">&times;</span>
+            <h2>Request a Quote</h2>
+            <form name="quoteForm" id="quoteForm" method="POST" data-netlify="true"
+                netlify-honeypot="bot-field">
+                <input type="hidden" name="form-name" value="quoteForm">
+                <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+
+                <fieldset>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" placeholder="e.g. (123) 456-7890" required>
+                    <label for="message">Your Question</label>
+
+                    <textarea name="message" id="message" required></textarea>
+
+                </fieldset>
+
+                <button id="submit-enquiry" class="mybutton">Submit Enquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="backdrop" id="login-backdrop"></div>
+    <div id="login-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="close-login" aria-label="Close modal">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" name="email" required>
+
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" required>
+
+                <button type="submit" class="mybutton">Login</button>
+            </form>
+            <p id="login-message"></p>
+        </div>
+    </div>
+
+    <div class="backdrop" id="signup-backdrop"></div>
+    <div id="signup-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close" id="close-signup" aria-label="Close modal">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <label for="signup-name">Full Name</label>
+                <input type="text" id="signup-name" name="name" required>
+
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" name="email" required>
+
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" name="password" required>
+
+                <button type="submit" class="mybutton">Sign Up</button>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

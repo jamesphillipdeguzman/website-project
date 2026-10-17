@@ -141,39 +141,122 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-  const dynamicPortfolio = document.querySelector("#dynamic-product"); // maybe rename this ID in HTML too
+  const dynamicPortfolio =
+    document.querySelector("#portfolio-select") ||
+    document.querySelector("#dynamic-product");
   const reviewForm = document.querySelector("#review-form");
   const reviewBtn = document.querySelector("#review-btn");
   const submitDisplay = document.querySelector("#submit-count");
+  let activePortfolios = [...portfolios];
+
+  // Fetch real-time portfolio list if available, or fall back to static list
+  async function loadPortfolioData() {
+    try {
+      const res = await fetch("/api/portfolios");
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          activePortfolios = data.map((item) => ({
+            id: item.id,
+            pTitle: item.title || item.pTitle,
+            title: item.title || item.pTitle,
+            sourceImg: item.image_url || item.sourceImg,
+            imageURL: item.project_link || item.imageURL,
+            description: item.description,
+          }));
+        }
+      }
+    } catch (err) {
+      console.warn("Using default portfolios data list:", err);
+    }
+    populateDropdown();
+  }
 
   // Populate the dropdown list with portfolio values
   function populateDropdown() {
+    if (!dynamicPortfolio) return;
     dynamicPortfolio.innerHTML =
       '<option value="" disabled selected>Select a portfolio...</option>';
-    portfolios.forEach((portfolio) => {
+    activePortfolios.forEach((portfolio) => {
       const option = document.createElement("option");
       option.value = portfolio.id;
-      option.textContent = portfolio.pTitle;
+      option.textContent = portfolio.pTitle || portfolio.title;
       dynamicPortfolio.appendChild(option);
     });
+  }
+
+  // Render selected portfolio preview card beneath or beside the dropdown
+  function renderSelectedPortfolioPreview(selectedItem) {
+    let displayContainer = document.getElementById("portfolio-display");
+    if (!displayContainer && dynamicPortfolio) {
+      displayContainer = document.createElement("div");
+      displayContainer.id = "portfolio-display";
+      displayContainer.className = "portfolio-preview-container";
+      dynamicPortfolio.parentNode.insertBefore(
+        displayContainer,
+        document.querySelector(".stars-rating") || dynamicPortfolio.nextSibling
+      );
+    }
+
+    if (!displayContainer) return;
+
+    if (!selectedItem) {
+      displayContainer.style.display = "none";
+      displayContainer.innerHTML = "";
+      return;
+    }
+
+    const title = selectedItem.pTitle || selectedItem.title || "Portfolio Project";
+    const desc =
+      selectedItem.description ||
+      "Explore this modern web project showcase and review its design and usability.";
+    const imgUrl =
+      selectedItem.sourceImg ||
+      selectedItem.image_url ||
+      "/images/project-images/portfolio-1.webp";
+    const link =
+      selectedItem.imageURL || selectedItem.project_link || "#";
+
+    displayContainer.style.display = "block";
+    displayContainer.innerHTML = `
+      <div class="portfolio-preview-card" style="margin: 1.25rem 0; padding: 1.25rem; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 1rem; backdrop-filter: blur(12px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <h4 style="margin: 0; color: #ffffff; font-size: 1.15rem; font-weight: 700; font-family: var(--aether-font-display, inherit);">${title}</h4>
+          ${link && link !== "#" ? `<a href="${link}" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; font-size: 0.82rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">Live Preview ↗</a>` : ""}
+        </div>
+        <div style="position: relative; border-radius: 0.75rem; overflow: hidden; margin-bottom: 0.75rem; aspect-ratio: 16/9; max-height: 220px; background: #070a13;">
+          <img src="${imgUrl}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.style.display='none'" />
+        </div>
+        <p style="margin: 0; color: #cbd5e1; font-size: 0.88rem; line-height: 1.55;">${desc}</p>
+      </div>
+    `;
   }
 
   // Initialize localStorage for submission count
   function lsSubmitCount() {
     let numSubmit = Number(window.localStorage.getItem("submit-ls")) || 0;
-    submitDisplay.textContent = numSubmit || "0";
+    if (submitDisplay) {
+      submitDisplay.textContent = numSubmit || "0";
+    }
     localStorage.setItem("submit-ls", numSubmit);
   }
 
-  reviewBtn.disabled = true;
+  if (reviewBtn) {
+    reviewBtn.disabled = true;
+  }
 
   function checkFormValidity() {
-    const portfolioSelected = dynamicPortfolio.value !== "";
-    const starsSelected =
-      document.querySelector('input[name="stars"]:checked') !== null;
-    const dateSelected = document.querySelector("#date-installed").value !== "";
+    const portfolioSelected = dynamicPortfolio && dynamicPortfolio.value !== "";
+    const selectedStar =
+      document.querySelector('input[name="rating"]:checked') ||
+      document.querySelector('input[name="stars"]:checked');
+    const starsSelected = selectedStar !== null && selectedStar.value !== "";
+    const dateInput = document.querySelector("#date-installed");
+    const dateSelected = dateInput && dateInput.value !== "";
 
-    reviewBtn.disabled = !(portfolioSelected && starsSelected && dateSelected);
+    if (reviewBtn) {
+      reviewBtn.disabled = !(portfolioSelected && starsSelected && dateSelected);
+    }
 
     checkFormEntry("select", portfolioSelected ? "present" : "missing");
     checkFormEntry("radio", starsSelected ? "present" : "missing");
@@ -182,6 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function checkFormEntry(field, status) {
     const errorContainer = document.querySelector(`#${field}-error-message`);
+    if (!errorContainer) return;
     errorContainer.innerHTML = ""; // Clear previous error messages
 
     const errorMessage = document.createElement("p");
@@ -204,17 +288,75 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  if (dynamicPortfolio) {
-    dynamicPortfolio.addEventListener("change", checkFormValidity);
+  // Explicit star rating synchronizer
+  function syncStarRating(value) {
+    if (!value) return;
+
+    // 1. Sync radio button checked state
+    const radio =
+      document.querySelector(`input[name="rating"][value="${value}"]`) ||
+      document.querySelector(`input[name="stars"][value="${value}"]`);
+    if (radio && !radio.checked) {
+      radio.checked = true;
+      radio.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    // 2. Sync hidden input if present
+    const hiddenInput =
+      document.querySelector('input[name="rating_value"]') ||
+      document.querySelector('input[name="rating"][type="hidden"]');
+    if (hiddenInput) {
+      hiddenInput.value = value;
+    }
+
+    // 3. Clear the red star rating error message dynamically
+    const radioError = document.querySelector("#radio-error-message");
+    if (radioError) {
+      radioError.innerHTML = "";
+    }
+
+    // 4. Update form validity
+    checkFormValidity();
   }
 
-  document.querySelectorAll('input[name="rating"], input[name="stars"]').forEach((star) => {
-    star.addEventListener("change", checkFormValidity);
+  // Attach change listener to dropdown to load preview
+  if (dynamicPortfolio) {
+    dynamicPortfolio.addEventListener("change", () => {
+      const selectedId = dynamicPortfolio.value;
+      const found = activePortfolios.find(
+        (p) =>
+          String(p.id) === selectedId ||
+          p.pTitle === selectedId ||
+          p.title === selectedId
+      );
+      renderSelectedPortfolioPreview(found);
+      checkFormValidity();
+    });
+  }
+
+  // Attach click listeners to star rating labels
+  document.querySelectorAll(".stars-rating label").forEach((label) => {
+    label.addEventListener("click", () => {
+      const forId = label.getAttribute("for");
+      const targetRadio = document.getElementById(forId);
+      if (targetRadio) {
+        syncStarRating(targetRadio.value);
+      }
+    });
   });
+
+  // Attach change and click listeners to radio inputs
+  document
+    .querySelectorAll('input[name="rating"], input[name="stars"]')
+    .forEach((star) => {
+      star.addEventListener("change", () => syncStarRating(star.value));
+      star.addEventListener("click", () => syncStarRating(star.value));
+    });
 
   const dateInput = document.querySelector("#date-installed");
   if (dateInput) {
     dateInput.addEventListener("input", checkFormValidity);
+    dateInput.addEventListener("change", checkFormValidity);
   }
 
   if (reviewForm) {
@@ -298,7 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (dynamicPortfolio) {
-    populateDropdown();
+    loadPortfolioData();
   }
   if (submitDisplay) {
     lsSubmitCount();

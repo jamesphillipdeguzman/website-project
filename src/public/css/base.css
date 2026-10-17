@@ -1006,12 +1006,65 @@ header {
   flex-grow: 1;
 }
 
-/* Action Buttons */
+/* Action Buttons & Card Footer Meta */
+.card-actions-col {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .card-actions {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-top: auto;
+  position: relative;
+  z-index: 20;
+}
+
+.card-footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.8rem;
+  color: #94a3b8; /* slate-400 */
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.view-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #38bdf8; /* soft sky-blue */
+  font-weight: 500;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.view-count-badge.updated {
+  transform: scale(1.08);
+  color: #67e8f9;
+}
+
+.view-count-badge .eye-icon {
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+.category-tag {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
 }
 
 .btn-action {
@@ -1235,19 +1288,33 @@ header {
   line-clamp: 2 !important;
 }
 
+.portfolio-showcase-section.mode-list .card-actions-col {
+  flex: 0 0 160px !important;
+  margin-top: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
 .portfolio-showcase-section.mode-list .card-actions {
   flex: 0 0 auto !important;
   margin-top: 0 !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 0.6rem !important;
-  width: 140px !important;
+  width: 100% !important;
 }
 
 .portfolio-showcase-section.mode-list .btn-action {
   width: 100% !important;
   padding: 0.55rem 0.9rem !important;
   text-align: center !important;
+}
+
+.portfolio-showcase-section.mode-list .card-footer-meta {
+  width: 100% !important;
+  margin-top: 0.4rem !important;
+  padding-top: 0.45rem !important;
 }
 
 /* Responsive adjustments for List Mode on tablets & mobile */
@@ -1678,32 +1745,57 @@ input[type="email"] {
 
 /* ================== AETHER MODAL & DIALOGS ================== */
 
-.backdrop {
+.backdrop,
+.modal-backdrop,
+.quote-overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(2, 6, 23, 0.75);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: none;
-  z-index: 999;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
+  z-index: 998;
+  pointer-events: auto;
+  transition: opacity var(--aether-duration-normal) ease;
 }
 
-.modal.hidden {
+.backdrop.active,
+.backdrop.open,
+.modal-backdrop.active,
+.modal-backdrop.open,
+.quote-overlay.active,
+.quote-overlay.open {
+  display: block !important;
+}
+
+.modal.hidden,
+.quote-modal-dialog.hidden {
   display: none !important;
 }
 
-.modal {
+.modal,
+.quote-modal-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
   display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-y: auto;
+  pointer-events: auto;
+}
+
+.modal.active,
+.modal.open,
+.quote-modal-dialog.active,
+.quote-modal-dialog.open {
+  display: flex !important;
 }
 
 .modal-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  z-index: 1001;
   max-height: 90vh;
   overflow-y: auto;
   background-color: var(--aether-surface-modal);
@@ -1715,12 +1807,24 @@ input[type="email"] {
   box-shadow: var(--aether-shadow-lg), 0 0 35px rgba(56, 189, 248, 0.15);
   max-width: 520px;
   width: 92%;
-  margin: 0 auto;
+  margin: auto;
   text-align: left;
   font-family: var(--aether-font-body);
   font-size: 1rem;
   color: var(--aether-text);
-  z-index: 1000;
+  pointer-events: auto;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .modal-content h2 {
@@ -1770,11 +1874,15 @@ input[type="email"] {
   font-weight: 300;
   color: var(--aether-text-muted);
   cursor: pointer;
-  transition: color var(--aether-duration-fast) ease;
+  z-index: 10;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color var(--aether-duration-fast) ease, transform var(--aether-duration-fast) ease;
 }
 
 .close:hover {
   color: var(--aether-text);
+  transform: scale(1.1);
 }
 
 fieldset {
