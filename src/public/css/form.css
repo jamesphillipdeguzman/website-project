@@ -555,3 +555,181 @@ legend {
     width: 90%;
   }
 }
+
+/* ================== OVERHAULED QUOTE MODAL DIALOG ================== */
+
+.quote-modal,
+.quote-dialog-content {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 25px rgba(59, 130, 246, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 2.25rem;
+  max-width: 480px;
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+
+.quote-modal fieldset,
+.quote-dialog-content fieldset,
+#quote-modal fieldset,
+#quoteForm fieldset,
+.quote-form-card,
+.modal-inner {
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.quote-modal h2,
+.quote-dialog-content h2,
+#quote-modal h2,
+#quoteForm h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.quote-modal label,
+.quote-dialog-content label,
+#quote-modal label,
+#quoteForm label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 0.4rem;
+  text-align: left;
+}
+
+.quote-modal input,
+.quote-modal textarea,
+.quote-dialog-content input,
+.quote-dialog-content textarea,
+#quote-modal input,
+#quote-modal textarea,
+#quoteForm input,
+#quoteForm textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.65rem;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  margin-bottom: 1rem;
+  height: auto;
+}
+
+.quote-modal input:focus,
+.quote-modal textarea:focus,
+.quote-dialog-content input:focus,
+.quote-dialog-content textarea:focus,
+#quote-modal input:focus,
+#quote-modal textarea:focus,
+#quoteForm input:focus,
+#quoteForm textarea:focus {
+  border-color: #3b82f6;
+  background: rgba(30, 41, 59, 0.95);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.quote-modal input::placeholder,
+.quote-modal textarea::placeholder,
+.quote-dialog-content input::placeholder,
+.quote-dialog-content textarea::placeholder,
+#quote-modal input::placeholder,
+#quote-modal textarea::placeholder,
+#quoteForm input::placeholder,
+#quoteForm textarea::placeholder {
+  color: #64748b;
+}
+
+.quote-modal textarea,
+.quote-dialog-content textarea,
+#quote-modal textarea,
+#quoteForm textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.quote-modal button[type="submit"],
+.quote-dialog-content button[type="submit"],
+#quote-modal button[type="submit"],
+#quoteForm button[type="submit"],
+.quote-submit-btn,
+#submit-enquiry {
+  width: 100%;
+  max-width: none !important;
+  height: auto !important;
+  padding: 0.85rem 1.5rem;
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+  cursor: pointer;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.quote-modal button[type="submit"]:hover,
+.quote-dialog-content button[type="submit"]:hover,
+#quote-modal button[type="submit"]:hover,
+#quoteForm button[type="submit"]:hover,
+.quote-submit-btn:hover,
+#submit-enquiry:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5) !important;
+  transform: translateY(-1px);
+}
+
+.quote-modal .close,
+.quote-dialog-content .close,
+#quote-modal .close,
+#close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #94a3b8;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  max-width: none;
+  height: auto;
+  z-index: 10;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.quote-modal .close:hover,
+.quote-dialog-content .close:hover,
+#quote-modal .close:hover,
+#close-btn:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+

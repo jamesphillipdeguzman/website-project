@@ -186,8 +186,8 @@
 
     <!-- Top-Level Dialog Modals & Backdrops -->
     <div class="backdrop" id="quote-backdrop"></div>
-    <div id="quote-modal" class="modal hidden">
-        <div class="modal-content">
+    <div id="quote-modal" class="modal quote-modal hidden">
+        <div class="modal-content quote-dialog-content">
             <span class="close" id="close-btn" aria-label="Close modal">&times;</span>
             <h2>Request a Quote</h2>
             <form name="quoteForm" id="quoteForm" method="POST">
@@ -195,23 +195,20 @@
                 <input type="hidden" name="extra_security_token" value="" />
                 <p hidden><label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
 
-                <fieldset>
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required>
 
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
 
-                    <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone" placeholder="e.g. (123) 456-7890" required>
-                    <label for="message">Your Question</label>
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" placeholder="e.g. (123) 456-7890" required>
 
-                    <textarea name="message" id="message" required></textarea>
-
-                </fieldset>
+                <label for="message">Your Question</label>
+                <textarea name="message" id="message" placeholder="How can we help you?" required></textarea>
 
                 <div id="quote-error-message" class="errMsg" style="display: none; margin-top: 10px; margin-bottom: 10px; color: #ef4444; font-size: 0.9rem;"></div>
-                <button type="submit" id="submit-enquiry" class="mybutton">Submit Enquiry</button>
+                <button type="submit" id="submit-enquiry" class="mybutton quote-submit-btn">Submit Enquiry</button>
             </form>
         </div>
     </div>

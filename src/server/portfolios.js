@@ -215,6 +215,72 @@ export const DEFAULT_PORTFOLIOS = [
     github_link: "",
     views: 49,
   },
+  {
+    id: 16,
+    title: "SANAG",
+    pTitle: "SANAG",
+    description: "Disaster recovery analytics platform with nightlight and assessment grids built with FastAPI, SQLite, Leaflet, and Netlify.",
+    category: "FULLSTACK",
+    image_url: "/images/project-images/sanag.webp",
+    sourceImg: "/images/project-images/sanag.webp",
+    project_link: "https://sanag.netlify.app",
+    imageURL: "https://sanag.netlify.app",
+    github_link: "https://github.com/jamesphillipdeguzman/sanag",
+    views: 95,
+  },
+  {
+    id: 17,
+    title: "Kantimes",
+    pTitle: "Kantimes",
+    description: "Offline-first Progressive Web App rehearsal tool and practice timer featuring Web Audio pitch detection and audio recording.",
+    category: "WEB APP",
+    image_url: "/images/project-images/kantimes.webp",
+    sourceImg: "/images/project-images/kantimes.webp",
+    project_link: "https://kantimes.netlify.app",
+    imageURL: "https://kantimes.netlify.app",
+    github_link: "https://github.com/jamesphillipdeguzman/kantimes",
+    views: 120,
+  },
+  {
+    id: 18,
+    title: "MedRef",
+    pTitle: "MedRef",
+    description: "Medical reference and lookup tool for ICD-10 diagnostic codes built with Blazor WebAssembly, .NET Core API, and MongoDB.",
+    category: ".NET",
+    image_url: "/images/project-images/medref.webp",
+    sourceImg: "/images/project-images/medref.webp",
+    project_link: "https://medref.netlify.app",
+    imageURL: "https://medref.netlify.app",
+    github_link: "https://github.com/jamesphillipdeguzman/medref",
+    views: 84,
+  },
+  {
+    id: 19,
+    title: "DrMeet",
+    pTitle: "DrMeet",
+    description: "Medical clinic scheduling, appointment booking, and patient communication platform built with Node.js, Express, and MongoDB.",
+    category: "FULLSTACK",
+    image_url: "/images/project-images/drmeet.webp",
+    sourceImg: "/images/project-images/drmeet.webp",
+    project_link: "https://drmeet.netlify.app",
+    imageURL: "https://drmeet.netlify.app",
+    github_link: "https://github.com/jamesphillipdeguzman/drmeet",
+    views: 68,
+  },
+  {
+    id: 20,
+    title: "snip8",
+    pTitle: "snip8",
+    description:
+      "Timesheet screenshot OCR calculator and compliance monitor designed to prevent overtime breaches with strict daily cap tracking and grace window alerts.",
+    category: "PRODUCTIVITY",
+    image_url: "/images/project-images/snip8.webp",
+    sourceImg: "/images/project-images/snip8.webp",
+    project_link: "https://snip8.netlify.app",
+    imageURL: "https://snip8.netlify.app",
+    github_link: "https://github.com/jamesphillipdeguzman/snip8",
+    views: 88,
+  },
 ];
 
 /**
@@ -278,7 +344,7 @@ export async function handleGetPortfolios(req, res) {
     if (client) {
       try {
         await client.end();
-      } catch {}
+      } catch { }
     }
   }
 }
@@ -304,7 +370,7 @@ export async function handleIncrementPortfolioView(req, res) {
 
     try {
       await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;");
-    } catch {}
+    } catch { }
 
     const result = await client.query(
       `
@@ -332,7 +398,7 @@ export async function handleIncrementPortfolioView(req, res) {
     if (client) {
       try {
         await client.end();
-      } catch {}
+      } catch { }
     }
   }
 }
@@ -369,7 +435,7 @@ export async function handleCreatePortfolio(req, res) {
     try {
       try {
         await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;");
-      } catch {}
+      } catch { }
 
       const result = await client.query(
         `
@@ -502,7 +568,7 @@ export async function handleLastProject(req, res) {
     if (client) {
       try {
         await client.end();
-      } catch {}
+      } catch { }
     }
   }
 }
