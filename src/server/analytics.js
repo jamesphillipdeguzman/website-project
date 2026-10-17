@@ -1,4 +1,4 @@
-import { sql } from "../src/lib/db.js";
+import { sql } from "../lib/db.js";
 import { randomUUID } from "crypto";
 
 // Helper to normalize device names
@@ -19,15 +19,16 @@ const getVisitorType = (email, trackAdmin) => {
   return "guest";
 };
 
-export default async function handler(req, res) {
+/**
+ * Handle track-event
+ */
+export async function handleTrackEvent(req, res) {
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed");
   }
 
   try {
     const payload = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-
-    // 1️⃣ Generate new visitor_id if not provided or empty
     const visitor_id = payload.visitor_id?.trim() || randomUUID();
 
     const {
@@ -48,7 +49,7 @@ export default async function handler(req, res) {
     const device = getDeviceName(user_agent);
     const typeToLog = getVisitorType(email, trackAdmin);
 
-    // 2️⃣ Upsert visitor (keep visitor_type intact)
+    // Upsert visitor
     await sql`
       INSERT INTO visitors (id, name, email, visitor_type, first_seen, last_seen, session_count)
       VALUES (
@@ -66,7 +67,7 @@ export default async function handler(req, res) {
         session_count = visitors.session_count + 1
     `;
 
-    // 3️⃣ Insert analytics event
+    // Insert analytics event
     await sql`
       INSERT INTO analytics_events (
         visitor_id, visitor_type, name, email,
@@ -81,10 +82,83 @@ export default async function handler(req, res) {
       )
     `;
 
-    // 4️⃣ Return visitor_id so frontend can store it in localStorage
     return res.status(200).json({ success: true, visitor_id });
   } catch (err) {
     console.error("Analytics function error:", err);
     return res.status(500).send(err.message);
+  }
+}
+
+/**
+ * Handle get-analytics
+ */
+export async function handleGetAnalytics(req, res) {
+  try {
+    const events = await sql`
+      SELECT id, visitor_id, visitor_type, name, email,
+             page_url, page_title, referrer_url, device,
+             event_type, created_at
+      FROM analytics_events
+      ORDER BY created_at DESC
+      LIMIT 100
+    `;
+
+    return res.status(200).json(events);
+  } catch (err) {
+    console.error("Get analytics error:", err);
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+/**
+ * Handle clear-analytics
+ */
+export async function handleClearAnalytics(req, res) {
+  try {
+    await sql`TRUNCATE TABLE analytics_events RESTART IDENTITY CASCADE;`;
+    await sql`TRUNCATE TABLE visitors RESTART IDENTITY CASCADE;`;
+
+    return res.status(200).json({
+      message: "Analytics and visitors cleared successfully.",
+    });
+  } catch (err) {
+    console.error("Error clearing analytics:", err);
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+/**
+ * Handle get-visit-count
+ */
+export async function handleGetVisitCount(req, res) {
+  try {
+    const result = await sql`
+      SELECT count AS visit_count FROM site_visits WHERE id = 1;
+    `;
+
+    return res.status(200).json({
+      count: result[0]?.visit_count ?? 0,
+    });
+  } catch (err) {
+    console.error("❌ Read visit count error:", err);
+    return res.status(500).json({ error: "Failed to read visit count" });
+  }
+}
+
+/**
+ * Handle increment-visit
+ */
+export async function handleIncrementVisit(req, res) {
+  try {
+    await sql`
+      UPDATE site_visits
+      SET count = count + 1
+      WHERE id = 1;
+    `;
+
+    return res.status(204).end();
+  } catch (err) {
+    console.error("❌ Increment visit error:", err);
+    return res.status(500).json({ error: "Failed to increment visit" });
   }
 }

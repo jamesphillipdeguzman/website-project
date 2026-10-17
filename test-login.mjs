@@ -1,8 +1,11 @@
 // test-login.mjs
-import handler from "./api/login.js";
+import handler from "./api/[...slug].js";
 
 const req = {
   method: "POST",
+  query: {
+    slug: ["login"],
+  },
   body: {
     email: "jamesphillipd@yahoo.com",
     password: "@ldsPjay138ad",
