@@ -1,6 +1,7 @@
 import { Client } from "@neondatabase/serverless";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import { getCleanDatabaseUrl } from "../lib/db.js";
 dotenv.config();
 
 /**
@@ -13,7 +14,7 @@ export async function handleLogin(req, res) {
 
   const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
   const { email, password } = body;
-  const client = new Client({ connectionString: process.env.DATABASE_URL });
+  const client = new Client({ connectionString: getCleanDatabaseUrl(process.env.DATABASE_URL) });
 
   try {
     await client.connect();
@@ -134,7 +135,7 @@ export async function handleRegister(req, res) {
     return res.status(400).json({ error: "Please enter a valid full name." });
   }
 
-  const client = new Client({ connectionString: process.env.DATABASE_URL });
+  const client = new Client({ connectionString: getCleanDatabaseUrl(process.env.DATABASE_URL) });
 
   try {
     await client.connect();
@@ -162,7 +163,7 @@ export async function handleGetUser(req, res) {
   const userId = req.query?.id || 1;
 
   try {
-    const client = new Client({ connectionString: process.env.DATABASE_URL });
+    const client = new Client({ connectionString: getCleanDatabaseUrl(process.env.DATABASE_URL) });
     await client.connect();
 
     const result = await client.query("SELECT name FROM users WHERE id = $1", [
@@ -195,7 +196,7 @@ export async function handlePurgeBots(req, res) {
     return res.status(204).end();
   }
 
-  const client = new Client({ connectionString: process.env.DATABASE_URL });
+  const client = new Client({ connectionString: getCleanDatabaseUrl(process.env.DATABASE_URL) });
 
   try {
     await client.connect();

@@ -1,5 +1,5 @@
 import { Client } from "@neondatabase/serverless";
-import { sql } from "../lib/db.js";
+import { sql, getCleanDatabaseUrl } from "../lib/db.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -8,8 +8,16 @@ dotenv.config();
  * Handle system-status
  */
 export async function handleSystemStatus(req, res) {
+  const cleanUrl = getCleanDatabaseUrl(process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL);
+  if (!cleanUrl) {
+    return res.status(200).json({
+      status: "degraded",
+      message: "No database connection string configured",
+    });
+  }
+
   const client = new Client({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: cleanUrl,
   });
 
   try {
@@ -54,8 +62,13 @@ export async function handleGetClients(req, res) {
  * Handle new-leads
  */
 export async function handleNewLeads(req, res) {
+  const cleanUrl = getCleanDatabaseUrl(process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL);
+  if (!cleanUrl) {
+    return res.status(200).json({ newLeads: 0 });
+  }
+
   const client = new Client({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: cleanUrl,
   });
 
   try {
@@ -69,13 +82,15 @@ export async function handleNewLeads(req, res) {
     `);
 
     return res.status(200).json({
-      newLeads: Number(result.rows[0].count),
+      newLeads: Number(result.rows[0]?.count || 0),
     });
   } catch (err) {
-    console.error("New leads error:", err);
-    return res.status(500).json({ error: "Failed to fetch new leads" });
+    console.warn("New leads error:", err.message);
+    return res.status(200).json({ newLeads: 0 });
   } finally {
-    await client.end();
+    try {
+      await client.end();
+    } catch {}
   }
 }
 
@@ -95,8 +110,9 @@ export async function handleQueryDb(req, res) {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
     const query = body.query || "SELECT NOW()";
 
-    const connectionString =
-      process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
+    const connectionString = getCleanDatabaseUrl(
+      process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL
+    );
 
     if (!connectionString) {
       return res.status(500).json({
@@ -169,7 +185,7 @@ export async function handleReview(req, res) {
       return res.status(400).json({ error: "Portfolio name is required." });
     }
 
-    const connectionString = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
+    const connectionString = getCleanDatabaseUrl(process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL);
     if (connectionString) {
       const client = new Client({ connectionString });
       await client.connect();
@@ -262,7 +278,7 @@ export async function handleQuotes(req, res) {
       return res.status(400).json({ error: "Name and email are required." });
     }
 
-    const connectionString = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
+    const connectionString = getCleanDatabaseUrl(process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL);
     if (connectionString) {
       const client = new Client({ connectionString });
       await client.connect();

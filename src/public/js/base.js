@@ -3,6 +3,7 @@ import {
   setActiveNavLink,
   getFormattedLastModified,
 } from "./utils.mjs";
+import staticPortfolios from "./portfolios-data.mjs";
 
 /* ======================================================
    CONSTANTS
@@ -116,15 +117,32 @@ function createConfetti(num = 30) {
 async function loadPortfolios() {
   try {
     const res = await fetch("/api/get-portfolios");
-    if (!res.ok) throw new Error("Portfolio fetch failed");
-
-    portfolios = await res.json();
-
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        portfolios = data;
+      }
+    } else {
+      console.warn("Portfolio fetch returned status:", res.status);
+    }
+  } catch (err) {
+    console.error("❌ Portfolio load error:", err);
+  } finally {
+    if ((!portfolios || portfolios.length === 0) && Array.isArray(staticPortfolios) && staticPortfolios.length > 0) {
+      portfolios = staticPortfolios.map((item, idx) => ({
+        id: item.id || idx + 1,
+        title: item.pTitle || item.title || "Project",
+        description: item.description || "",
+        category: item.category || "PROJECT",
+        image_url: item.sourceImg || item.image_url || PLACEHOLDER_IMAGE,
+        project_link: item.imageURL || item.project_link || "#",
+        github_link: item.github_link || "",
+        views: item.views || 0,
+      }));
+    }
     renderPortfolioCarousel();
     renderPortfolioDropdown();
     renderPortfolioEditor();
-  } catch (err) {
-    console.error("❌ Portfolio load error:", err);
   }
 }
 
@@ -763,6 +781,9 @@ function trackVisit() {
     localStorage.setItem(KEY, now);
   }
 
+  const visitCountEl = document.getElementById("visit-count");
+  if (!visitCountEl) return;
+
   fetch("/api/get-visit-count")
     .then((r) => r.json())
     .then((d) => {
@@ -900,53 +921,85 @@ function clearAnalytics() {
 // ===== New Leads =====
 
 async function loadNewLeads() {
-  const res = await fetch("/api/new-leads");
-  const data = await res.json();
+  const container = document.getElementById("new-leads-count");
+  if (!container) return; // Prevent dashboard-specific polling/fetch if not on dashboard
 
-  document.getElementById("new-leads-count").textContent = data.newLeads || 0;
+  try {
+    const res = await fetch("/api/new-leads");
+    if (!res.ok) return;
+    const data = await res.json();
+
+    const el = document.getElementById("new-leads-count");
+    if (el) {
+      el.textContent = data.newLeads || 0;
+    }
+  } catch (err) {
+    console.warn("Could not load new leads:", err.message);
+  }
 }
 
 // ===== Last Project =====
 
 async function loadLastProject() {
-  const res = await fetch("/api/last-project");
-  const data = await res.json();
+  const titleEl = document.getElementById("last-project-title");
+  const dateEl = document.getElementById("last-project-date");
+  if (!titleEl && !dateEl) return; // Prevent fetch if not on dashboard
 
-  if (!data.project) {
-    document.getElementById("last-project-title").textContent =
-      "No projects yet";
-    return;
-  }
+  try {
+    const res = await fetch("/api/last-project");
+    if (!res.ok) return;
+    const data = await res.json();
 
-  document.getElementById("last-project-title").textContent =
-    data.project.title;
+    const elTitle = document.getElementById("last-project-title");
+    const elDate = document.getElementById("last-project-date");
 
-  if (data.project.created_at) {
-    document.getElementById("last-project-date").textContent =
-      "Added on " + new Date(data.project.created_at).toLocaleDateString();
+    if (!data || !data.project) {
+      if (elTitle) {
+        elTitle.textContent = "No projects yet";
+      }
+      return;
+    }
+
+    if (elTitle) {
+      elTitle.textContent = data.project.title || "No projects yet";
+    }
+
+    if (data.project.created_at && elDate) {
+      elDate.textContent =
+        "Added on " + new Date(data.project.created_at).toLocaleDateString();
+    }
+  } catch (err) {
+    console.warn("Could not load last project:", err.message);
   }
 }
 
 // ===== System Status =====
 
 async function loadSystemStatus() {
+  const statusEl = document.getElementById("system-status-text");
+  if (!statusEl) return; // Prevent fetch if not on dashboard
+
   try {
     const res = await fetch("/api/system-status");
+    if (!res.ok) throw new Error("Status endpoint error");
     const data = await res.json();
 
     const el = document.getElementById("system-status-text");
-
-    if (data.status === "operational") {
-      el.textContent = "Active within the last 24 hours ✅";
-      el.className = "status-ok";
-    } else {
-      el.textContent = "System degraded ⚠️";
-      el.className = "status-warn";
+    if (el) {
+      if (data.status === "operational") {
+        el.textContent = "Active within the last 24 hours ✅";
+        el.className = "status-ok";
+      } else {
+        el.textContent = "System degraded ⚠️";
+        el.className = "status-warn";
+      }
     }
   } catch {
     const el = document.getElementById("system-status-text");
-    el.textContent = "System unavailable ❌";
-    el.className = "status-error";
+    if (el) {
+      el.textContent = "System unavailable ❌";
+      el.className = "status-error";
+    }
   }
 }
 
