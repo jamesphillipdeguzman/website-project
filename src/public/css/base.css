@@ -1540,6 +1540,41 @@ select {
   height: 44px;
 }
 
+/* Ensure typed input text and active text are crisp white */
+.login-card input[type="email"],
+.login-card input[type="password"],
+.login-card input,
+.login-form input,
+#loginForm input {
+  color: #ffffff !important;
+  caret-color: #3b82f6; /* Blue cursor matching your accent */
+}
+
+/* Ensure placeholder text stays legible muted slate */
+.login-card input::placeholder,
+.login-form input::placeholder,
+#loginForm input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* Chrome/Brave/Edge autofill override */
+.login-card input:-webkit-autofill,
+.login-card input:-webkit-autofill:hover, 
+.login-card input:-webkit-autofill:focus,
+.login-form input:-webkit-autofill,
+.login-form input:-webkit-autofill:hover,
+.login-form input:-webkit-autofill:focus,
+#loginForm input:-webkit-autofill,
+#loginForm input:-webkit-autofill:hover,
+#loginForm input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0px 1000px #1e293b inset !important;
+  box-shadow: 0 0 0px 1000px #1e293b inset !important;
+  caret-color: #3b82f6;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 fieldset {
   border-radius: 5px;
   border: 1px solid var(--aether-border-subtle, rgba(255, 255, 255, 0.1));
