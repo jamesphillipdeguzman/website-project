@@ -380,18 +380,33 @@ document.addEventListener("DOMContentLoaded", () => {
       const featureCheckboxes = document.querySelectorAll('input[name="features"]:checked');
       const features = Array.from(featureCheckboxes).map((cb) => cb.value);
 
+      const portfolioTitle =
+        dynamicPortfolio && dynamicPortfolio.selectedIndex >= 0
+          ? dynamicPortfolio.options[dynamicPortfolio.selectedIndex]?.text
+          : "";
+      const authorName = nameInput ? nameInput.value.trim() : "";
+      const feedbackText = commentsInput ? commentsInput.value.trim() : "";
+      const parsedRating = selectedStar ? parseInt(selectedStar.value, 10) : 5;
+
       const payload = {
-        name: nameInput ? nameInput.value.trim() : "",
-        rating: selectedStar ? Number(selectedStar.value) : 5,
+        portfolio_name: portfolioTitle,
+        rating: parsedRating,
+        feedback: feedbackText,
+        author_name: authorName,
+        // Auxiliary fields for backwards compatibility
+        name: authorName,
         portfolioId: dynamicPortfolio ? dynamicPortfolio.value : "",
-        portfolioName:
-          dynamicPortfolio && dynamicPortfolio.selectedIndex >= 0
-            ? dynamicPortfolio.options[dynamicPortfolio.selectedIndex]?.text
-            : "",
+        portfolioName: portfolioTitle,
         date: dateInput ? dateInput.value : new Date().toISOString().split("T")[0],
         features,
-        comments: commentsInput ? commentsInput.value.trim() : "",
+        comments: feedbackText,
       };
+
+      const errorContainer = document.getElementById("review-error-message");
+      if (errorContainer) {
+        errorContainer.textContent = "";
+        errorContainer.style.display = "none";
+      }
 
       if (reviewBtn) {
         reviewBtn.disabled = true;
@@ -415,7 +430,11 @@ document.addEventListener("DOMContentLoaded", () => {
           window.location.href = "/pages/thanks.html";
         } else {
           const errData = await res.json().catch(() => ({}));
-          alert(errData.error || "Failed to submit review. Please try again.");
+          const errMsg = errData.error || "Failed to submit review. Please try again.";
+          if (errorContainer) {
+            errorContainer.textContent = errMsg;
+            errorContainer.style.display = "block";
+          }
           if (reviewBtn) {
             reviewBtn.disabled = false;
             reviewBtn.value = "Post a Review";
@@ -423,7 +442,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (err) {
         console.error("Error submitting review:", err);
-        alert("Network error submitting review. Please check your connection and try again.");
+        const errMsg = "Network error submitting review. Please check your connection and try again.";
+        if (errorContainer) {
+          errorContainer.textContent = errMsg;
+          errorContainer.style.display = "block";
+        }
         if (reviewBtn) {
           reviewBtn.disabled = false;
           reviewBtn.value = "Post a Review";

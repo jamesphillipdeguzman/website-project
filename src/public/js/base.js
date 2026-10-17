@@ -652,6 +652,103 @@ function setupModals() {
   });
 }
 
+// ----- Quote Form Submission Handler -----
+function setupQuoteForm() {
+  const quoteForm = document.getElementById("quoteForm");
+  if (!quoteForm) return;
+
+  const errorDiv = document.getElementById("quote-error-message");
+  const submitBtn =
+    quoteForm.querySelector("#submit-enquiry") ||
+    quoteForm.querySelector('button[type="submit"]');
+
+  quoteForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (errorDiv) {
+      errorDiv.style.display = "none";
+      errorDiv.textContent = "";
+    }
+
+    const nameInput = quoteForm.querySelector('[name="name"]');
+    const emailInput = quoteForm.querySelector('[name="email"]');
+    const phoneInput = quoteForm.querySelector('[name="phone"]');
+    const messageInput =
+      quoteForm.querySelector('[name="message"]') ||
+      quoteForm.querySelector('[name="question"]');
+    const faxInput = quoteForm.querySelector('[name="company_fax"]');
+    const tokenInput = quoteForm.querySelector('[name="extra_security_token"]');
+    const botInput = quoteForm.querySelector('[name="bot-field"]');
+
+    const name = nameInput ? nameInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
+    const phone = phoneInput ? phoneInput.value.trim() : "";
+    const question = messageInput ? messageInput.value.trim() : "";
+    const company_fax = faxInput ? faxInput.value.trim() : "";
+    const extra_security_token = tokenInput ? tokenInput.value.trim() : "";
+    const botField = botInput ? botInput.value.trim() : "";
+
+    if (!name || !email) {
+      if (errorDiv) {
+        errorDiv.textContent = "Please fill in all required fields (Name and Email).";
+        errorDiv.style.display = "block";
+      }
+      return;
+    }
+
+    const originalBtnText = submitBtn ? submitBtn.textContent : "Submit Enquiry";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting Quote...";
+    }
+
+    try {
+      const res = await fetch("/api/quotes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          question,
+          message: question,
+          company_fax,
+          extra_security_token,
+          "bot-field": botField,
+        }),
+      });
+
+      if (res.ok) {
+        window.location.href = "/pages/thanks.html";
+      } else {
+        const data = await res.json().catch(() => ({}));
+        if (errorDiv) {
+          errorDiv.textContent =
+            data.error || "Failed to submit quote request. Please try again.";
+          errorDiv.style.display = "block";
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        }
+      }
+    } catch (err) {
+      console.error("Error submitting quote:", err);
+      if (errorDiv) {
+        errorDiv.textContent =
+          "Network error. Please check your connection and try again.";
+        errorDiv.style.display = "block";
+      }
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+      }
+    }
+  });
+}
+
 /* ======================================================
    VISITS
 ====================================================== */
@@ -866,6 +963,7 @@ async function init() {
   setActiveNavLink();
   initDate();
   setupModals();
+  setupQuoteForm();
   trackVisit();
   await loadPortfolios();
   const params = new URLSearchParams(window.location.search);

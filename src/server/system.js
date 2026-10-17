@@ -119,6 +119,7 @@ export async function handleQueryDb(req, res) {
 
 /**
  * Handle POST /api/reviews
+ * Accepts { portfolio_name, rating, feedback, author_name }
  */
 export async function handleReview(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -135,66 +136,178 @@ export async function handleReview(req, res) {
 
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-    const { name, rating, stars, comments, review, portfolioId, portfolioName, features, date } = body;
+    const portfolio_name = (
+      body.portfolio_name ||
+      body.portfolioName ||
+      body.portfolio ||
+      body["dynamic-product"] ||
+      ""
+    ).trim();
+    const feedback = (
+      body.feedback ||
+      body.comments ||
+      body.review ||
+      body["written-review"] ||
+      ""
+    ).trim();
+    const author_name = (
+      body.author_name ||
+      body.name ||
+      body.fname ||
+      "Anonymous"
+    ).trim();
 
-    const reviewData = {
-      name: (name || body.fname || "Anonymous").trim(),
-      rating: Number(rating || stars) || 5,
-      comments: (comments || review || body["written-review"] || "").trim(),
-      portfolio: (portfolioName || portfolioId || body["dynamic-product"] || "").trim(),
-      features: Array.isArray(features) ? features : (features ? [features] : []),
-      date: date || body["date-installed"] || new Date().toISOString().split("T")[0],
-      createdAt: new Date().toISOString(),
-    };
+    // Validate rating: integer between 1 and 5
+    const rawRating = body.rating !== undefined ? body.rating : body.stars;
+    const rating = Number(rawRating);
 
-    console.log("New review received:", JSON.stringify(reviewData));
+    if (isNaN(rating) || !Number.isInteger(rating) || rating < 1 || rating > 5) {
+      return res.status(400).json({ error: "Rating must be an integer between 1 and 5." });
+    }
 
-    // Optional DB persistence
+    if (!portfolio_name) {
+      return res.status(400).json({ error: "Portfolio name is required." });
+    }
+
     const connectionString = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
     if (connectionString) {
-      try {
-        const client = new Client({ connectionString });
-        await client.connect();
+      const client = new Client({ connectionString });
+      await client.connect();
 
+      try {
         await client.query(`
           CREATE TABLE IF NOT EXISTS reviews (
             id SERIAL PRIMARY KEY,
-            name VARCHAR(255),
+            portfolio_name VARCHAR(255),
             rating INT,
-            comments TEXT,
-            portfolio VARCHAR(255),
-            features TEXT,
-            date VARCHAR(100),
+            feedback TEXT,
+            author_name VARCHAR(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
           )
         `);
 
+        // Ensure target columns exist if table was previously created with alternative columns
+        await client.query(`ALTER TABLE reviews ADD COLUMN IF NOT EXISTS portfolio_name VARCHAR(255)`);
+        await client.query(`ALTER TABLE reviews ADD COLUMN IF NOT EXISTS rating INT`);
+        await client.query(`ALTER TABLE reviews ADD COLUMN IF NOT EXISTS feedback TEXT`);
+        await client.query(`ALTER TABLE reviews ADD COLUMN IF NOT EXISTS author_name VARCHAR(255)`);
+
         await client.query(
-          `INSERT INTO reviews (name, rating, comments, portfolio, features, date)
-           VALUES ($1, $2, $3, $4, $5, $6)`,
-          [
-            reviewData.name,
-            reviewData.rating,
-            reviewData.comments,
-            reviewData.portfolio,
-            reviewData.features.join(", "),
-            reviewData.date,
-          ]
+          `INSERT INTO reviews (portfolio_name, rating, feedback, author_name)
+           VALUES ($1, $2, $3, $4)`,
+          [portfolio_name, rating, feedback, author_name]
         );
+      } finally {
         await client.end();
-      } catch (dbErr) {
-        console.warn("Could not insert review to DB, logging instead:", dbErr.message);
       }
     }
 
     return res.status(200).json({
       success: true,
-      message: "Review recorded",
-      review: reviewData,
+      message: "Review recorded successfully",
+      review: {
+        portfolio_name,
+        rating,
+        feedback,
+        author_name,
+      },
     });
   } catch (error) {
     console.error("Error processing review:", error);
-    return res.status(500).json({ error: "Failed to record review" });
+    return res.status(500).json({ error: error.message || "Failed to record review" });
+  }
+}
+
+/**
+ * Handle POST /api/quotes
+ * Accepts { name, email, phone, question }
+ */
+export async function handleQuotes(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed. Use POST." });
+  }
+
+  try {
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    const { name, email, phone, question, message, company_fax, extra_security_token } = body;
+    const botField = body["bot-field"];
+
+    // Honeypot / Bot Validation
+    if (company_fax || botField || extra_security_token) {
+      console.warn("Honeypot triggered on quote request. Silently discarding submission:", {
+        email,
+        company_fax,
+        botField,
+      });
+      return res.status(200).json({
+        success: true,
+        message: "Quote request submitted successfully.",
+      });
+    }
+
+    const cleanName = (name || "").trim();
+    const cleanEmail = (email || "").trim();
+    const cleanPhone = (phone || "").trim();
+    const cleanQuestion = (question || message || "").trim();
+
+    if (!cleanName || !cleanEmail) {
+      return res.status(400).json({ error: "Name and email are required." });
+    }
+
+    const connectionString = process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL;
+    if (connectionString) {
+      const client = new Client({ connectionString });
+      await client.connect();
+
+      try {
+        await client.query(`
+          CREATE TABLE IF NOT EXISTS quotes (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255),
+            email VARCHAR(255),
+            phone VARCHAR(100),
+            question TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        // Ensure columns exist
+        await client.query(`ALTER TABLE quotes ADD COLUMN IF NOT EXISTS name VARCHAR(255)`);
+        await client.query(`ALTER TABLE quotes ADD COLUMN IF NOT EXISTS email VARCHAR(255)`);
+        await client.query(`ALTER TABLE quotes ADD COLUMN IF NOT EXISTS phone VARCHAR(100)`);
+        await client.query(`ALTER TABLE quotes ADD COLUMN IF NOT EXISTS question TEXT`);
+
+        await client.query(
+          `INSERT INTO quotes (name, email, phone, question)
+           VALUES ($1, $2, $3, $4)`,
+          [cleanName, cleanEmail, cleanPhone, cleanQuestion]
+        );
+      } finally {
+        await client.end();
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Quote request submitted successfully.",
+      quote: {
+        name: cleanName,
+        email: cleanEmail,
+        phone: cleanPhone,
+        question: cleanQuestion,
+      },
+    });
+  } catch (error) {
+    console.error("Error processing quote:", error);
+    return res.status(500).json({ error: error.message || "Failed to process quote request" });
   }
 }
 
