@@ -83,22 +83,44 @@
 
         <main>
             <div class="banner-text">
+                <span class="hero-tag">Curated Portfolio</span>
                 <h1>My Latest Work</h1>
+                <p class="hero-subtitle">Interactive web applications, client solutions, and digital experiences.</p>
             </div>
 
-            <section class="bottom-section">
-                <h2 id="choose">Choose a website portfolio</h2>
-                <div class="dropdown-container">
-                    <select id="my-portfolios">
+            <section class="bottom-section portfolio-showcase-section">
+                <div class="showcase-header">
+                    <div>
+                        <h2 id="choose">Featured Projects</h2>
+                        <p class="showcase-subtext">Swipe or scroll horizontally to explore projects and track live metrics.</p>
+                    </div>
+                </div>
+
+                <!-- Hidden for backwards compatibility if needed -->
+                <div class="dropdown-container" style="display: none;">
+                    <select id="my-portfolios" aria-label="Select a portfolio">
                         <option value="">Select a portfolio</option>
                     </select>
                 </div>
 
-                <div class="carousel-wrapper">
-                    <button class="carousel-btn prev" aria-label="Previous">&larr;</button>
-                    <div class="carousel" id="portfolio-carousel"></div>
-                    <button class="carousel-btn next" aria-label="Next">&rarr;</button>
+                <div class="carousel-wrapper modern-carousel-wrapper">
+                    <button class="carousel-btn carousel-nav-btn prev" aria-label="Previous Project">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <div class="carousel modern-carousel" id="portfolio-carousel" tabindex="0" aria-label="Interactive portfolio project showcase">
+                        <!-- Rendered dynamically with view counts & glowing badges -->
+                    </div>
+                    <button class="carousel-btn carousel-nav-btn next" aria-label="Next Project">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
                 </div>
+
+                <!-- Active dot / pagination indicators -->
+                <div class="carousel-dots-container" id="carousel-dots" role="tablist" aria-label="Project slide navigation"></div>
             </section>
 
         </main>

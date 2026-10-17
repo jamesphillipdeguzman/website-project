@@ -6,6 +6,7 @@ dotenv.config();
 
 /**
  * Handle get-portfolios
+ * Accommodates 'views' column (default 0)
  */
 export async function handleGetPortfolios(req, res) {
   if (req.method !== "GET") {
@@ -13,16 +14,72 @@ export async function handleGetPortfolios(req, res) {
   }
 
   try {
-    const portfolios = await sql`
-      SELECT id, title, description, category, image_url, project_link, github_link
-      FROM portfolios 
-      ORDER BY id ASC;
-    `;
+    // Ensure views column exists if not already present in the database
+    try {
+      await sql`ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;`;
+    } catch {
+      // Ignore if table/column already exists or user has restricted permissions
+    }
+
+    let portfolios;
+    try {
+      portfolios = await sql`
+        SELECT id, title, description, category, image_url, project_link, github_link, COALESCE(views, 0) AS views
+        FROM portfolios 
+        ORDER BY id ASC;
+      `;
+    } catch {
+      // Fallback query if column hasn't propagated yet
+      portfolios = await sql`
+        SELECT id, title, description, category, image_url, project_link, github_link
+        FROM portfolios 
+        ORDER BY id ASC;
+      `;
+      portfolios = portfolios.map((p) => ({ ...p, views: p.views ?? 0 }));
+    }
 
     return res.status(200).json(portfolios);
   } catch (err) {
     console.error("Portfolios error:", err);
     return res.status(500).json({ error: "Database error" });
+  }
+}
+
+/**
+ * Atomically increment a portfolio item's view count
+ */
+export async function handleIncrementPortfolioView(req, res) {
+  const id = req.query?.id || (req.body && req.body.id);
+  if (!id) {
+    return res.status(400).json({ error: "Portfolio ID is required" });
+  }
+
+  try {
+    try {
+      await sql`ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;`;
+    } catch {
+      // Ignore
+    }
+
+    const result = await sql`
+      UPDATE portfolios
+      SET views = COALESCE(views, 0) + 1
+      WHERE id = ${id}
+      RETURNING id, views;
+    `;
+
+    if (!result || result.length === 0) {
+      return res.status(404).json({ error: "Portfolio not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      id: result[0].id,
+      views: result[0].views,
+    });
+  } catch (err) {
+    console.error("Increment portfolio view error:", err);
+    return res.status(500).json({ error: err.message });
   }
 }
 
@@ -44,9 +101,15 @@ export async function handleCreatePortfolio(req, res) {
       });
     }
 
+    try {
+      await sql`ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;`;
+    } catch {
+      // Ignore
+    }
+
     const result = await sql`
-      INSERT INTO portfolios (title, description, category, project_link, github_link, image_url)
-      VALUES (${title}, ${description}, ${category}, ${project_link || null}, ${github || null}, ${image_url})
+      INSERT INTO portfolios (title, description, category, project_link, github_link, image_url, views)
+      VALUES (${title}, ${description}, ${category}, ${project_link || null}, ${github || null}, ${image_url}, 0)
       RETURNING *;
     `;
 

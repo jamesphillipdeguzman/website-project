@@ -468,75 +468,342 @@ body {
   border-radius: 5px;
 }
 
-/* =========================
-   Portfolio Card Styles
-========================= */
+/* =========================================================
+   PORTFOLIO MODERN SHOWCASE & KINETIC CAROUSEL
+   ========================================================= */
 
-#top-save-portfolio-btn {
+.hero-tag {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 4px 14px;
+  border-radius: 9999px;
+  margin-bottom: 0.75rem;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: #94a3b8;
+  max-width: 650px;
+  margin: 0 auto 1.5rem auto;
+  line-height: 1.6;
+}
+
+.portfolio-showcase-section {
+  max-width: 1300px;
+  margin: 0 auto 4rem auto;
+  padding: 0 1.5rem;
+}
+
+.showcase-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.showcase-header h2 {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.showcase-subtext {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+/* Modern Carousel Track */
+.modern-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+#portfolio-carousel.modern-carousel,
+.carousel.modern-carousel {
+  display: flex;
+  gap: 1.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 1.5rem 0.75rem 2.25rem 0.75rem;
+  width: 100%;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+#portfolio-carousel.modern-carousel::-webkit-scrollbar,
+.carousel.modern-carousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Kinetic Navigation Arrows */
+.carousel-nav-btn {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10;
+}
+
+.carousel-nav-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.5);
+  color: #38bdf8;
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+}
+
+.carousel-nav-btn:active {
+  transform: scale(0.94);
+}
+
+/* Sleek Glassmorphic Card (rounded-2xl) */
+.modern-portfolio-card {
+  flex: 0 0 350px;
+  min-width: 320px;
+  max-width: 380px;
+  scroll-snap-align: center;
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.65) 0%, rgba(15, 23, 42, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem; /* rounded-2xl */
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+  outline: none;
+}
+
+.modern-portfolio-card:hover,
+.modern-portfolio-card:focus-within {
+  transform: translateY(-8px);
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.7),
+              0 0 30px rgba(56, 189, 248, 0.18);
+}
+
+/* Card Media / Image */
+.card-media-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #090d16;
+}
+
+.card-image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.portfolio-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modern-portfolio-card:hover .portfolio-card-img {
+  transform: scale(1.07);
+}
+
+.card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, transparent 40%, rgba(15, 23, 42, 0.85) 100%);
+  pointer-events: none;
+}
+
+/* Discreet Glowing Views Pill Badge */
+.views-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #38bdf8;
+  background: rgba(10, 15, 30, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 9999px;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+  z-index: 2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.views-badge.updated {
+  transform: scale(1.12);
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+}
+
+.views-icon {
+  stroke: #38bdf8;
+}
+
+/* Category Pill Badge */
+.category-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  z-index: 2;
+}
+
+/* Card Databox / Content */
+.modern-databox {
+  padding: 1.25rem 1.25rem 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  line-height: 1.55;
+  margin: 0 0 1.25rem 0;
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+/* Action Buttons */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-action.btn-primary {
+  flex: 1;
+  background: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+}
+
+.btn-action.btn-primary:hover {
+  background: linear-gradient(135deg, #0ea5e9 0%, #4f46e5 100%);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.45);
+  transform: translateY(-2px);
+}
+
+.btn-action.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+}
+
+.btn-action.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+/* Active Dot Indicators */
+.carousel-dots-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin-top: 1.5rem;
 }
 
-#portfolio-carousel {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 10px;
-}
-
-#portfolio-carousel .card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-}
-
-#portfolio-carousel::-webkit-scrollbar {
+.carousel-dot {
+  width: 8px;
   height: 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-#portfolio-carousel::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+.carousel-dot:hover {
+  background: rgba(56, 189, 248, 0.5);
+  transform: scale(1.25);
 }
 
-/* Portfolios Page: Headings and Paragraphs */
-#portfolio-carousel h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--text-primary); /* bright white for contrast */
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-#portfolio-carousel p {
-  font-size: 1rem;
-  color: #e0e0e0; /* slightly dimmer than white, still readable */
-  text-align: center;
-  line-height: 1.5;
-  margin: 0.3rem 0;
-}
-
-#portfolio-name {
-  color: #333;
-}
-/* Portfolios Page Dropdown */
-.dropdown-container {
-  display: flex;
-  justify-content: center; /* centers the select horizontally */
-  margin: 1.5rem 0;
-  align-content: center;
-}
-
-#my-portfolios {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: 1px solid #555;
-
-  min-width: 220px; /* optional: ensures decent width */
-  max-width: 90%; /* responsive on small screens */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+.carousel-dot.active {
+  width: 28px;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
 }
 
 .card {
@@ -1282,59 +1549,27 @@ fieldset {
 }
 
 /* ================== CAROUSEL: SMALL DEVICES ================== */
-@media (max-width: 480px) {
-  .bottom-section {
-    width: 95%;
-    max-width: 95vw;
-    padding: 2rem 1rem;
-  }
-
-  .carousel-wrapper {
-    gap: 0.5rem;
-    padding: 0 0.5rem;
-    justify-content: flex-start;
-  }
-
-  .carousel {
-    gap: 0.5rem;
+@media (max-width: 600px) {
+  .portfolio-showcase-section {
+    padding: 0 0.75rem;
     width: 100%;
   }
 
-  #portfolio-carousel {
-    gap: 8px;
-    padding: 8px 0;
+  .modern-portfolio-card {
+    flex: 0 0 85vw;
+    min-width: 280px;
+    max-width: 340px;
   }
 
-  #portfolio-carousel .card {
-    min-width: 180px; /* smaller card width */
-    max-width: 200px;
-    flex-shrink: 0;
-    border-radius: 8px;
+  .carousel-nav-btn {
+    display: none; /* Rely on fluid kinetic touch scrolling */
   }
 
-  #portfolio-carousel .card img {
-    height: 120px; /* smaller image */
+  .showcase-header h2 {
+    font-size: 1.4rem;
   }
 
-  #portfolio-carousel h3 {
-    font-size: 1rem;
-  }
-
-  #portfolio-carousel p {
-    font-size: 0.8rem;
-  }
-
-  .carousel-btn {
-    padding: 0.5rem 0.7rem;
-    font-size: 1.2rem;
-  }
-
-  .dropdown-container {
-    width: 90%; /* make dropdown full width */
-    max-width: 90vw;
-  }
-
-  .dropdown-container select {
+  .showcase-subtext {
     font-size: 0.85rem;
   }
 }

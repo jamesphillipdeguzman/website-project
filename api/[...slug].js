@@ -15,6 +15,7 @@ import {
   handleCreatePortfolio,
   handleUpdatePortfolio,
   handleLastProject,
+  handleIncrementPortfolioView,
 } from "../src/server/portfolios.js";
 import {
   handleSystemStatus,
@@ -86,9 +87,16 @@ export default async function handler(req, res) {
     case "last-project":
       return handleLastProject(req, res);
 
+    case "portfolio-view":
+      return handleIncrementPortfolioView(req, res);
+
     case "portfolios": {
       const action = subRoute || req.query?.action;
+      if (action === "view" || action === "increment-view")
+        return handleIncrementPortfolioView(req, res);
       if (action === "last" || action === "last-project") return handleLastProject(req, res);
+      if (req.method === "POST" && (action === "view" || req.query?.action === "view"))
+        return handleIncrementPortfolioView(req, res);
       if (req.method === "POST") return handleCreatePortfolio(req, res);
       if (req.method === "PUT") return handleUpdatePortfolio(req, res);
       return handleGetPortfolios(req, res);
