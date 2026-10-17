@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const data = await (
-      await fetch("/.netlify/functions/get-analytics")
+      await fetch("/api/get-analytics")
     ).json();
     console.log(data);
 

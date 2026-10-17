@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let clientsData = [];
 
   try {
-    const res = await fetch("/.netlify/functions/get-clients");
+    const res = await fetch("/api/get-clients");
     const clients = await res.json();
 
     if (!clients || clients.length === 0) {

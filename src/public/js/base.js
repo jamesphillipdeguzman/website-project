@@ -115,7 +115,7 @@ function createConfetti(num = 30) {
 ====================================================== */
 async function loadPortfolios() {
   try {
-    const res = await fetch("/.netlify/functions/get-portfolios");
+    const res = await fetch("/api/get-portfolios");
     if (!res.ok) throw new Error("Portfolio fetch failed");
 
     portfolios = await res.json();
@@ -352,11 +352,11 @@ function trackVisit() {
   const last = Number(localStorage.getItem(KEY));
 
   if (!last || now - last > LIMIT) {
-    fetch("/.netlify/functions/increment-visit").catch(console.error);
+    fetch("/api/increment-visit").catch(console.error);
     localStorage.setItem(KEY, now);
   }
 
-  fetch("/.netlify/functions/get-visit-count")
+  fetch("/api/get-visit-count")
     .then((r) => r.json())
     .then((d) => {
       const el = document.getElementById("visit-count");
@@ -437,7 +437,7 @@ function trackPageView() {
 
   if (!shouldTrack) return;
 
-  fetch("/.netlify/functions/track-event", {
+  fetch("/api/track-event", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -470,7 +470,7 @@ function clearAnalytics() {
       return;
 
     try {
-      const res = await fetch("/.netlify/functions/clear-analytics", {
+      const res = await fetch("/api/clear-analytics", {
         method: "POST",
       });
       const data = await res.json();
@@ -493,7 +493,7 @@ function clearAnalytics() {
 // ===== New Leads =====
 
 async function loadNewLeads() {
-  const res = await fetch("/.netlify/functions/new-leads");
+  const res = await fetch("/api/new-leads");
   const data = await res.json();
 
   document.getElementById("new-leads-count").textContent = data.newLeads || 0;
@@ -502,7 +502,7 @@ async function loadNewLeads() {
 // ===== Last Project =====
 
 async function loadLastProject() {
-  const res = await fetch("/.netlify/functions/last-project");
+  const res = await fetch("/api/last-project");
   const data = await res.json();
 
   if (!data.project) {
@@ -524,7 +524,7 @@ async function loadLastProject() {
 
 async function loadSystemStatus() {
   try {
-    const res = await fetch("/.netlify/functions/system-status");
+    const res = await fetch("/api/system-status");
     const data = await res.json();
 
     const el = document.getElementById("system-status-text");

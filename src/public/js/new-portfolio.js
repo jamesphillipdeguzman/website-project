@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const isEdit = Boolean(editingId && editingId !== "undefined");
 
     const endpoint = isEdit
-      ? `/.netlify/functions/updatePortfolio?id=${editingId}`
-      : "/.netlify/functions/createPortfolio";
+      ? `/api/updatePortfolio?id=${editingId}`
+      : "/api/createPortfolio";
     const method = isEdit ? "PUT" : "POST";
 
     const res = await fetch(endpoint, {

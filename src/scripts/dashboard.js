@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ".dashboard-content .card:first-child p",
   );
   if (visitEl) {
-    fetch("/.netlify/functions/visit-count")
+    fetch("/api/visit-count")
       .then((res) => res.json())
       .then((data) => {
         visitEl.textContent = data.count;

@@ -2,7 +2,7 @@
 // In-house Analytics (GTM-style)
 // ==================================
 
-const ANALYTICS_ENDPOINT = "/.netlify/functions/track-event";
+const ANALYTICS_ENDPOINT = "/api/track-event";
 const VISITOR_KEY = "analytics_visitor_id";
 
 // ---------- Visitor ID ----------

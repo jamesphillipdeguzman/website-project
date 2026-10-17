@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function fetchPortfolios() {
   try {
-    const res = await fetch("/.netlify/functions/get-portfolios");
+    const res = await fetch("/api/get-portfolios");
     if (!res.ok) throw new Error("Failed to fetch portfolios");
 
     const portfolios = await res.json();
