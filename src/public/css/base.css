@@ -1,27 +1,149 @@
 /* =========================================================
-   ROOT VARIABLES
+   AETHER DESIGN SYSTEM — SIGNATURE DESIGN TOKENS
+   Tailored for BesysTech (besys.tech) & James De Guzman
    ========================================================= */
 :root {
-  --bg-main: #1e293b;
-  --bg-glass: rgba(15, 23, 42, 0.7);
-  --bg-footer: #020617;
-  --bg-card: #020617;
+  color-scheme: dark;
 
-  --text-main: #e5e7eb;
-  --text-muted: #94a3b8;
-  --text-accent: #38bdf8;
+  /* --- Foundations & Surfaces --- */
+  --aether-canvas: #090d16;
+  --aether-surface: #0f172a;
+  --aether-surface-raised: #1e293b;
+  --aether-surface-glass: rgba(15, 23, 42, 0.78);
+  --aether-surface-card: rgba(18, 26, 46, 0.92);
+  --aether-surface-modal: rgba(15, 23, 42, 0.96);
+  --aether-surface-input: rgba(30, 41, 59, 0.7);
 
-  --border-soft: rgba(255, 255, 255, 0.08);
+  /* --- Borders --- */
+  --aether-border-subtle: rgba(255, 255, 255, 0.08);
+  --aether-border-medium: rgba(255, 255, 255, 0.16);
+  --aether-border-accent: rgba(56, 189, 248, 0.4);
 
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  /* --- Typography & Text Contrast --- */
+  --aether-text: #f8fafc;
+  --aether-text-body: #e2e8f0;
+  --aether-text-secondary: #cbd5e1;
+  --aether-text-muted: #94a3b8;
+  --aether-text-accent: #38bdf8;
 
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.35);
+  /* --- Signature Brand Accents --- */
+  --aether-accent: #38bdf8;
+  --aether-accent-hover: #0ea5e9;
+  --aether-accent-soft: rgba(56, 189, 248, 0.14);
+  --aether-accent-secondary: #6366f1;
+  --aether-accent-gradient: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+  --aether-accent-gradient-hover: linear-gradient(135deg, #0ea5e9 0%, #4f46e5 100%);
+  --aether-focus: #38bdf8;
+
+  /* --- Fonts --- */
+  --aether-font-display: "Poppins", system-ui, -apple-system, sans-serif;
+  --aether-font-body: "Roboto", "Inter", system-ui, -apple-system, sans-serif;
+  --aether-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* --- Typographic Scale --- */
+  --aether-text-xs: 0.75rem;
+  --aether-text-sm: 0.875rem;
+  --aether-text-base: 1rem;
+  --aether-text-lg: 1.125rem;
+  --aether-text-xl: 1.35rem;
+  --aether-text-2xl: 1.85rem;
+  --aether-text-3xl: clamp(2.2rem, 5vw, 3.8rem);
+
+  /* --- Spacing Scale --- */
+  --aether-space-1: 0.25rem;
+  --aether-space-2: 0.5rem;
+  --aether-space-3: 0.75rem;
+  --aether-space-4: 1rem;
+  --aether-space-6: 1.5rem;
+  --aether-space-8: 2rem;
+  --aether-space-12: 3rem;
+  --aether-space-16: 4rem;
+  --aether-space-24: 6rem;
+
+  /* --- Geometry (Radii) --- */
+  --aether-radius-sm: 0.375rem;
+  --aether-radius-md: 0.75rem;
+  --aether-radius-lg: 1.125rem;
+  --aether-radius-xl: 1.5rem;
+  --aether-radius-pill: 9999px;
+
+  /* --- Elevation & Shadows --- */
+  --aether-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --aether-shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.45);
+  --aether-shadow-lg: 0 20px 45px -10px rgba(0, 0, 0, 0.65);
+  --aether-shadow-glow: 0 0 25px rgba(56, 189, 248, 0.25);
+
+  /* --- Motion & Transitions --- */
+  --aether-duration-fast: 160ms;
+  --aether-duration-normal: 240ms;
+  --aether-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* --- Layout Constraints --- */
+  --aether-content-width: 1200px;
+  --aether-showcase-width: 1400px;
+  --aether-page-gutter: clamp(1rem, 4vw, 3rem);
+
+  /* Backward Compatibility Aliases */
+  --bg-main: var(--aether-surface-raised);
+  --bg-glass: var(--aether-surface-glass);
+  --bg-footer: var(--aether-canvas);
+  --bg-card: var(--aether-surface-card);
+  --text-main: var(--aether-text-body);
+  --text-muted: var(--aether-text-muted);
+  --text-accent: var(--aether-accent);
+  --border-soft: var(--aether-border-subtle);
+  --radius-sm: var(--aether-radius-sm);
+  --radius-md: var(--aether-radius-md);
+  --radius-lg: var(--aether-radius-lg);
+  --shadow-soft: var(--aether-shadow-md);
+  --primary-font: var(--aether-font-body);
 }
 
 /* =========================================================
-   RESET & BASE
+   AETHER INTERACTION & ACCESSIBILITY BASELINE
+   ========================================================= */
+:where(
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  outline: 2px solid var(--aether-focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(
+    a,
+    button,
+    input,
+    select,
+    textarea,
+    [role="button"]
+  ) {
+    transition:
+      color var(--aether-duration-fast) ease,
+      background-color var(--aether-duration-fast) ease,
+      border-color var(--aether-duration-fast) ease,
+      box-shadow var(--aether-duration-fast) ease;
+  }
+}
+
+/* =========================================================
+   RESET & FOUNDATIONS
    ========================================================= */
 *,
 *::before,
@@ -34,9 +156,16 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  font-family: "Poppins", system-ui, sans-serif;
-  background: radial-gradient(circle at top, #020617, #000);
-  color: var(--text-main);
+  font-family: var(--aether-font-body);
+  background-color: var(--aether-canvas);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.08), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(99, 102, 241, 0.06), transparent 70%);
+  background-attachment: fixed;
+  color: var(--aether-text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img {
@@ -49,19 +178,17 @@ a {
   text-decoration: none;
 }
 
-/* =========================================================
-   PAGE WRAPPER (FIXES SCROLLBAR ISSUE)
-   ========================================================= */
+/* Page Wrapper */
 .page-wrap {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #1e293b;
+  background: transparent;
 }
 
 main {
   flex: 1;
-  background-color: #1e293b;
+  background: transparent;
 }
 
 h1,
@@ -69,9 +196,16 @@ h2,
 h3,
 h4,
 h5,
-h6,
+h6 {
+  font-family: var(--aether-font-display);
+  color: var(--aether-text);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0;
+}
+
 p {
-  color: var(--text-main);
+  color: var(--aether-text-body);
   margin: 0;
 }
 
@@ -364,72 +498,66 @@ header {
    About Page Styles (Dark Theme)
    ============================ */
 
-/* Body & Page Wrap */
-body {
-  background-color: #020617;
-  color: #ffffff;
-  font-family: "Roboto", sans-serif;
-  line-height: 1.6;
-}
-
+/* ============================
+   About & Editorial Styles
+   ============================ */
 .my-profile {
   border: none;
-  margin: 2rem 0;
-}
-
-.page-wrap {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  margin: var(--aether-space-8) 0;
+  max-width: 65ch;
+  line-height: 1.7;
 }
 
 /* Banner Text */
 .banner-text {
   text-align: center;
-  padding: 6rem 2rem 4rem 2rem;
-  background: linear-gradient(to bottom, #020617, #0a0c1f);
+  padding: 5rem 1.5rem 3rem 1.5rem;
+  background: transparent;
 }
 
 .banner-text h1 {
-  font-family: "Poppins", sans-serif;
+  font-family: var(--aether-font-display);
   font-weight: 700;
-  font-size: 2.8rem;
+  font-size: var(--aether-text-3xl);
   margin: 0;
-  color: #00d8ff;
+  color: var(--aether-text);
+  letter-spacing: -0.02em;
 }
 
 /* Bottom Section / Main Content */
 .bottom-section {
-  max-width: 80vw;
-  width: 80%;
+  max-width: var(--aether-content-width);
+  width: 90%;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 3rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--aether-space-8);
   align-items: center;
 }
 
 .bottom-section h2 {
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: var(--aether-text-2xl);
+  font-weight: 700;
   text-align: center;
-  color: #ffffff;
+  color: var(--aether-text);
+  letter-spacing: -0.01em;
 }
 
 /* Profile Image */
 .profile2 {
   display: flex;
   justify-content: center;
-  margin: 2rem 0;
+  margin: var(--aether-space-6) 0;
 }
 
 .profile2 img {
   border-radius: 50%;
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
-  border: 3px solid #00d8ff;
+  border: 2px solid var(--aether-border-accent);
+  box-shadow: var(--aether-shadow-glow);
 }
 
 /* ================= CAROUSEL ================== */
@@ -1507,168 +1635,188 @@ input[type="email"] {
   color: var(--text-muted);
 }
 
-/* ================== MODAL ====================== */
+/* ================== AETHER MODAL & DIALOGS ================== */
 
 .backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(2, 6, 23, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: none;
-  /* 👈 start hidden */
-  z-index: 100;
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
 
 .modal.hidden {
+  display: none !important;
+}
+
+.modal {
   display: none;
-}
-
-.quote-modal {
-  width: 50%;
-  max-width: 50vw;
-}
-
-.modal,
-#quote-backdrop {
-  display: none;
-}
-
-.backdrop {
-  display: none;
-  /* make sure it starts hidden */
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  max-width: 100vw;
-  height: 100%;
-  z-index: 999;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 5vh;
-  transition: background-color 1.2s ease-in-out;
-}
-
-.close {
-  font-size: 2rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.modal-content h2 {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: #464444;
 }
 
 .modal-content {
   position: fixed;
-  top: 10%;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  max-height: 80vh;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
   overflow-y: auto;
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  max-width: 50vw;
-  width: 50%;
+  background-color: var(--aether-surface-modal);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--aether-border-medium);
+  padding: 2.5rem 2rem 2rem;
+  border-radius: var(--aether-radius-lg);
+  box-shadow: var(--aether-shadow-lg), 0 0 35px rgba(56, 189, 248, 0.15);
+  max-width: 520px;
+  width: 92%;
   margin: 0 auto;
   text-align: left;
-  font-family: var(--primary-font);
+  font-family: var(--aether-font-body);
   font-size: 1rem;
-  color: #464444;
+  color: var(--aether-text);
   z-index: 1000;
 }
 
+.modal-content h2 {
+  text-align: center;
+  font-size: 1.6rem;
+  font-family: var(--aether-font-display);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--aether-text);
+}
+
+.modal-content label {
+  color: var(--aether-text-secondary);
+  font-size: var(--aether-text-sm);
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.modal-content input,
+.modal-content textarea {
+  background: var(--aether-surface-input);
+  border: 1px solid var(--aether-border-subtle);
+  border-radius: var(--aether-radius-md);
+  color: var(--aether-text);
+  padding: 0.75rem 1rem;
+  font-family: var(--aether-font-body);
+  font-size: 0.95rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border-color var(--aether-duration-fast) ease, box-shadow var(--aether-duration-fast) ease;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: var(--aether-accent);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  font-size: 1.75rem;
+  line-height: 1;
+  font-weight: 300;
+  color: var(--aether-text-muted);
+  cursor: pointer;
+  transition: color var(--aether-duration-fast) ease;
+}
+
+.close:hover {
+  color: var(--aether-text);
+}
+
 fieldset {
-  max-height: 100vh;
+  border: 1px solid var(--aether-border-subtle);
+  border-radius: var(--aether-radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 #message {
   width: 100%;
-  resize: none;
+  resize: vertical;
+  min-height: 100px;
 }
 
+/* Harmonized AETHER Primary Action Button */
 .mybutton {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(192, 116, 103);
-  color: #0b0500;
+  gap: 0.5rem;
+  background: var(--aether-accent-gradient);
+  color: #ffffff !important;
   border: none;
-  border-radius: 12px;
-  padding: 12px 28px;
-  font-family: "Roboto", Arial, sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
+  border-radius: var(--aether-radius-md);
+  padding: 0.8rem 2rem;
+  font-family: var(--aether-font-display);
+  font-size: var(--aether-text-base);
+  font-weight: 600;
+  letter-spacing: 0.01em;
   cursor: pointer;
   width: fit-content;
-  max-width: 100vw;
-  margin: 3rem auto;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+  transition: all var(--aether-duration-normal) var(--aether-ease);
 }
 
 .mybutton:hover {
-  opacity: 0.9;
-  /* same color, slightly transparent */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  background: var(--aether-accent-gradient-hover);
+  box-shadow: 0 6px 22px rgba(14, 165, 233, 0.5);
   transform: translateY(-2px);
 }
 
-.mybutton:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(231, 88, 44, 0.4);
-}
-
-/* Window */
-
-#getWindowWidth {
-  color: #464444;
+.mybutton:focus-visible {
+  outline: 2px solid var(--aether-focus);
+  outline-offset: 3px;
 }
 
 /* ---------- DASHBOARD CONTENT ---------- */
 .dashboard-content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   padding: 2rem 3rem;
 }
 
-.card {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+.dashboard-content .card {
+  background-color: var(--aether-surface-card);
+  border: 1px solid var(--aether-border-subtle);
+  border-radius: var(--aether-radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--aether-shadow-sm);
+  transition: transform 0.25s var(--aether-ease), border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.card:hover {
+.dashboard-content .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border-color: var(--aether-border-accent);
+  box-shadow: var(--aether-shadow-md);
 }
 
-.card h3 {
-  font-size: 1.2rem;
+.dashboard-content .card h3 {
+  font-size: 1.25rem;
   margin-bottom: 0.5rem;
-  color: var(--dark-slate-gray, #2f4f4f);
+  color: var(--aether-text);
 }
 
-.card p {
-  font-size: 1rem;
-  color: var(--faint-black, #444);
+.dashboard-content .card p {
+  font-size: 0.95rem;
+  color: var(--aether-text-secondary);
 }
 
 .status.ok {
-  color: var(--faint-black, #444);
+  color: var(--aether-accent);
   font-weight: 600;
 }
 
@@ -1679,7 +1827,7 @@ fieldset {
 #status,
 #status2 {
   font-size: 1rem;
-  color: white;
+  color: var(--aether-text);
 }
 
 /* ---------- QUICK ACTIONS SECTION ---------- */
@@ -1688,9 +1836,9 @@ fieldset {
 }
 
 .quick-actions h2 {
-  font-family: var(Roboto, sans-serif);
+  font-family: var(--aether-font-display);
   font-size: 1.6rem;
-  color: #38bdf8;
+  color: var(--aether-accent);
   margin-bottom: 1rem;
 }
 
@@ -1704,74 +1852,83 @@ fieldset {
 .btn-primary,
 .btn-secondary,
 .btn-logout {
-  font-family: var(--primary-font);
-  font-size: 1rem;
-  padding: 0.9rem 1.8rem;
-  /* increased horizontal padding */
-  border: none;
-  border-radius: 8px;
+  font-family: var(--aether-font-display);
+  font-size: 0.95rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--aether-radius-md);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--aether-duration-fast) var(--aether-ease);
   white-space: nowrap;
-  /* prevents text from wrapping */
-  min-width: 180px;
-  /* ensures uniform width for long text */
+  min-width: 160px;
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-primary {
-  background-color: rebeccapurple;
-  color: #fff;
-}
-
-.btn-primary a {
-  color: white;
-  text-decoration: none;
+  background: var(--aether-accent-gradient);
+  color: #fff !important;
+  border: none;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
 }
 
 .btn-primary:hover {
-  background-color: rgb(133, 101, 165);
+  background: var(--aether-accent-gradient-hover);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
-  background-color: var(--dark-slate-gray, #2f4f4f);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--aether-border-medium);
+  color: var(--aether-text) !important;
 }
 
 .btn-secondary:hover {
-  background-color: #3e5c5c;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--aether-accent);
+  transform: translateY(-2px);
 }
 
 .btn-logout {
-  background-color: rgb(141, 69, 69);
-  color: #fff;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5 !important;
 }
 
 .btn-logout:hover {
-  background-color: #af6d76;
+  background: rgba(239, 68, 68, 0.3);
+  color: #ffffff !important;
+  transform: translateY(-2px);
 }
 
 /* AUTH STYLES */
 
 .auth-container {
   display: flex;
-  justify-content: center; /* horizontal center */
-  align-items: center; /* vertical center (optional) */
-  min-height: 60vh; /* optional, to center vertically in main */
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 2rem;
 }
 
 .auth-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* <-- this centers the logout button */
-  padding: 2rem;
-  gap: 1rem;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  padding: 2.5rem;
+  gap: 1.25rem;
+  background-color: var(--aether-surface-card);
+  border: 1px solid var(--aether-border-subtle);
+  border-radius: var(--aether-radius-lg);
+  box-shadow: var(--aether-shadow-md);
+  color: var(--aether-text);
   font-size: 1rem;
+  max-width: 420px;
+  width: 100%;
 }
 
 .auth-card p {

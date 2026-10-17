@@ -56,12 +56,12 @@
 }
 
 .analytics-header p {
-  color: #666;
+  color: var(--aether-text-muted, #94a3b8);
   font-size: 0.95rem;
 }
 
 .analytics-table td {
-  color: #333;
+  color: var(--aether-text-body, #e2e8f0);
 }
 
 /* ===============================
@@ -69,14 +69,16 @@
 ================================ */
 
 .analytics-table-wrapper {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  background: var(--aether-surface-card, rgba(18, 26, 46, 0.95));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--aether-border-medium, rgba(255, 255, 255, 0.12));
+  border-radius: var(--aether-radius-lg, 1.125rem);
+  box-shadow: var(--aether-shadow-md, 0 10px 30px -5px rgba(0, 0, 0, 0.45));
   overflow-x: auto;
-  max-height: 600px; /* optional: add vertical scrollbar */
+  max-height: 600px;
   overflow-y: auto;
-  width: 100%; /* ensure full width */
+  width: 100%;
 }
 
 /* ===============================
@@ -84,7 +86,7 @@
 ================================ */
 
 #last-project-date {
-  color: #555;
+  color: var(--aether-text-muted, #94a3b8);
   font-weight: 500;
 }
 
@@ -94,12 +96,13 @@
 }
 
 .analytics-table thead {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid var(--aether-border-medium, rgba(255, 255, 255, 0.12));
 }
 
 .analytics-table th,
 .analytics-table td {
-  padding: 14px 16px;
+  padding: 14px 18px;
   text-align: left;
   font-size: 0.9rem;
   white-space: nowrap;
@@ -107,11 +110,14 @@
 
 .analytics-table th {
   font-weight: 600;
-  color: #333;
+  color: var(--aether-text, #f8fafc);
+  font-family: var(--aether-font-display, "Poppins", sans-serif);
+  letter-spacing: 0.02em;
 }
 
 .analytics-table tbody tr {
-  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--aether-border-subtle, rgba(255, 255, 255, 0.06));
+  transition: background-color var(--aether-duration-fast, 160ms) ease;
 }
 
 .analytics-table-actions {
@@ -120,20 +126,20 @@
 }
 
 /* ===============================
-   Alternating Row Colors
+   Alternating Row Colors (Dark)
 ================================ */
 
 .analytics-table tbody tr:nth-child(odd) {
-  background-color: rgba(227, 242, 253, 0.6); /* light blue */
+  background-color: transparent;
 }
 
 .analytics-table tbody tr:nth-child(even) {
-  background-color: rgba(255, 235, 230, 0.6); /* light peach */
+  background-color: rgba(30, 41, 59, 0.25);
 }
 
 /* Hover Highlight */
 .analytics-table tbody tr:hover {
-  background-color: #d0f0ff !important; /* bright light blue highlight */
+  background-color: rgba(56, 189, 248, 0.1) !important;
   cursor: pointer;
 }
 
@@ -143,25 +149,30 @@
 
 .badge {
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: var(--aether-radius-pill, 9999px);
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-block;
 }
 
 .badge.guest {
-  background: #e3f2fd;
-  color: #1565c0;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
 }
 
 .badge.client {
-  background: #e8f5e9;
-  color: #2e7d32;
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.35);
 }
 
 .badge.admin {
-  background: #fce4ec;
-  color: #ad1457;
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.35);
 }
 
 /* ===============================
