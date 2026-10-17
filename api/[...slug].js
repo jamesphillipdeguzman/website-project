@@ -8,7 +8,6 @@ import {
   handleTrackEvent,
   handleGetAnalytics,
   handleClearAnalytics,
-  handleGetVisitCount,
   handleIncrementVisit,
 } from "../src/server/analytics.js";
 import {
@@ -25,6 +24,8 @@ import {
   handleQueryDb,
   handleReview,
   handleQuotes,
+  handleRecordVisit,
+  handleGetVisitCount,
 } from "../src/server/system.js";
 
 /**
@@ -95,12 +96,13 @@ export default async function handler(req, res) {
     case "last-project":
       return handleLastProject(req, res);
 
+    case "increment-portfolio-view":
     case "portfolio-view":
       return handleIncrementPortfolioView(req, res);
 
     case "portfolios": {
       const action = subRoute || req.query?.action;
-      if (action === "view" || action === "increment-view")
+      if (action === "view" || action === "increment-view" || action === "increment-portfolio-view")
         return handleIncrementPortfolioView(req, res);
       if (action === "last" || action === "last-project") return handleLastProject(req, res);
       if (req.method === "POST" && (action === "view" || req.query?.action === "view"))
@@ -119,6 +121,10 @@ export default async function handler(req, res) {
 
     case "clear-analytics":
       return handleClearAnalytics(req, res);
+
+    case "record-visit":
+    case "recordvisit":
+      return handleRecordVisit(req, res);
 
     case "get-visit-count":
     case "visit-count":

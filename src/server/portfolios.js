@@ -353,14 +353,24 @@ export async function handleGetPortfolios(req, res) {
  * Atomically increment a portfolio item's view count
  */
 export async function handleIncrementPortfolioView(req, res) {
-  const id = req.query?.id || (req.body && req.body.id);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+  const id = body.id || req.query?.id;
+
   if (!id) {
-    return res.status(400).json({ error: "Portfolio ID is required" });
+    return res.status(400).json({ error: "Missing portfolio id" });
   }
 
   const cleanUrl = getCleanDatabaseUrl(process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL);
   if (!cleanUrl) {
-    return res.status(200).json({ success: true, id, views: 1 });
+    return res.status(200).json({ success: true, views: 1 });
   }
 
   let client;
@@ -370,35 +380,25 @@ export async function handleIncrementPortfolioView(req, res) {
 
     try {
       await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;");
-    } catch { }
+    } catch {}
 
-    const result = await client.query(
-      `
-      UPDATE portfolios
-      SET views = COALESCE(views, 0) + 1
-      WHERE id = $1
-      RETURNING id, views;
-      `,
+    const { rows } = await client.query(
+      "UPDATE portfolios SET views = COALESCE(views, 0) + 1 WHERE id = $1 RETURNING views",
       [id]
     );
 
-    if (!result.rows || result.rows.length === 0) {
-      return res.status(200).json({ success: true, id, views: 1 });
-    }
-
     return res.status(200).json({
       success: true,
-      id: result.rows[0].id,
-      views: result.rows[0].views,
+      views: rows[0]?.views ?? 1,
     });
   } catch (err) {
-    console.warn("Increment portfolio view warning:", err.message);
-    return res.status(200).json({ success: true, id, views: 1 });
+    console.error("Increment portfolio view error:", err);
+    return res.status(200).json({ success: true, views: 1 });
   } finally {
     if (client) {
       try {
         await client.end();
-      } catch { }
+      } catch {}
     }
   }
 }

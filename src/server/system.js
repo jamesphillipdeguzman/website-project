@@ -327,3 +327,107 @@ export async function handleQuotes(req, res) {
   }
 }
 
+/**
+ * Handle POST /api/record-visit
+ * Records real page visit in Neon visits table
+ */
+export async function handleRecordVisit(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed. Use POST." });
+  }
+
+  try {
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    const page = body?.page || req.url || "home";
+    const rawIp = req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown";
+    const ip = String(rawIp).split(",")[0].trim();
+
+    const connectionString = getCleanDatabaseUrl(
+      process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL
+    );
+
+    if (connectionString) {
+      const client = new Client({ connectionString });
+      await client.connect();
+
+      try {
+        await client.query(`
+          CREATE TABLE IF NOT EXISTS visits (
+            id SERIAL PRIMARY KEY,
+            page VARCHAR(255),
+            ip VARCHAR(100),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        await client.query(
+          "INSERT INTO visits (page, ip) VALUES ($1, $2)",
+          [page, ip]
+        );
+      } finally {
+        await client.end();
+      }
+    }
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("Error recording visit:", err);
+    return res.status(200).json({ success: false, error: err.message });
+  }
+}
+
+/**
+ * Handle GET /api/get-visit-count
+ * Queries actual count from visits table
+ */
+export async function handleGetVisitCount(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  try {
+    const connectionString = getCleanDatabaseUrl(
+      process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL
+    );
+
+    if (connectionString) {
+      const client = new Client({ connectionString });
+      await client.connect();
+
+      try {
+        await client.query(`
+          CREATE TABLE IF NOT EXISTS visits (
+            id SERIAL PRIMARY KEY,
+            page VARCHAR(255),
+            ip VARCHAR(100),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        const { rows } = await client.query("SELECT COUNT(*)::int AS count FROM visits");
+        return res.status(200).json({ count: rows[0]?.count || 0 });
+      } finally {
+        await client.end();
+      }
+    }
+
+    return res.status(200).json({ count: 0 });
+  } catch (err) {
+    console.error("Error getting visit count:", err);
+    return res.status(200).json({ count: 0 });
+  }
+}
+
+

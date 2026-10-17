@@ -154,26 +154,40 @@ function formatPortfolioViews(count) {
   return `${n} view${n === 1 ? "" : "s"}`;
 }
 
+async function incrementPortfolioView(id, badgeEl) {
+  if (!id) return;
+  try {
+    const res = await fetch("/api/increment-portfolio-view", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: Number(id) || id }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.views !== undefined && badgeEl) {
+        const countSpan =
+          badgeEl.querySelector(".count") ||
+          badgeEl.querySelector(".views-count") ||
+          badgeEl;
+        if (countSpan) {
+          countSpan.textContent = `${data.views || 0} views`;
+        }
+        badgeEl.classList.add("updated");
+        setTimeout(() => badgeEl.classList.remove("updated"), 1200);
+      }
+    }
+  } catch (err) {
+    console.warn("Portfolio view increment error:", err);
+  }
+}
+
 function trackPortfolioView(id, badgeEl) {
   if (!id) return;
   const key = `session_viewed_portfolio_${id}`;
   if (sessionStorage.getItem(key)) return;
 
   sessionStorage.setItem(key, "1");
-
-  fetch(`/api/portfolios?action=view&id=${encodeURIComponent(id)}`, {
-    method: "POST",
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data && data.views !== undefined && badgeEl) {
-        const countSpan = badgeEl.querySelector(".count") || badgeEl.querySelector(".views-count");
-        if (countSpan) countSpan.textContent = `${data.views || 0} views`;
-        badgeEl.classList.add("updated");
-        setTimeout(() => badgeEl.classList.remove("updated"), 1200);
-      }
-    })
-    .catch((err) => console.error("Failed to track portfolio view:", err));
+  incrementPortfolioView(id, badgeEl);
 }
 
 /* ---------- Modern Carousel & View Tracking ---------- */
@@ -298,20 +312,27 @@ function renderPortfolioCarousel() {
       </div>
     `;
 
-    // Click & Focus view tracking
-    card.addEventListener("click", (e) => {
+    const triggerViewIncrement = () => {
       const badge = card.querySelector(".view-count-badge") || card.querySelector(".views-badge");
-      trackPortfolioView(p.id, badge);
+      incrementPortfolioView(p.id, badge);
+    };
 
-      if (e.target.closest("a") || e.target.closest("button")) {
-        // Do not prevent default navigation for buttons/links
-        return;
-      }
+    // Live demo & action button view increments
+    const liveDemoBtn = card.querySelector(".btn-primary");
+    const codeBtn = card.querySelector(".btn-secondary");
+    const cardImgLink = card.querySelector(".card-image-link");
+
+    liveDemoBtn?.addEventListener("click", triggerViewIncrement);
+    codeBtn?.addEventListener("click", triggerViewIncrement);
+    cardImgLink?.addEventListener("click", triggerViewIncrement);
+
+    // Card click & focus view tracking
+    card.addEventListener("click", () => {
+      triggerViewIncrement();
     });
 
     card.addEventListener("focus", () => {
-      const badge = card.querySelector(".view-count-badge") || card.querySelector(".views-badge");
-      trackPortfolioView(p.id, badge);
+      triggerViewIncrement();
     });
 
     container.appendChild(card);
@@ -885,6 +906,28 @@ function trackPageView() {
       visitor_type: userType, // include type explicitly
     }),
   }).catch(console.error);
+}
+
+// ===== Global Page Visit Tracking =====
+async function trackVisit() {
+  try {
+    await fetch("/api/record-visit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ page: window.location.pathname }),
+    });
+
+    const countEl = document.getElementById("visit-count");
+    if (countEl) {
+      const res = await fetch("/api/get-visit-count");
+      if (res.ok) {
+        const data = await res.json();
+        countEl.textContent = data.count;
+      }
+    }
+  } catch (err) {
+    console.warn("Visit tracking blip:", err);
+  }
 }
 
 // ===== Clear Analytics =====
