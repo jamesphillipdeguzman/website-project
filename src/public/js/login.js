@@ -49,7 +49,12 @@ async function handleLogin(e) {
     }
 
     // ✅ LOGIN SUCCESS
-    localStorage.setItem("user", JSON.stringify(data.user));
+    if (data.user) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+      if (data.user.name) {
+        localStorage.setItem("user_name", data.user.name);
+      }
+    }
 
     // Redirect to pages/dashboard.html
     window.location.href = "/pages/dashboard.html";

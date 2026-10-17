@@ -8,21 +8,40 @@ dotenv.config();
  * Handle user login
  */
 export async function handleLogin(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
   if (req.method !== "POST") {
-    return res.status(405).send("Method Not Allowed");
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
 
   const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-  const { email, password } = body;
-  const client = new Client({ connectionString: getCleanDatabaseUrl(process.env.DATABASE_URL) });
+  const email = (body.email || "").trim();
+  const password = body.password || "";
+
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required" });
+  }
+
+  const cleanUrl = getCleanDatabaseUrl(process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL);
+  if (!cleanUrl) {
+    return res.status(500).json({ error: "Database configuration missing" });
+  }
+
+  const client = new Client({ connectionString: cleanUrl });
 
   try {
     await client.connect();
 
-    // Fetch user by email
+    // Query user by case-insensitive email
     const result = await client.query(
-      "SELECT * FROM users WHERE email = $1",
-      [email?.toLowerCase()]
+      "SELECT * FROM users WHERE LOWER(TRIM(email)) = LOWER(TRIM($1)) LIMIT 1;",
+      [email]
     );
 
     if (result.rows.length === 0) {
@@ -31,19 +50,33 @@ export async function handleLogin(req, res) {
 
     const user = result.rows[0];
 
-    // Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ error: "Invalid email or password" });
+    // Flexible password verification
+    let isPasswordMatch = false;
+
+    if (user.password && (user.password.startsWith("$2a$") || user.password.startsWith("$2b$") || user.password.startsWith("$2y$"))) {
+      // Hashed password
+      isPasswordMatch = await bcrypt.compare(password, user.password);
+    } else {
+      // Plain text fallback
+      isPasswordMatch = (user.password === password);
+    }
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({ error: "Incorrect password" });
     }
 
     // Update last_login
-    await client.query("UPDATE users SET last_login = NOW() WHERE id = $1", [
-      user.id,
-    ]);
+    try {
+      await client.query("UPDATE users SET last_login = NOW() WHERE id = $1", [
+        user.id,
+      ]);
+    } catch (loginErr) {
+      console.warn("Could not update last_login timestamp:", loginErr.message);
+    }
 
     // Successful login
     return res.status(200).json({
+      success: true,
       message: "Login successful",
       user: {
         id: user.id,
@@ -56,7 +89,9 @@ export async function handleLogin(req, res) {
     console.error("Login error:", error);
     return res.status(500).json({ error: error.message });
   } finally {
-    await client.end();
+    try {
+      await client.end();
+    } catch {}
   }
 }
 

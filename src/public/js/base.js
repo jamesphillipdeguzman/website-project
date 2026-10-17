@@ -789,32 +789,6 @@ function setupQuoteForm() {
 }
 
 /* ======================================================
-   VISITS
-====================================================== */
-function trackVisit() {
-  const KEY = "lastVisitIncrement";
-  const LIMIT = 30 * 60 * 1000;
-  const now = Date.now();
-  const last = Number(localStorage.getItem(KEY));
-
-  if (!last || now - last > LIMIT) {
-    fetch("/api/increment-visit").catch(console.error);
-    localStorage.setItem(KEY, now);
-  }
-
-  const visitCountEl = document.getElementById("visit-count");
-  if (!visitCountEl) return;
-
-  fetch("/api/get-visit-count")
-    .then((r) => r.json())
-    .then((d) => {
-      const el = document.getElementById("visit-count");
-      if (el) el.textContent = d.count ?? 0;
-    })
-    .catch(console.error);
-}
-
-/* ======================================================
    FOOTER
 ====================================================== */
 function initDate() {
