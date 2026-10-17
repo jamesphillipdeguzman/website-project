@@ -34,7 +34,7 @@
     <meta property="og:site-name" content="https://jamesdeguzman.com/index.html" />
 
     <script src="/js/base.js" type="module"></script>
-    <script src="/js/portfolios.js" type="module"></script>
+    <script src="/js/form.js" type="module"></script>
     <script type="module" src="/js/analytics.js"></script>
 
 </head>
@@ -97,35 +97,28 @@
             <div class="form-section">
                 <h3>Portfolio Review Form</h3>
 
-                <form name="review" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="review-form">
-
-                    <!-- Netlify hidden field -->
-                    <input type="hidden" name="form-name" value="review" />
-                    <p hidden>
-                        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-                    </p>
-
+                <form id="review-form" method="POST">
                     <fieldset class="form-group">
                         <label for="dynamic-product" id="portfolio-name">Portfolio Name</label>
-                        <select id="dynamic-product" name="dynamic-product" required>
-                            <option value="" disabled>Select a portfolio...</option>
+                        <select id="dynamic-product" name="portfolio" required>
+                            <option value="" disabled selected>Select a portfolio...</option>
                         </select>
                         <div id="select-error-message"></div>
 
                         <fieldset class="stars-rating">
                             <legend>Overall Rating</legend>
-                            <input type="radio" id="fivestar" name="stars" value="5" required><label
+                            <input type="radio" id="fivestar" name="rating" value="5" required><label
                                 for="fivestar"></label>
-                            <input type="radio" id="fourstar" name="stars" value="4" /><label for="fourstar"></label>
-                            <input type="radio" id="threestar" name="stars" value="3" /><label for="threestar"></label>
-                            <input type="radio" id="twostar" name="stars" value="2" /><label for="twostar"></label>
-                            <input type="radio" id="onestar" name="stars" value="1" /><label for="onestar"></label>
+                            <input type="radio" id="fourstar" name="rating" value="4" /><label for="fourstar"></label>
+                            <input type="radio" id="threestar" name="rating" value="3" /><label for="threestar"></label>
+                            <input type="radio" id="twostar" name="rating" value="2" /><label for="twostar"></label>
+                            <input type="radio" id="onestar" name="rating" value="1" /><label for="onestar"></label>
                         </fieldset>
                         <div id="radio-error-message"></div>
 
                         <div class="install-date">
                             <label for="date-installed">Date</label>
-                            <input type="date" id="date-installed" name="date-installed" required />
+                            <input type="date" id="date-installed" name="date" required />
                         </div>
                         <div id="date-error-message"></div>
 
@@ -151,11 +144,11 @@
                         </div>
 
                         <div class="review">
-                            <label for="written-review">Written Review <span class="optional">(Optional)</span></label>
-                            <textarea id="written-review" name="written-review"></textarea>
+                            <label for="comments">Written Review <span class="optional">(Optional)</span></label>
+                            <textarea id="comments" name="comments" placeholder="Write your review here..."></textarea>
 
-                            <label for="fname">Name <span class="optional">(Optional)</span></label>
-                            <input type="text" id="fname" name="fname">
+                            <label for="name">Name <span class="optional">(Optional)</span></label>
+                            <input type="text" id="name" name="name" placeholder="Your name (optional)">
                         </div>
 
                         <input type="submit" id="review-btn" class="mybutton" value="Post a Review">

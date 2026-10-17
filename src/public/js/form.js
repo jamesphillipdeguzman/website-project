@@ -204,29 +204,91 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  dynamicPortfolio.addEventListener("change", checkFormValidity);
-  document.querySelectorAll('input[name="stars"]').forEach((star) => {
+  if (dynamicPortfolio) {
+    dynamicPortfolio.addEventListener("change", checkFormValidity);
+  }
+
+  document.querySelectorAll('input[name="rating"], input[name="stars"]').forEach((star) => {
     star.addEventListener("change", checkFormValidity);
   });
-  document
-    .querySelector("#date-installed")
-    .addEventListener("input", checkFormValidity);
 
-  reviewForm.addEventListener("submit", (event) => {
-    const portfolioSelected = dynamicPortfolio.value !== "";
-    const starsSelected =
-      document.querySelector('input[name="stars"]:checked') !== null;
-    const dateSelected = document.querySelector("#date-installed").value !== "";
+  const dateInput = document.querySelector("#date-installed");
+  if (dateInput) {
+    dateInput.addEventListener("input", checkFormValidity);
+  }
 
-    if (portfolioSelected && starsSelected && dateSelected) {
-      let numSubmit = Number(window.localStorage.getItem("submit-ls"));
-      numSubmit++;
-      localStorage.setItem("submit-ls", numSubmit);
-    } else {
+  if (reviewForm) {
+    reviewForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-      checkFormValidity();
-    }
-  });
+
+      const portfolioSelected = dynamicPortfolio && dynamicPortfolio.value !== "";
+      const selectedStar =
+        document.querySelector('input[name="rating"]:checked') ||
+        document.querySelector('input[name="stars"]:checked');
+      const starsSelected = selectedStar !== null;
+      const dateSelected = dateInput && dateInput.value !== "";
+
+      if (!portfolioSelected || !starsSelected || !dateSelected) {
+        checkFormValidity();
+        return;
+      }
+
+      const nameInput = document.querySelector("#name") || document.querySelector("#fname");
+      const commentsInput = document.querySelector("#comments") || document.querySelector("#written-review");
+      const featureCheckboxes = document.querySelectorAll('input[name="features"]:checked');
+      const features = Array.from(featureCheckboxes).map((cb) => cb.value);
+
+      const payload = {
+        name: nameInput ? nameInput.value.trim() : "",
+        rating: selectedStar ? Number(selectedStar.value) : 5,
+        portfolioId: dynamicPortfolio ? dynamicPortfolio.value : "",
+        portfolioName:
+          dynamicPortfolio && dynamicPortfolio.selectedIndex >= 0
+            ? dynamicPortfolio.options[dynamicPortfolio.selectedIndex]?.text
+            : "",
+        date: dateInput ? dateInput.value : new Date().toISOString().split("T")[0],
+        features,
+        comments: commentsInput ? commentsInput.value.trim() : "",
+      };
+
+      if (reviewBtn) {
+        reviewBtn.disabled = true;
+        reviewBtn.value = "Submitting Review...";
+      }
+
+      try {
+        const res = await fetch("/api/reviews", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          let numSubmit = Number(window.localStorage.getItem("submit-ls")) || 0;
+          numSubmit++;
+          localStorage.setItem("submit-ls", numSubmit);
+
+          window.location.href = "/pages/thanks.html";
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          alert(errData.error || "Failed to submit review. Please try again.");
+          if (reviewBtn) {
+            reviewBtn.disabled = false;
+            reviewBtn.value = "Post a Review";
+          }
+        }
+      } catch (err) {
+        console.error("Error submitting review:", err);
+        alert("Network error submitting review. Please check your connection and try again.");
+        if (reviewBtn) {
+          reviewBtn.disabled = false;
+          reviewBtn.value = "Post a Review";
+        }
+      }
+    });
+  }
 
   const signupBtn = document.querySelector(".signup-btn");
   if (signupBtn) {
@@ -235,12 +297,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (reviewBtn) {
-    reviewBtn.addEventListener("click", () => {
-      window.location.href = "review.html";
-    });
+  if (dynamicPortfolio) {
+    populateDropdown();
   }
-
-  populateDropdown();
-  lsSubmitCount();
+  if (submitDisplay) {
+    lsSubmitCount();
+  }
 });

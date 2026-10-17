@@ -22,6 +22,7 @@ import {
   handleGetClients,
   handleNewLeads,
   handleQueryDb,
+  handleReview,
 } from "../src/server/system.js";
 
 /**
@@ -148,6 +149,11 @@ export default async function handler(req, res) {
 
     case "query-db":
       return handleQueryDb(req, res);
+
+    // ===== Review Routes =====
+    case "reviews":
+    case "review":
+      return handleReview(req, res);
 
     default:
       if (!primaryRoute) {
