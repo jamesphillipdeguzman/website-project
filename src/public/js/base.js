@@ -673,6 +673,35 @@ function setupModals() {
     });
   });
 
+  // Resilient global delegated click listener for any quote button or link
+  const quoteModal =
+    document.getElementById("quote-modal") ||
+    document.querySelector(".quote-modal-backdrop");
+  const quoteBackdrop =
+    document.getElementById("quote-backdrop") ||
+    document.querySelector(".quote-backdrop, .modal-backdrop");
+
+  if (quoteModal) {
+    document.addEventListener("click", (e) => {
+      if (
+        e.target.closest(
+          "#get-quote-btn, .get-quote-btn, a[href='#quote'], a[href='#get-quote']"
+        )
+      ) {
+        e.preventDefault();
+        quoteModal.classList.remove("hidden");
+        quoteModal.classList.add("active", "open");
+        quoteModal.style.display = "flex";
+        if (quoteBackdrop) {
+          quoteBackdrop.classList.remove("hidden");
+          quoteBackdrop.classList.add("active", "open");
+          quoteBackdrop.style.display = "block";
+        }
+        document.body.style.overflow = "hidden";
+      }
+    });
+  }
+
   // Global Escape key listener to dismiss open modals
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {

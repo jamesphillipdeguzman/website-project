@@ -89,9 +89,13 @@ export default async function handler(req, res) {
       return handleGetPortfolios(req, res);
 
     case "createportfolio":
+    case "create-portfolio":
       return handleCreatePortfolio(req, res);
 
     case "updateportfolio":
+    case "update-portfolio":
+    case "saveportfolio":
+    case "save-portfolio":
       return handleUpdatePortfolio(req, res);
 
     case "last-project":

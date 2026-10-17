@@ -32,25 +32,55 @@ document.addEventListener("DOMContentLoaded", () => {
    * Collect form values into payload
    */
   async function getFormPayload() {
-    const title = form.elements["name"].value.trim();
-    const description = form.elements["description"].value.trim();
-    const category = form.elements["category"].value;
-    const project_link = form.elements["url"].value.trim();
-    const github_link = form.elements["github"].value.trim();
-    const file = fileInput.files[0];
+    const title = form.elements["name"] ? form.elements["name"].value.trim() : "";
+    const description = form.elements["description"] ? form.elements["description"].value.trim() : "";
+    const category = form.elements["category"] ? form.elements["category"].value : "PROJECT";
+
+    const projectLinkInput =
+      document.getElementById("project_link") ||
+      document.getElementById("live_url") ||
+      document.getElementById("url") ||
+      form.elements["project_link"] ||
+      form.elements["live_url"] ||
+      form.elements["url"] ||
+      document.querySelector('input[name="project_link"]') ||
+      document.querySelector('input[name="live_url"]');
+
+    const projectLinkVal = projectLinkInput ? projectLinkInput.value.trim() : "";
+
+    const githubInput =
+      document.getElementById("github_link") ||
+      document.getElementById("github_url") ||
+      document.getElementById("github") ||
+      form.elements["github_link"] ||
+      form.elements["github_url"] ||
+      form.elements["github"] ||
+      document.querySelector('input[name="github_link"]') ||
+      document.querySelector('input[name="github_url"]');
+
+    const githubLinkVal = githubInput ? githubInput.value.trim() : "";
 
     if (!title || !description)
       throw new Error("Title and description are required.");
 
-    let image_url = form.dataset.existingImage || null;
-    if (file) image_url = await uploadImage(file);
+    let image_url = form.dataset.existingImage || "/images/project-images/no-image-placeholder.webp";
+    const file = fileInput?.files?.[0];
+    if (file) {
+      try {
+        image_url = await uploadImage(file);
+      } catch (uploadErr) {
+        console.warn("Cloudinary upload failed, falling back:", uploadErr);
+      }
+    }
 
     return {
       title,
       description,
-      category,
-      project_link: project_link || github_link || null,
-      github_link: github_link || null,
+      category: category || "PROJECT",
+      project_link: projectLinkVal || "#",
+      live_url: projectLinkVal || "#",
+      github_link: githubLinkVal || "#",
+      github_url: githubLinkVal || "#",
       image_url,
     };
   }
@@ -76,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const result = await res.json();
     if (!res.ok) throw new Error(result.error || "Portfolio save failed.");
 
-    if (isEdit)
+    if (isEdit && result.portfolio)
       form.dataset.editingId = String(result.portfolio.id || editingId);
 
     return isEdit;
@@ -105,30 +135,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Form submit handler ---
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!statusEl) return;
-
-    statusEl.textContent = "Processing portfolio...";
-    if (!statusEl2) return;
-
-    statusEl2.textContent = "Processing portfolio...";
+    if (statusEl) statusEl.textContent = "Processing portfolio...";
+    if (statusEl2) statusEl2.textContent = "Processing portfolio...";
 
     try {
       const payload = await getFormPayload();
       const isEdit = await savePortfolio(payload);
 
-      statusEl.textContent = isEdit
-        ? "✅ Portfolio updated successfully!"
-        : "✅ Portfolio created successfully!";
+      const msg = isEdit
+        ? "✅ Portfolio updated successfully! Redirecting..."
+        : "✅ Portfolio created successfully! Redirecting...";
 
-      statusEl2.textContent = isEdit
-        ? "✅ Portfolio updated successfully!"
-        : "✅ Portfolio created successfully!";
+      if (statusEl) statusEl.textContent = msg;
+      if (statusEl2) statusEl2.textContent = msg;
 
-      if (!isEdit) resetForm();
+      setTimeout(() => {
+        window.location.href = "/pages/portfolios.html";
+      }, 1200);
     } catch (err) {
-      console.error(err);
-      statusEl.textContent = "❌ " + err.message;
-      statusEl2.textContent = "❌ " + err.message;
+      console.error("Portfolio save error:", err);
+      if (statusEl) statusEl.textContent = "❌ " + err.message;
+      if (statusEl2) statusEl2.textContent = "❌ " + err.message;
+      // Do not wipe inputs on error so user doesn't lose typed data
     }
   });
 

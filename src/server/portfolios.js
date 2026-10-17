@@ -413,11 +413,16 @@ export async function handleCreatePortfolio(req, res) {
     }
 
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-    const { title, description, category, project_link, github, image_url } = body;
+    const liveUrl = (body.project_link || body.live_url || "#").trim();
+    const githubUrl = (body.github_link || body.github_url || "#").trim();
+    const imageUrl = (body.image_url || body.sourceImg || "/images/project-images/no-image-placeholder.webp").trim();
+    const title = body.title?.trim();
+    const description = body.description?.trim() || "";
+    const category = body.category?.trim() || "OTHER";
 
-    if (!title || !description || !image_url) {
+    if (!title) {
       return res.status(400).json({
-        error: "Title, description, and image_url are required",
+        error: "Title is required",
       });
     }
 
@@ -425,7 +430,17 @@ export async function handleCreatePortfolio(req, res) {
     if (!cleanUrl) {
       return res.status(200).json({
         message: "Portfolio created (mock)",
-        portfolio: { id: Date.now(), title, description, category, image_url },
+        portfolio: {
+          id: Date.now(),
+          title,
+          description,
+          category,
+          image_url: imageUrl,
+          live_url: liveUrl,
+          project_link: liveUrl,
+          github_url: githubUrl,
+          github_link: githubUrl,
+        },
       });
     }
 
@@ -433,17 +448,37 @@ export async function handleCreatePortfolio(req, res) {
     await client.connect();
 
     try {
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS portfolios (
+          id SERIAL PRIMARY KEY,
+          title VARCHAR(255),
+          description TEXT,
+          category VARCHAR(100),
+          live_url VARCHAR(500),
+          project_link VARCHAR(500),
+          github_url VARCHAR(500),
+          github_link VARCHAR(500),
+          image_url VARCHAR(500),
+          views INTEGER DEFAULT 0,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
       try {
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS live_url VARCHAR(500);");
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS project_link VARCHAR(500);");
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS github_url VARCHAR(500);");
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS github_link VARCHAR(500);");
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS image_url VARCHAR(500);");
         await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;");
-      } catch { }
+      } catch {}
 
       const result = await client.query(
         `
-        INSERT INTO portfolios (title, description, category, project_link, github_link, image_url, views)
-        VALUES ($1, $2, $3, $4, $5, $6, 0)
+        INSERT INTO portfolios (title, description, category, live_url, project_link, github_url, github_link, image_url)
+        VALUES ($1, $2, $3, $4, $4, $5, $5, $6)
         RETURNING *;
         `,
-        [title, description, category, project_link || null, github || null, image_url]
+        [title, description, category, liveUrl, githubUrl, imageUrl]
       );
 
       return res.status(200).json({
@@ -460,28 +495,33 @@ export async function handleCreatePortfolio(req, res) {
 }
 
 /**
- * Handle updatePortfolio
+ * Handle updatePortfolio / savePortfolio
  */
 export async function handleUpdatePortfolio(req, res) {
   try {
-    if (req.method !== "PUT") {
+    if (req.method !== "PUT" && req.method !== "POST") {
       return res.status(405).json({ error: "Method Not Allowed" });
     }
 
-    const id = req.query?.id;
     const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-    const {
-      title,
-      description,
-      category,
-      project_link,
-      github_link,
-      image_url,
-    } = body;
+    const id = req.query?.id || body.id;
 
-    if (!id || !title || !description) {
+    if (!id) {
       return res.status(400).json({
-        error: "Portfolio ID, title, and description are required",
+        error: "Portfolio ID is required",
+      });
+    }
+
+    const liveUrl = (body.project_link || body.live_url || "#").trim();
+    const githubUrl = (body.github_link || body.github_url || "#").trim();
+    const imageUrl = (body.image_url || body.sourceImg || "/images/project-images/no-image-placeholder.webp").trim();
+    const title = body.title?.trim();
+    const description = body.description?.trim() || "";
+    const category = body.category?.trim() || "OTHER";
+
+    if (!title) {
+      return res.status(400).json({
+        error: "Title is required",
       });
     }
 
@@ -489,7 +529,17 @@ export async function handleUpdatePortfolio(req, res) {
     if (!cleanUrl) {
       return res.status(200).json({
         message: "Portfolio updated (mock)",
-        portfolio: { id, title, description, category },
+        portfolio: {
+          id,
+          title,
+          description,
+          category,
+          live_url: liveUrl,
+          project_link: liveUrl,
+          github_url: githubUrl,
+          github_link: githubUrl,
+          image_url: imageUrl,
+        },
       });
     }
 
@@ -497,20 +547,29 @@ export async function handleUpdatePortfolio(req, res) {
     await client.connect();
 
     try {
+      try {
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS live_url VARCHAR(500);");
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS project_link VARCHAR(500);");
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS github_url VARCHAR(500);");
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS github_link VARCHAR(500);");
+        await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS image_url VARCHAR(500);");
+      } catch {}
+
       const result = await client.query(
         `
-        UPDATE portfolios
-        SET 
-          title = COALESCE($1, title),
-          description = COALESCE($2, description),
-          category = COALESCE($3, category),
-          project_link = COALESCE($4, project_link),
-          github_link = COALESCE($5, github_link),
-          image_url = COALESCE($6, image_url)
+        UPDATE portfolios 
+        SET title = $1, 
+            description = $2, 
+            category = $3, 
+            live_url = $4, 
+            project_link = $4, 
+            github_url = $5, 
+            github_link = $5, 
+            image_url = $6
         WHERE id = $7
         RETURNING *;
         `,
-        [title, description, category, project_link || null, github_link || null, image_url || null, id]
+        [title, description, category, liveUrl, githubUrl, imageUrl, id]
       );
 
       if (!result.rows || result.rows.length === 0) {
@@ -529,6 +588,8 @@ export async function handleUpdatePortfolio(req, res) {
     return res.status(500).json({ error: error.message });
   }
 }
+
+export const handleSavePortfolio = handleUpdatePortfolio;
 
 /**
  * Handle last-project
