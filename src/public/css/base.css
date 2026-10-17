@@ -513,35 +513,58 @@ body {
   letter-spacing: -0.02em;
 }
 
+.bottom-section.portfolio-showcase-section {
+  max-width: 1400px;
+  width: 96%;
+  margin: 0 auto 4rem auto;
+  padding: 2rem 0.5rem 4rem 0.5rem;
+}
+
+.showcase-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.showcase-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff !important;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
 .showcase-subtext {
-  font-size: 0.95rem;
-  color: #94a3b8;
+  font-size: 1rem;
+  color: #cbd5e1;
   margin: 0;
 }
 
-/* Modern Carousel Track */
+/* Modern Carousel Track & Outer Clearance */
 .modern-carousel-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
   margin-top: 1rem;
   width: 100%;
+  max-width: 100%;
+  padding: 0 4.25rem; /* Dedicated side padding so arrows never sit on top of cards */
+  box-sizing: border-box;
 }
 
 #portfolio-carousel.modern-carousel,
 .carousel.modern-carousel {
   display: flex;
-  gap: 1.75rem;
+  gap: 1.5rem; /* Exact 24px spacing between cards */
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  padding: 1.5rem 0.75rem 2.25rem 0.75rem;
+  padding: 1.5rem 0.5rem 2.25rem 0.5rem;
   width: 100%;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
+  box-sizing: border-box;
 }
 
 #portfolio-carousel.modern-carousel::-webkit-scrollbar,
@@ -549,50 +572,61 @@ body {
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* Kinetic Navigation Arrows */
+/* Kinetic Navigation Arrows - Positioned outside the card track */
 .carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   flex-shrink: 0;
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff !important;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(56, 189, 248, 0.2);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 10;
+  z-index: 25;
+}
+
+.carousel-nav-btn.prev {
+  left: 0.5rem;
+}
+
+.carousel-nav-btn.next {
+  right: 0.5rem;
 }
 
 .carousel-nav-btn:hover {
-  background: rgba(56, 189, 248, 0.2);
-  border-color: rgba(56, 189, 248, 0.5);
-  color: #38bdf8;
-  transform: scale(1.1);
-  box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.25);
+  border-color: rgba(56, 189, 248, 0.7);
+  color: #38bdf8 !important;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.45);
 }
 
 .carousel-nav-btn:active {
-  transform: scale(0.94);
+  transform: translateY(-50%) scale(0.95);
 }
 
 /* Sleek Glassmorphic Card (rounded-2xl) */
 .modern-portfolio-card {
-  flex: 0 0 350px;
-  min-width: 320px;
+  flex: 0 0 360px;
+  min-width: 330px;
   max-width: 380px;
   scroll-snap-align: center;
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.65) 0%, rgba(15, 23, 42, 0.8) 100%);
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.88) 100%) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1.25rem; /* rounded-2xl */
-  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 1.25rem !important; /* rounded-2xl */
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.55);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -605,9 +639,9 @@ body {
 .modern-portfolio-card:hover,
 .modern-portfolio-card:focus-within {
   transform: translateY(-8px);
-  border-color: rgba(56, 189, 248, 0.45);
-  box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.7),
-              0 0 30px rgba(56, 189, 248, 0.18);
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.75),
+              0 0 30px rgba(56, 189, 248, 0.2);
 }
 
 /* Card Media / Image */
@@ -640,7 +674,7 @@ body {
 .card-image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, transparent 40%, rgba(15, 23, 42, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, transparent 40%, rgba(15, 23, 42, 0.85) 100%);
   pointer-events: none;
 }
 
@@ -652,19 +686,23 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px;
-  font-size: 0.78rem;
+  padding: 6px 14px;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: #38bdf8;
-  background: rgba(10, 15, 30, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #ffffff !important; /* Crisp white text */
+  background: rgba(10, 15, 30, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(56, 189, 248, 0.65); /* Distinct glowing cyan border */
   border-radius: 9999px;
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
-  z-index: 2;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.35);
+  z-index: 5;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.views-badge .views-count {
+  color: #ffffff !important;
 }
 
 .views-badge.updated {
@@ -674,6 +712,7 @@ body {
 
 .views-icon {
   stroke: #38bdf8;
+  filter: drop-shadow(0 0 3px rgba(56, 189, 248, 0.7));
 }
 
 /* Category Pill Badge */
@@ -681,43 +720,52 @@ body {
   position: absolute;
   top: 12px;
   left: 12px;
-  padding: 4px 10px;
-  font-size: 0.72rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #cbd5e1;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  letter-spacing: 0.07em;
+  color: #ffffff !important; /* Crisp white text */
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(147, 197, 253, 0.5); /* Distinct light blue border */
   border-radius: 9999px;
-  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 5;
 }
 
-/* Card Databox / Content */
+/* Card Databox / Content - High Contrast Typography */
 .modern-databox {
-  padding: 1.25rem 1.25rem 1.5rem 1.25rem;
+  padding: 1.4rem 1.4rem 1.5rem 1.4rem;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.card-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #f8fafc;
-  margin: 0 0 0.5rem 0;
-  line-height: 1.35;
-  text-align: left;
+.modern-portfolio-card .card-title,
+.modern-portfolio-card h3,
+#portfolio-carousel .card h3 {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important; /* High contrast crisp white */
+  margin: 0 0 0.6rem 0 !important;
+  line-height: 1.35 !important;
+  text-align: left !important;
+  letter-spacing: -0.01em;
 }
 
-.card-desc {
-  font-size: 0.9rem;
-  color: #94a3b8;
-  line-height: 1.55;
-  margin: 0 0 1.25rem 0;
-  text-align: left;
+.modern-portfolio-card .card-desc,
+.modern-portfolio-card p,
+#portfolio-carousel .card p {
+  font-size: 0.92rem !important;
+  color: #cbd5e1 !important; /* Readable silver / light slate */
+  line-height: 1.6 !important;
+  margin: 0 0 1.35rem 0 !important;
+  text-align: left !important;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -738,8 +786,8 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 0.55rem 1rem;
-  font-size: 0.85rem;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.88rem;
   font-weight: 600;
   border-radius: 0.75rem;
   text-decoration: none;
@@ -750,28 +798,28 @@ body {
 .btn-action.btn-primary {
   flex: 1;
   background: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
-  color: #ffffff;
+  color: #ffffff !important;
   border: none;
-  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
 }
 
 .btn-action.btn-primary:hover {
   background: linear-gradient(135deg, #0ea5e9 0%, #4f46e5 100%);
-  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.45);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
   transform: translateY(-2px);
 }
 
 .btn-action.btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
 }
 
 .btn-action.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
-  color: #38bdf8;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(56, 189, 248, 0.5);
+  color: #38bdf8 !important;
   transform: translateY(-2px);
 }
 
@@ -780,15 +828,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: 1.5rem;
+  gap: 10px;
+  margin-top: 1.75rem;
 }
 
 .carousel-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
   border: none;
   padding: 0;
   cursor: pointer;
@@ -796,17 +844,60 @@ body {
 }
 
 .carousel-dot:hover {
-  background: rgba(56, 189, 248, 0.5);
+  background: rgba(56, 189, 248, 0.6);
   transform: scale(1.25);
 }
 
 .carousel-dot.active {
-  width: 28px;
+  width: 30px;
   background: linear-gradient(90deg, #38bdf8, #818cf8);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.7);
 }
 
-.card {
+/* Responsive adjustments for modern portfolio showcase */
+@media (max-width: 768px) {
+  .modern-carousel-wrapper {
+    padding: 0 3.25rem;
+  }
+  .carousel-nav-btn {
+    width: 42px;
+    height: 42px;
+  }
+  .carousel-nav-btn.prev {
+    left: 0.25rem;
+  }
+  .carousel-nav-btn.next {
+    right: 0.25rem;
+  }
+  .modern-portfolio-card {
+    flex: 0 0 300px;
+    min-width: 280px;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 540px) {
+  .modern-carousel-wrapper {
+    padding: 0 2.25rem;
+  }
+  .carousel-nav-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .carousel-nav-btn.prev {
+    left: 0;
+  }
+  .carousel-nav-btn.next {
+    right: 0;
+  }
+  .modern-portfolio-card {
+    flex: 0 0 calc(100vw - 7rem);
+    min-width: 240px;
+    max-width: 320px;
+  }
+}
+
+.card:not(.modern-portfolio-card) {
   min-width: 280px;
   max-width: 300px;
   flex-shrink: 0;
@@ -819,29 +910,29 @@ body {
     box-shadow 0.2s ease;
 }
 
-.card:hover {
+.card:not(.modern-portfolio-card):hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.card img {
+.card:not(.modern-portfolio-card) img {
   width: 100%;
   height: 180px;
   object-fit: cover;
   display: block;
 }
 
-.card .databox {
+.card:not(.modern-portfolio-card) .databox {
   padding: 12px 15px;
 }
 
-.card h3 {
+.card:not(.modern-portfolio-card) h3 {
   font-size: 1.1rem;
   margin: 0 0 5px 0;
   color: #222;
 }
 
-.card p {
+.card:not(.modern-portfolio-card) p {
   font-size: 0.9rem;
   color: #555;
   line-height: 1.4;
@@ -850,11 +941,11 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
-  .card {
+  .card:not(.modern-portfolio-card) {
     min-width: 220px;
     max-width: 240px;
   }
-  .card img {
+  .card:not(.modern-portfolio-card) img {
     height: 140px;
   }
 }
@@ -1064,12 +1155,11 @@ input[type="email"] {
   gap: 10px;
 }
 
-.card .databox p {
-  /* putting .card in front of .databox p increases its specificity, therefore this works */
+.card:not(.modern-portfolio-card) .databox p {
   font-size: 0.8rem;
 }
 
-.card .databox h3 {
+.card:not(.modern-portfolio-card) .databox h3 {
   font-size: 0.9rem;
 }
 
