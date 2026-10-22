@@ -154,32 +154,31 @@ function formatPortfolioViews(count) {
   return `${n} view${n === 1 ? "" : "s"}`;
 }
 
-async function incrementPortfolioView(id, badgeEl) {
-  if (!id) return;
+async function incrementProjectView(projectId, badgeEl) {
   try {
-    const res = await fetch("/api/increment-portfolio-view", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: Number(id) || id }),
+    const res = await fetch('/api/increment-portfolio-view', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: projectId })
     });
     if (res.ok) {
       const data = await res.json();
-      if (data && data.views !== undefined && badgeEl) {
-        const countSpan =
-          badgeEl.querySelector(".count") ||
-          badgeEl.querySelector(".views-count") ||
-          badgeEl;
-        if (countSpan) {
-          countSpan.textContent = `${data.views || 0} views`;
+      if (badgeEl && typeof data.views === 'number') {
+        const countSpan = badgeEl.querySelector?.('.views, .count, .views-count');
+        if (countSpan && countSpan !== badgeEl) {
+          countSpan.textContent = `${data.views} views`;
+        } else {
+          badgeEl.textContent = `${data.views} views`;
         }
-        badgeEl.classList.add("updated");
-        setTimeout(() => badgeEl.classList.remove("updated"), 1200);
       }
     }
   } catch (err) {
-    console.warn("Portfolio view increment error:", err);
+    console.debug('View increment blip:', err);
   }
 }
+
+// Backward-compatibility alias
+const incrementPortfolioView = incrementProjectView;
 
 function trackPortfolioView(id, badgeEl) {
   if (!id) return;
@@ -187,8 +186,34 @@ function trackPortfolioView(id, badgeEl) {
   if (sessionStorage.getItem(key)) return;
 
   sessionStorage.setItem(key, "1");
-  incrementPortfolioView(id, badgeEl);
+  incrementProjectView(id, badgeEl);
 }
+
+// Wire event delegation onto portfolio cards and action buttons
+document.addEventListener('click', (e) => {
+  const actionBtn = e.target.closest('.portfolio-card a, .portfolio-card button');
+  if (actionBtn) {
+    const card = actionBtn.closest('[data-id]');
+    if (!card) return;
+
+    const projectId = card.dataset.id;
+    const badgeEl = card.querySelector('.views, [class*="view"]');
+    if (projectId) {
+      incrementProjectView(projectId, badgeEl);
+    }
+    return;
+  }
+
+  // Also trigger when clicking or opening the project card itself
+  const card = e.target.closest('.portfolio-card[data-id]');
+  if (!card) return;
+
+  const projectId = card.dataset.id;
+  const badgeEl = card.querySelector('.views, [class*="view"]');
+  if (projectId) {
+    incrementProjectView(projectId, badgeEl);
+  }
+});
 
 /* ---------- Modern Carousel & View Tracking ---------- */
 function renderPortfolioCarousel() {
@@ -299,41 +324,18 @@ function renderPortfolioCarousel() {
           </div>
 
           <div class="card-footer-meta">
-            <span class="view-count-badge">
+            <span class="stats-badge">
               <svg class="eye-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
-              <span class="count">${p.views || 0} views</span>
+              <span class="views">${p.views || 0} views</span>
             </span>
             <span class="category-tag">${p.category || 'PROJECT'}</span>
           </div>
         </div>
       </div>
     `;
-
-    const triggerViewIncrement = () => {
-      const badge = card.querySelector(".view-count-badge") || card.querySelector(".views-badge");
-      incrementPortfolioView(p.id, badge);
-    };
-
-    // Live demo & action button view increments
-    const liveDemoBtn = card.querySelector(".btn-primary");
-    const codeBtn = card.querySelector(".btn-secondary");
-    const cardImgLink = card.querySelector(".card-image-link");
-
-    liveDemoBtn?.addEventListener("click", triggerViewIncrement);
-    codeBtn?.addEventListener("click", triggerViewIncrement);
-    cardImgLink?.addEventListener("click", triggerViewIncrement);
-
-    // Card click & focus view tracking
-    card.addEventListener("click", () => {
-      triggerViewIncrement();
-    });
-
-    card.addEventListener("focus", () => {
-      triggerViewIncrement();
-    });
 
     container.appendChild(card);
     viewObserver.observe(card);

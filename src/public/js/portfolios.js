@@ -22,27 +22,65 @@ function formatPortfolioViews(count) {
   return `${n} view${n === 1 ? "" : "s"}`;
 }
 
+async function incrementProjectView(projectId, badgeEl) {
+  try {
+    const res = await fetch('/api/increment-portfolio-view', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: projectId })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (badgeEl && typeof data.views === 'number') {
+        const countSpan = badgeEl.querySelector?.('.views, .count, .views-count');
+        if (countSpan && countSpan !== badgeEl) {
+          countSpan.textContent = `${data.views} views`;
+        } else {
+          badgeEl.textContent = `${data.views} views`;
+        }
+      }
+    }
+  } catch (err) {
+    console.debug('View increment blip:', err);
+  }
+}
+
+const incrementPortfolioView = incrementProjectView;
+
 function trackPortfolioView(id, badgeEl) {
   if (!id) return;
   const key = `session_viewed_portfolio_${id}`;
   if (sessionStorage.getItem(key)) return;
 
   sessionStorage.setItem(key, "1");
-
-  fetch(`/api/portfolios?action=view&id=${encodeURIComponent(id)}`, {
-    method: "POST",
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data && data.views !== undefined && badgeEl) {
-        const countSpan = badgeEl.querySelector(".views-count");
-        if (countSpan) countSpan.textContent = formatPortfolioViews(data.views);
-        badgeEl.classList.add("updated");
-        setTimeout(() => badgeEl.classList.remove("updated"), 1200);
-      }
-    })
-    .catch((err) => console.error("Failed to track portfolio view:", err));
+  incrementProjectView(id, badgeEl);
 }
+
+// Wire event delegation onto portfolio cards and action buttons
+document.addEventListener('click', (e) => {
+  const actionBtn = e.target.closest('.portfolio-card a, .portfolio-card button');
+  if (actionBtn) {
+    const card = actionBtn.closest('[data-id]');
+    if (!card) return;
+
+    const projectId = card.dataset.id;
+    const badgeEl = card.querySelector('.views, [class*="view"]');
+    if (projectId) {
+      incrementProjectView(projectId, badgeEl);
+    }
+    return;
+  }
+
+  // Also trigger when clicking or opening the project card itself
+  const card = e.target.closest('.portfolio-card[data-id]');
+  if (!card) return;
+
+  const projectId = card.dataset.id;
+  const badgeEl = card.querySelector('.views, [class*="view"]');
+  if (projectId) {
+    incrementProjectView(projectId, badgeEl);
+  }
+});
 
 // Modern carousel setup
 function setupPortfolioCarousel(portfolios) {

@@ -17,7 +17,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://jamesphillipdeguzman.github.io/wdd131/place.html",
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/place.html",
     github_link: "https://github.com/jamesphillipdeguzman/wdd131",
-    views: 42,
+    views: 0,
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://jamesphillipdeguzman.github.io/wdd131/index.html",
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/index.html",
     github_link: "https://github.com/jamesphillipdeguzman/wdd131",
-    views: 38,
+    views: 0,
   },
   {
     id: 3,
@@ -45,7 +45,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://jamesphillipdeguzman.github.io/wdd131/filtered-temples.html",
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/filtered-temples.html",
     github_link: "https://github.com/jamesphillipdeguzman/wdd131",
-    views: 29,
+    views: 0,
   },
   {
     id: 4,
@@ -59,7 +59,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://jamesphillipdeguzman.github.io/wdd131/temples.html",
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/temples.html",
     github_link: "https://github.com/jamesphillipdeguzman/wdd131",
-    views: 19,
+    views: 0,
   },
   {
     id: 5,
@@ -73,7 +73,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://jamesphillipdeguzman.github.io/wdd131/csspractice/holy-grail-layout-flex.html",
     imageURL: "https://jamesphillipdeguzman.github.io/wdd131/csspractice/holy-grail-layout-flex.html",
     github_link: "https://github.com/jamesphillipdeguzman/wdd131",
-    views: 25,
+    views: 0,
   },
   {
     id: 6,
@@ -87,7 +87,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://jamesphillipdeguzman.github.io/wdd130/wwr/index.html",
     imageURL: "https://jamesphillipdeguzman.github.io/wdd130/wwr/index.html",
     github_link: "https://github.com/jamesphillipdeguzman/wdd130",
-    views: 31,
+    views: 0,
   },
   {
     id: 7,
@@ -101,7 +101,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://jamesphillipdeguzman.github.io/wdd231/index.html",
     imageURL: "https://jamesphillipdeguzman.github.io/wdd231/index.html",
     github_link: "https://github.com/jamesphillipdeguzman/wdd231",
-    views: 45,
+    views: 0,
   },
   {
     id: 8,
@@ -115,7 +115,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://jamesphillipdeguzman.github.io/wdd231/chamber/index.html",
     imageURL: "https://jamesphillipdeguzman.github.io/wdd231/chamber/index.html",
     github_link: "https://github.com/jamesphillipdeguzman/wdd231",
-    views: 52,
+    views: 0,
   },
   {
     id: 9,
@@ -129,7 +129,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://jamesphillipdeguzman.github.io/wdd231/web-project/index.html",
     imageURL: "https://jamesphillipdeguzman.github.io/wdd231/web-project/index.html",
     github_link: "https://github.com/jamesphillipdeguzman/wdd231",
-    views: 67,
+    views: 0,
   },
   {
     id: 10,
@@ -143,7 +143,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://sleepoutside2.netlify.app/",
     imageURL: "https://sleepoutside2.netlify.app/",
     github_link: "",
-    views: 74,
+    views: 0,
   },
   {
     id: 11,
@@ -157,7 +157,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://foodexer.netlify.app/",
     imageURL: "https://foodexer.netlify.app/",
     github_link: "",
-    views: 58,
+    views: 0,
   },
   {
     id: 12,
@@ -171,7 +171,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://ralteenfiel.netlify.app/",
     imageURL: "https://ralteenfiel.netlify.app/",
     github_link: "",
-    views: 83,
+    views: 0,
   },
   {
     id: 13,
@@ -185,7 +185,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://deeday.netlify.app/",
     imageURL: "https://deeday.netlify.app/",
     github_link: "",
-    views: 41,
+    views: 0,
   },
   {
     id: 14,
@@ -199,7 +199,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://simple-pos-api.onrender.com/api-docs",
     imageURL: "https://simple-pos-api.onrender.com/api-docs",
     github_link: "",
-    views: 36,
+    views: 0,
   },
   {
     id: 15,
@@ -213,7 +213,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://store-pos-api.onrender.com/api-docs",
     imageURL: "https://store-pos-api.onrender.com/api-docs",
     github_link: "",
-    views: 49,
+    views: 0,
   },
   {
     id: 16,
@@ -226,7 +226,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://sanag.netlify.app",
     imageURL: "https://sanag.netlify.app",
     github_link: "https://github.com/jamesphillipdeguzman/sanag",
-    views: 95,
+    views: 0,
   },
   {
     id: 17,
@@ -239,7 +239,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://kantimes.netlify.app",
     imageURL: "https://kantimes.netlify.app",
     github_link: "https://github.com/jamesphillipdeguzman/kantimes",
-    views: 120,
+    views: 0,
   },
   {
     id: 18,
@@ -252,7 +252,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://medref.netlify.app",
     imageURL: "https://medref.netlify.app",
     github_link: "https://github.com/jamesphillipdeguzman/medref",
-    views: 84,
+    views: 0,
   },
   {
     id: 19,
@@ -265,7 +265,7 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://drmeet.netlify.app",
     imageURL: "https://drmeet.netlify.app",
     github_link: "https://github.com/jamesphillipdeguzman/drmeet",
-    views: 68,
+    views: 0,
   },
   {
     id: 20,
@@ -279,14 +279,14 @@ export const DEFAULT_PORTFOLIOS = [
     project_link: "https://snip8.netlify.app",
     imageURL: "https://snip8.netlify.app",
     github_link: "https://github.com/jamesphillipdeguzman/snip8",
-    views: 88,
+    views: 0,
   },
 ];
 
 /**
  * Handle get-portfolios
- * Accommodates 'views' column (default 0)
- * Gracefully falls back to DEFAULT_PORTFOLIOS if database query fails or table is empty
+ * Reads directly from Neon database with current views
+ * Only falls back to DEFAULT_PORTFOLIOS if the database throws an unrecoverable connection error
  */
 export async function handleGetPortfolios(req, res) {
   if (req.method !== "GET") {
@@ -296,7 +296,7 @@ export async function handleGetPortfolios(req, res) {
   const cleanUrl = getCleanDatabaseUrl(process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL);
 
   if (!cleanUrl) {
-    console.warn("No DATABASE_URL configured. Serving DEFAULT_PORTFOLIOS fallback.");
+    console.error("Database connection failure: No DATABASE_URL configured. Serving DEFAULT_PORTFOLIOS fallback.");
     return res.status(200).json(DEFAULT_PORTFOLIOS);
   }
 
@@ -305,30 +305,33 @@ export async function handleGetPortfolios(req, res) {
     client = new Client({ connectionString: cleanUrl });
     await client.connect();
 
-    // Ensure views column exists if not already present in the database
+    // Ensure columns exist if not already present in the database
     try {
+      await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS live_url VARCHAR(500);");
+      await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS github_url VARCHAR(500);");
+      await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS project_link VARCHAR(500);");
+      await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS github_link VARCHAR(500);");
       await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;");
+      await client.query("UPDATE portfolios SET live_url = project_link WHERE live_url IS NULL AND project_link IS NOT NULL;");
+      await client.query("UPDATE portfolios SET github_url = github_link WHERE github_url IS NULL AND github_link IS NOT NULL;");
     } catch {
-      // Ignore if table/column already exists or user has restricted permissions
+      // Ignore if column already exists or user has restricted permissions
     }
 
-    let rows = [];
-    try {
-      const result = await client.query(`
-        SELECT id, title, description, category, image_url, project_link, github_link, COALESCE(views, 0) AS views
-        FROM portfolios 
-        ORDER BY id ASC;
-      `);
-      rows = result.rows || [];
-    } catch (queryErr) {
-      console.warn("Direct query failed, attempting basic query:", queryErr.message);
-      const fallbackResult = await client.query(`
-        SELECT id, title, description, category, image_url, project_link, github_link
-        FROM portfolios 
-        ORDER BY id ASC;
-      `);
-      rows = (fallbackResult.rows || []).map((p) => ({ ...p, views: p.views ?? 0 }));
-    }
+    const result = await client.query(`
+      SELECT id, title, description, category, image_url, live_url, github_url, COALESCE(views, 0) AS views 
+      FROM portfolios 
+      ORDER BY id DESC;
+    `);
+
+    const rows = (result.rows || []).map((row) => ({
+      ...row,
+      project_link: row.project_link || row.live_url || "#",
+      live_url: row.live_url || row.project_link || "#",
+      github_link: row.github_link || row.github_url || "",
+      github_url: row.github_url || row.github_link || "",
+      views: Number(row.views) || 0,
+    }));
 
     if (!rows || rows.length === 0) {
       console.log("Portfolios table returned 0 rows, serving default portfolios.");
@@ -337,7 +340,7 @@ export async function handleGetPortfolios(req, res) {
 
     return res.status(200).json(rows);
   } catch (err) {
-    console.error("Database fetch error:", err);
+    console.error("Database connection failure / fetch error:", err);
     // Return fallback static data so UI cards always render
     return res.status(200).json(DEFAULT_PORTFOLIOS);
   } finally {
@@ -370,6 +373,7 @@ export async function handleIncrementPortfolioView(req, res) {
 
   const cleanUrl = getCleanDatabaseUrl(process.env.DATABASE_URL || process.env.NETLIFY_DATABASE_URL);
   if (!cleanUrl) {
+    console.error("Database connection failure: No DATABASE_URL configured for view increment.");
     return res.status(200).json({ success: true, views: 1 });
   }
 
@@ -380,16 +384,23 @@ export async function handleIncrementPortfolioView(req, res) {
 
     try {
       await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;");
-    } catch {}
+    } catch { }
+
+    const numericId = Number(id);
+    const targetId = isNaN(numericId) ? id : numericId;
 
     const { rows } = await client.query(
-      "UPDATE portfolios SET views = COALESCE(views, 0) + 1 WHERE id = $1 RETURNING views",
-      [id]
+      `UPDATE portfolios 
+       SET views = COALESCE(views, 0) + 1 
+       WHERE id = $1 
+       RETURNING views;`,
+      [targetId]
     );
 
+    const views = rows && rows.length > 0 ? Number(rows[0].views) : 1;
     return res.status(200).json({
       success: true,
-      views: rows[0]?.views ?? 1,
+      views: views,
     });
   } catch (err) {
     console.error("Increment portfolio view error:", err);
@@ -398,7 +409,7 @@ export async function handleIncrementPortfolioView(req, res) {
     if (client) {
       try {
         await client.end();
-      } catch {}
+      } catch { }
     }
   }
 }
@@ -470,7 +481,7 @@ export async function handleCreatePortfolio(req, res) {
         await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS github_link VARCHAR(500);");
         await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS image_url VARCHAR(500);");
         await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;");
-      } catch {}
+      } catch { }
 
       const result = await client.query(
         `
@@ -553,7 +564,7 @@ export async function handleUpdatePortfolio(req, res) {
         await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS github_url VARCHAR(500);");
         await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS github_link VARCHAR(500);");
         await client.query("ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS image_url VARCHAR(500);");
-      } catch {}
+      } catch { }
 
       const result = await client.query(
         `
